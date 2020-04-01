@@ -63,9 +63,9 @@ import {
       const { rows } = await dbQuery.query(createCustomerQuery, values);
       const dbResponse = rows[0];
       delete dbResponse.password;
-      const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       successMessage.data = dbResponse;
-      successMessage.data.token = token;
+    //   successMessage.data.token = token;
       return res.status(status.created).send(successMessage);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
@@ -105,10 +105,10 @@ import {
         errorMessage.error = 'The password you provided is incorrect';
         return res.status(status.bad).send(errorMessage);
       }
-      const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       delete dbResponse.password;
       successMessage.data = dbResponse;
-      successMessage.data.token = token;
+    //   successMessage.data.token = token;
       return res.status(status.success).send(successMessage);
     } catch (error) {
       errorMessage.error = 'Operation was not successful';
