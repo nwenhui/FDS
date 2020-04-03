@@ -3,6 +3,10 @@ import 'babel-polyfill';
 import cors from 'cors';
 import env from './env';
 import customersRoute from './app/routes/customersRoute';
+import managersRoute from './app/routes/managersRoute';
+import ridersRoute from './app/routes/ridersRoute';
+import staffRoute from './app/routes/staffRoute';
+
 
 const app = express();
 const bodyParser = require('body-parser')
@@ -14,6 +18,9 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/v1/customer', customersRoute);
+app.use('/api/v1/manager', managersRoute);
+app.use('/api/v1/rider', ridersRoute);
+app.use('/api/v1/staff', staffRoute);
 
 app.listen(env.port).on('listening', () => {
     console.log(`🚀 are live on ${env.port}`);

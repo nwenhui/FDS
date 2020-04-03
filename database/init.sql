@@ -1,18 +1,55 @@
-drop table if exists Customers cascade;
+drop table if exists Customer cascade;
 drop table if exists Restaurants cascade;
 drop table if exists Staff cascade;
-drop table if exists Riders cascade;
-drop table if exists FDS cascade;
+drop table if exists Rider cascade;
+drop table if exists Manager cascade;
 
 -- list of customer details & login
-create table Customers (
-    id serial primary key,
+create table Customer (
+    CustomerID serial,
     email varchar(100) unique not null,
     first_name varchar(100),
     last_name varchar(100),
     password varchar(100) not null,
-    is_admin bool default(false),
-    created_on date not null
+    Points INTEGER default 0,
+    CCID INTEGER default 0,
+    PRIMARY KEY (CustomerID)
+    -- FOREIGN KEY (CCID) REFERENCES CreditCard
+);
+
+CREATE TABLE Rider (
+    RiderID serial,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null,
+    PRIMARY KEY (RiderID)
+);
+
+CREATE TABLE Restaurants (
+    ResID serial,
+    MinSpending INTEGER,
+    AddressDetails VARCHAR(60),
+    PRIMARY KEY (ResID)
+);
+
+create table Staff (
+    StaffID serial,
+    RestaurantId INTEGER default 0,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null,
+    primary key (StaffID, RestaurantID)
+    -- foreign key (RestaurantID) REFERENCES Restaurants
+);
+
+create table Manager (
+    ManagerID serial primary key,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null
 );
 
 -- -- list of restaurant details

@@ -15,12 +15,12 @@ import {
 } from '../helpers/status';
 
 /**
-   * Create A Customer
+   * Create A Staff
    * @param {object} req
    * @param {object} res
-   * @returns {object} reflection object (of Customer)
+   * @returns {object} reflection object (of Staff)
    */
-  const createCustomer = async (req, res) => {
+  const createStaff = async (req, res) => {
     const {
       email, first_name, last_name, password,
     } = req.body;
@@ -46,8 +46,8 @@ import {
       return res.status(status.bad).send(errorMessage);
     }
     const hashedPassword = hashPassword(password);
-    const createCustomerQuery = `INSERT INTO
-        Customer(email, first_name, last_name, password)
+    const createStaffQuery = `INSERT INTO
+        Staff(email, first_name, last_name, password)
         VALUES($1, $2, $3, $4)
         returning *`;
     const values = [
@@ -59,7 +59,7 @@ import {
     ];
   
     try {
-      const { rows } = await dbQuery.query(createCustomerQuery, values);
+      const { rows } = await dbQuery.query(createStaffQuery, values);
       const dbResponse = rows[0];
       delete dbResponse.password;
     //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
@@ -68,7 +68,7 @@ import {
       return res.status(status.created).send(successMessage);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
-        errorMessage.error = 'Customer with that EMAIL already exist';
+        errorMessage.error = 'Staff with that EMAIL already exist';
         return res.status(status.conflict).send(errorMessage);
       }
       errorMessage.error = 'Operation was not successful';
@@ -80,9 +80,9 @@ import {
      * Signin
      * @param {object} req
      * @param {object} res
-     * @returns {object} customer object
+     * @returns {object} staff object
      */
-  const signinCustomer = async (req, res) => {
+  const signinStaff = async (req, res) => {
     const { email, password } = req.body;
     if (isEmpty(email) || isEmpty(password)) {
       errorMessage.error = 'Email or Password detail is missing';
@@ -92,12 +92,12 @@ import {
       errorMessage.error = 'Please enter a valid Email or Password';
       return res.status(status.bad).send(errorMessage.error);
     }
-    const signinCustomerQuery = 'SELECT * FROM Customer WHERE email = $1';
+    const signinStaffQuery = 'SELECT * FROM Staff WHERE email = $1';
     try {
-      const { rows } = await dbQuery.query(signinCustomerQuery, [email]);
+      const { rows } = await dbQuery.query(signinStaffQuery, [email]);
       const dbResponse = rows[0];
       if (!dbResponse) {
-        errorMessage.error = 'Customer with this email does not exist';
+        errorMessage.error = 'Staff with this email does not exist';
         console.log(errorMessage);
         return res.status(status.notfound).send(errorMessage.error);
       }
@@ -122,9 +122,9 @@ import {
  * @returns return firstname and Lastname
  */ 
 
- const searchCustomerFirstnameOrLastname = async (req, res) => {
+ const searchStaffFirstnameOrLastname = async (req, res) => {
     const { first_name, last_name } = req.query;
-    const searchQuery = 'SELECT * from Customer WHERE first_name =$1 OR last_name =$2 ORDER BY id DESC';
+    const searchQuery = 'SELECT * from Staff WHERE first_name =$1 OR last_name =$2 ORDER BY id DESC';
     try {
       const { rows } = await dbQuery.query(searchQuery, [first_name, last_name]);
       const dbResponse = rows;
@@ -143,7 +143,7 @@ import {
   };
   
   export {
-    createCustomer,
-    signinCustomer,
-    searchCustomerFirstnameOrLastname,
+    createStaff,
+    signinStaff,
+    searchStaffFirstnameOrLastname,
   };

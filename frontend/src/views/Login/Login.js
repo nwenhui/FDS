@@ -3,8 +3,6 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Login.css";
 
-var show = false;
-
 const option = [
     { value: 1, label: 'FDS Manager' },
     { value: 2, label: 'Staff' },
@@ -26,7 +24,7 @@ function handleErrors(response) {
 function getURL(type) {
     switch(Number(type)) {
         case option[0].value:
-            return 'http://localhost:3000/api/v1/fds/auth/signin';
+            return 'http://localhost:3000/api/v1/manager/auth/signin';
             break;
         case option[1].value:
             return 'http://localhost:3000/api/v1/staff/auth/signin';
@@ -135,6 +133,11 @@ class Login extends Component {
                         login
                     </Button>
                 </Form>
+                <Link to="/">
+                    <Button block bssize="large">
+                        back
+                    </Button>
+                </Link>
                 { this.state.error && 
                     <div class="alert alert-danger alert-dismissable fade show" role="alert">
                         <strong>ohno! </strong>
