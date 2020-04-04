@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./style.css";
-import foodpic from "/Users/ngjingkang/Desktop/delivery/src/containers/images/lily-banse--YHSwy6uqvk-unsplash.jpg";
+import foodpic from "/Users/ngjingkang/Desktop/website/delivery2/src/containers/images/lily-banse--YHSwy6uqvk-unsplash.jpg";
 
 class HomePage extends Component {
   render() {
@@ -13,7 +13,7 @@ class HomePage extends Component {
               width: null,
               height: null,
               resizeMode: "Cover",
-              fit: "Cover"
+              fit: "Cover",
             }}
             class="img-fluid"
             alt=""
