@@ -1,0 +1,60 @@
+.container {
+  position: relative;
+  /* width: 100%;
+  max-width: 100; */
+  width: 50%;
+}
+
+.container img {
+  width: 100%;
+  height: auto;
+}
+/* Style the button and place it in the middle of the container/image */
+.image .loginBTN {
+  position: absolute;
+  top: 60%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.image .signupBTN {
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.image .welcome {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  font-size: 56px;
+  /* font-weight: bold; */
+  /* padding: 12px 24px; */
+  /* border: none; */
+  /* border-radius: 5px; */
+}
+
+
+/* .container .btn:hover {
+  background-color: black;
+} */
