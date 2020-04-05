@@ -12,11 +12,7 @@ function Navigation() {
             Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/About#">
-            About
-          </a>
-        </li>
+
         <li></li>
         <li class="nav-item dropdown">
           <a
@@ -45,7 +41,12 @@ function Navigation() {
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
-            Customer Service
+            Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/About#">
+            About
           </a>
         </li>
       </ul>

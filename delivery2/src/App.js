@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Home from "./containers/HomePage/HomePage";
+import Home from "./Pages/HomePage/HomePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import NavBar from "./components/Navigation";
