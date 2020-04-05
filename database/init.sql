@@ -28,6 +28,7 @@ CREATE TABLE Rider (
 
 CREATE TABLE Restaurants (
     ResID serial,
+    name varchar(100),
     MinSpending INTEGER,
     AddressDetails VARCHAR(60),
     PRIMARY KEY (ResID)
