@@ -3,6 +3,9 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Signup.css";
 
+import SignupSuccess from './SignupSuccess';
+
+
 const option = [
     { value: 1, label: 'FDS Manager' },
     { value: 2, label: 'Staff' },

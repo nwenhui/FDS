@@ -10,6 +10,7 @@ import CustomerHome from "./Pages/Customer/Home";
 import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
+import RestaurantSearch from './Pages/SearchResult/SearchResult';
 
 import history from "./history";
 import HomePage from './Pages/HomePage/HomePage';
@@ -28,6 +29,7 @@ export default class Routes extends Component {
           <Route path="/rider/home" exact component = {RiderHome} />
           <Route path="/manager/home" exact component = {ManagerHome} />
           <Route path="/staff/home" exact component = {StaffHome} />
+          <Route path="/restaurant/search" exact component = {RestaurantSearch} />
         </Switch>
       </Router>
     );
