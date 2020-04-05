@@ -15,5 +15,11 @@ to run server:
 to run client:
 1. npm start
 
-***** run 'npm install' in the folder after cloning/pulling
-***** make sure to run server first then client (so server is on localhost:3000)
+***** 
+- run 'npm install' in the folder after cloning/pulling
+- make sure to run server first then client (so server is on localhost:3000)
+***** 
+- log in and sign up functions should be working (i dunno i hope so bro)
+- can try searching for restaurants but no restaurants in database so will always return nth
+- have to look at console for search results LOL cos i dunno how to pass the state to another page TT
+- create new restaurants in postgres: "insert into restaurants(name) values('WHATEVER U WANNA NAME THE RESTAURANT');"
