@@ -1,5 +1,35 @@
+drop table if exists FoodItem cascade;
+drop table if exists Menu cascade;
+drop table if exists Listings cascade; 
+drop table if exists Category cascade; 
+drop table if exists LocalFood cascade; 
+drop table if exists WesternFood cascade; 
+drop table if exists Classifies cascade; 
+drop table if exists Restaurant cascade; 
+drop table if exists Inventory cascade; 
+drop table if exists Promotion cascade; 
+drop table if exists Discounts cascade; 
+drop table if exists Rider cascade; 
+drop table if exists PartTime cascade; 
+drop table if exists FullTime cascade; 
+drop table if exists Works cascade; 
+drop table if exists Shift cascade; 
+drop table if exists CreditCard cascade; 
+drop table if exists Customer cascade; 
+drop table if exists Uses cascade; 
+drop table if exists Order cascade; 
+drop table if exists Contains cascade; 
+drop table if exists Journey cascade; 
+drop table if exists Delivers cascade; 
+drop table if exists Receipt cascade; 
+drop table if exists Orders cascade; 
+drop table if exists Rates cascade; 
+drop table if exists Manager cascade;
+drop table if exists Staff cascade;
+
+
 CREATE TABLE FoodItem (
-    ItemID INTEGER,
+    ItemID serial,
     Available INTEGER,
     Cost INTEGER,
     MaxLimit INTEGER,
@@ -7,7 +37,7 @@ CREATE TABLE FoodItem (
 );
 
 CREATE TABLE Menu (
-    MenuID INTEGER,
+    MenuID serial,
     PRIMARY KEY (MenuID)
 );
 
@@ -45,7 +75,7 @@ CREATE TABLE Classifies (
 );
 
 CREATE TABLE Restaurant (
-    ResID INTEGER,
+    ResID serial,
     MinSpending INTEGER,
     AddressDetails VARCHAR(60),
     PRIMARY KEY (ResID)
@@ -60,19 +90,23 @@ CREATE TABLE Inventory (
 );
 
 CREATE TABLE Promotion (
-    PromotionID INTEGER,
+    PromotionID serial,
     PRIMARY KEY (PromotionID)
 );
 
 CREATE TABLE Discounts (
-    PromotionID INTEGER,
+    PromotionID serial,
     MinSpending INTEGER,
     PercentageOff INTEGER,
     PRIMARY KEY (PromotionID)
 );
 
 CREATE TABLE Rider (
-    RiderID INTEGER,
+    RiderID serial,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null,
     PRIMARY KEY (RiderID)
 );
 
@@ -106,15 +140,20 @@ CREATE TABLE Shift (
 );
 
 CREATE TABLE CreditCard (
-    CCID INTEGER NOT NULL,
+    CCID serial NOT NULL,
     SecurityCode INTEGER NOT NULL,
     Bank VARCHAR(20) NOT NULL,
     PRIMARY KEY (CCID)
 );
 
 CREATE TABLE Customer (
-    CustomerID INTEGER,
-    Points INTEGER,
+    CustomerID serial,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null,
+    Points INTEGER default 0,
+    CCID INTEGER,
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (CCID) REFERENCES CreditCard
 );
@@ -128,7 +167,7 @@ CREATE TABLE Uses (
 );
 
 CREATE TABLE Order (
-    OrderID INTEGER,
+    OrderID serial,
     AddressDetails VARCHAR(60) NOT NULL,
     PRIMARY KEY (OrderID),
 );
@@ -157,7 +196,7 @@ CREATE TABLE Contains (
 );
 
 CREATE TABLE Journey (
-    JourneyID INTEGER,
+    JourneyID serial,
     OrderedOn TIMESTAMP NOT NULL,
     RiderStartsJourney TIMESTAMP NOT NULL,
     RiderArrivesAtRes TIMESTAMP NOT NULL,
@@ -185,7 +224,7 @@ CREATE TABLE Contains (
 );
 
 CREATE TABLE Receipt (
-    ReceiptID INTEGER,
+    ReceiptID serial,
     GainedPoints INTEGER,
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
@@ -195,11 +234,11 @@ CREATE TABLE Receipt (
 );
 
 CREATE TABLE Orders (
-    OrderID INTEGER,
+    OrderID serial,
     ReceiptID INTEGER REFERENCES Receipt,
     CustomerID INTEGER REFERENCES Customer,
     PRIMARY KEY (OrderID),
-    FOREIGN KEY (OrderID) REFERENCES Order
+    -- FOREIGN KEY (OrderID) REFERENCES Order (omo idk but i just comment out cos we dont have Order table)
 );
 
 CREATE TABLE Rates (
@@ -209,4 +248,23 @@ CREATE TABLE Rates (
     PRIMARY KEY (CustomerID, OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customer,
     FOREIGN KEY (OrderID) REFERENCES Order
+);
+
+create table Staff (
+    StaffID serial primary key,
+    RestaurantId INTEGER,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null,
+    primary key (StaffID, RestaurandID),
+    foreign key (RestaurantID) REFERENCES Restaurants
+);
+
+create table Manager (
+    ManagerID serial primary key,
+    email varchar(100) unique not null,
+    first_name varchar(100),
+    last_name varchar(100),
+    password varchar(100) not null
 );

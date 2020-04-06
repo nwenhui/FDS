@@ -1,0 +1,53 @@
+@media all and (min-width: 480px) {
+	.SignUp {
+		padding: 60px 0;
+	}
+
+	.SignUp form {
+		margin: 0 auto;
+		max-width: 500px;
+	}
+}
+
+.Welcome {
+	padding: 50px 0;
+	padding-left: 30px;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.Signup {
+	padding: 25px 0;
+	padding-top: -20px;
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+
+.form-group {
+	display: flex;
+  justify-content: space-between;
+  margin: 10px;
+	height: 30px;
+
+	label {
+		padding-top: 6px;
+    padding-right: 1px;
+		width: 160px;
+	}
+
+	.input {
+    margin-left: 5px;
+		border-radius: 4px;
+	}
+}
+
+button {
+	margin:5px;
+}

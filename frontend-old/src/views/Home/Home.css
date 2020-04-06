@@ -1,0 +1,14 @@
+.welcome {
+    color: lightpink;
+}
+
+.homeButtons {
+    padding: 25px 0;
+    padding-top: -20px;
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+button {
+    margin:5px;
+}
