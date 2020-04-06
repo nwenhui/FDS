@@ -3,7 +3,6 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Signup.css";
 
-import SignupSuccess from './SignupSuccess';
 
 
 const option = [
