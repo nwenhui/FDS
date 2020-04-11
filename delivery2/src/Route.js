@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
-import About from "./About/About.js";
+import About from "./Pages/About/About.js";
 // import Contact from "./Contact/Contact";
 // import Products from "./Product/Products";
 
 import history from "./history";
-import HomePage from "./containers/HomePage/HomePage.js";
+import HomePage from "./Pages/HomePage/HomePage.js";
 
 export default class Routes extends Component {
   render() {
