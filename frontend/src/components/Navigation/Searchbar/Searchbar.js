@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 
+import searchbarError from './SearchbarError';
+
 import { searchService } from '../../../services';
 
 
-function handleErrors(response) {
-  if (!response.ok) {
-      throw response;
-  }
-  return response;
-}
 
 class Searchbar extends Component {
     state = { 
         searchQuery: "",
         errorMessage: "",
-        searchResult: ""
+        error: false
      }
 
     setSearchQuery = (event) => {
@@ -29,6 +25,7 @@ class Searchbar extends Component {
           .then((data) => {
               // this.setState({ searchResult: searchService.currentSearch }, () => console.log('result: ', this.state.searchResult))
               // const { from } = { from : { pathname: "/search" } }
+              this.setState({ success: true })
               this.props.history.push('/restaurant/search')
             }
             // ,
@@ -36,6 +33,13 @@ class Searchbar extends Component {
             //   console.log(error);
             // }
           )
+          .catch((error) => {
+            error.text().then( errorMessage => {
+              this.setState({ error: true });
+              this.setState({ errorMessage });
+              console.log('Error: ', error);
+            })
+        })
       }
 
     // handleSearch(event) {
@@ -83,12 +87,7 @@ class Searchbar extends Component {
                     Search
                 </button>
             </form>
-            {/* {this.state.searchResult && 
-              <Redirect to={{
-                pathname: '/restaurant/search',
-                state: { results: this.state.searchResult }
-              }} />
-            } */}
+            {this.state.error && searchbarError()}
           </div>
         );
     }
