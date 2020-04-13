@@ -58,7 +58,7 @@ class Navigation extends Component {
             </a>
           </li>
         </ul>
-        <Searchbar />
+        <Searchbar history={this.props.history}/>
       </nav>
     );
   }

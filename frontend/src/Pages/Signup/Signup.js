@@ -3,6 +3,9 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Signup.css";
 
+import NavBar from '../../components/Navigation/Navigation';
+
+
 
 
 const option = [
@@ -115,6 +118,7 @@ class Signup extends Component {
     render() { 
         return ( 
             <div className="signup">
+                <NavBar history={this.props.history}/>
                 <div className="welcome">
                     <h1>hi new user :)</h1>
                 </div>

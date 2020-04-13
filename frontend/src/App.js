@@ -44,7 +44,7 @@ class App extends Component {
     // let title = this.state.title;
     return (
       <div className="App">
-        <NavBar />
+        {/* <NavBar history={this.props.history}/> */}
         <Routes />
         {/* <Home /> */}
         {/* <form class="form-inline my-2 my-lg-0">

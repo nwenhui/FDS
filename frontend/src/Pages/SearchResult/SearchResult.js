@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Suggestion from '../../components/Suggestion';
+import NavBar from '../../components/Navigation/Navigation';
+
 
 class SearchResult extends Component {
     state = { 
@@ -13,9 +15,10 @@ class SearchResult extends Component {
     render() { 
         return ( 
             <div>
-            <h1>testing</h1>
-            <h2>hello, {this.state.results}</h2>
-            <Suggestion results={this.state.results} />
+                <NavBar history={this.props.history}/>
+                <h1>testing</h1>
+                <h2>hello, {this.state.results}</h2>
+                <Suggestion results={this.state.results} />
             </div>
         );
     }
