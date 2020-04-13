@@ -28,11 +28,11 @@ function searchRestaurant(searchQuery) {
             currentSearchSubject.next(response);
             return data;
           })
-          .catch((error) => {
-              error.text().then( errorMessage => {
-                  console.log('Error: ', errorMessage);
-              })
-          })
+        //   .catch((error) => {
+        //       error.text().then( errorMessage => {
+        //           console.log('Error: ', errorMessage);
+        //       })
+        //   })
         //   return data;
         });
 }
