@@ -2,6 +2,8 @@ import React, { Component, useState } from 'react';
 import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Login.css";
+import NavBar from '../../components/Navigation/Navigation';
+
 
 const option = [
     { value: 1, label: 'FDS Manager' },
@@ -101,52 +103,55 @@ class Login extends Component {
 
     render() { 
         return ( 
-            <div className="login">
-                <Form onSubmit= {(e) => this.handleSubmit(e)}>
-                    <Form.Group controlId="email" bssize="large">
-                        <Form.Label>email</Form.Label>
-                        <Form.Control
-                            autoFocus
-                            type="email"
-                            // value={email}
-                            placeholder="enter email"
-                            onChange={this.setEmail.bind(this)} 
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="password" bssize="large">
-                        <Form.Label>password</Form.Label>
-                        <Form.Control
-                            autoFocus
-                            type="password"
-                            // value={password}
-                            placeholder="password"
-                            onChange={this.setPassword.bind(this)} 
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="selectType">
-                        <Form.Label>type</Form.Label>
-                        <Form.Control as="select" custom onChange={this.setType.bind(this)}>
-                            {dropdown}
-                        </Form.Control>
-                    </Form.Group>
-                    <Button variant="outline-primary" block bssize="large" type="submit">
-                        login
-                    </Button>
-                </Form>
-                <Link to="/Home">
-                    <Button block bssize="large">
-                        back
-                    </Button>
-                </Link>
-                { this.state.error && 
-                    <div class="alert alert-danger alert-dismissable fade show" role="alert">
-                        <strong>ohno! </strong>
-                        {this.state.error}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
+            <div>
+                <NavBar history={this.props.history}/>
+                <div className="login">
+                    <Form onSubmit= {(e) => this.handleSubmit(e)}>
+                        <Form.Group controlId="email" bssize="large">
+                            <Form.Label>email</Form.Label>
+                            <Form.Control
+                                autoFocus
+                                type="email"
+                                // value={email}
+                                placeholder="enter email"
+                                onChange={this.setEmail.bind(this)} 
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="password" bssize="large">
+                            <Form.Label>password</Form.Label>
+                            <Form.Control
+                                autoFocus
+                                type="password"
+                                // value={password}
+                                placeholder="password"
+                                onChange={this.setPassword.bind(this)} 
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="selectType">
+                            <Form.Label>type</Form.Label>
+                            <Form.Control as="select" custom onChange={this.setType.bind(this)}>
+                                {dropdown}
+                            </Form.Control>
+                        </Form.Group>
+                        <Button variant="outline-primary" block bssize="large" type="submit">
+                            login
+                        </Button>
+                    </Form>
+                    <Link to="/Home">
+                        <Button block bssize="large">
+                            back
+                        </Button>
+                    </Link>
+                    { this.state.error && 
+                        <div class="alert alert-danger alert-dismissable fade show" role="alert">
+                            <strong>ohno! </strong>
+                            {this.state.error}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
          );
     }
