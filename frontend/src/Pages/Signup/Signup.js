@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import "./Signup.css";
+import "./Signup.scss";
 
 import NavBar from '../../components/Navigation/Navigation';
 import { authenticationService } from '../../services';
@@ -51,6 +51,12 @@ class Signup extends Component {
         type: "1",
         errorMessage: "",
         error: false
+    }
+
+    componentDidMount() {
+        if (authenticationService.currentUserValue) {
+            this.props.history.push('/dashboard');
+        }
     }
 
     setFirstName = (event) => {
@@ -194,15 +200,6 @@ class Signup extends Component {
                     </Button>
                 </Link>
                 {this.state.error && ErrorAlert(this.state.errorMessage)}
-                {/* { this.state.error && 
-                    <div class="alert alert-danger alert-dismissable fade show" role="alert">
-                        <strong>ohno! </strong>
-                        {this.state.error}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                } */}
             </div>
             </div>
          );

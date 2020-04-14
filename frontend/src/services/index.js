@@ -1,2 +1,2 @@
-export { searchService } from './searchService';
+export { restaurantService } from './restaurantService';
 export { authenticationService } from './authenticationService';

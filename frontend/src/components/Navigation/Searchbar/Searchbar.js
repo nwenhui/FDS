@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 
 import ErrorAlert from '../../ErrorAlert/ErrorAlert';
 
-import { searchService } from '../../../services';
+import { restaurantService } from '../../../services';
 
 
 
@@ -21,18 +21,20 @@ class Searchbar extends Component {
 
       handleSearch(event) {
         event.preventDefault();
-        searchService.searchRestaurant(this.state.searchQuery)
-          .then((data) => {
+        restaurantService.searchRestaurant(this.state.searchQuery)
+          .then((response) => {
+            response.json()
+            .then((data) => {
               // this.setState({ searchResult: searchService.currentSearch }, () => console.log('result: ', this.state.searchResult))
               const to = '/restaurant/search?keywords=' + this.state.searchQuery
               this.setState({ success: true })
               this.props.history.push(to)
-            }
+            })
+          })
             // ,
             // error => {
             //   console.log(error);
             // }
-          )
           .catch((error) => {
             // error.text().then( errorMessage => {
             //   this.setState({ error: true });

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchRestaurant } from '../controllers/restaurantsController';
+import { searchRestaurant, getRestaurant } from '../controllers/restaurantsController';
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ const router = express.Router();
 
 // router.post('/search', searchRestaurant);
 router.get('/search', searchRestaurant)
+router.post('/get', getRestaurant)
 
 export default router;

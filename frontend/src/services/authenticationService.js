@@ -108,9 +108,15 @@ function signup(firstname, lastname, email, password, type) {
         });
 }
 
+function logout() {
+    localStorage.removeItem('currentUser');
+    currentUserSubject.next(null);
+}
+
 export const authenticationService = {
     login,
     signup,
+    logout,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),
