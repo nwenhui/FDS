@@ -10,11 +10,7 @@ class Home extends Component {
         return ( 
             <div>
                 <NavBar history={this.props.history}/>
-                <Link to="/Home">
-                    <Button block bssize="large">
-                        log out
-                    </Button>
-                </Link>
+                <p>u issa staff</p>
             </div>
          );
     }

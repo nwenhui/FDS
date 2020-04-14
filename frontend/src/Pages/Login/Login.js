@@ -51,6 +51,12 @@ class Login extends Component {
 
     }
 
+    componentDidMount() {
+        if (authenticationService.currentUserValue) {
+            this.props.history.push('/dashboard');
+        }
+    }
+
     setEmail = (event) => {
         var value = event.target.value;
         this.setState({ email: value}, () => {console.log(this.state.email)});
@@ -164,15 +170,6 @@ class Login extends Component {
                         </Button>
                     </Link>
                     {this.state.error && ErrorAlert(this.state.errorMessage)}
-                    {/* { this.state.error && 
-                        <div class="alert alert-danger alert-dismissable fade show" role="alert">
-                            <strong>ohno! </strong>
-                            {this.state.error}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    } */}
                 </div>
             </div>
          );

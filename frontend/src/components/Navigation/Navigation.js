@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import "./Navigation.css";
 import Searchbar from './Searchbar/Searchbar';
 
+import { authenticationService } from '../../services';
+
 class Navigation extends Component {
   render() { 
     return (
@@ -41,13 +43,13 @@ class Navigation extends Component {
               <div class="dropdown-divider"></div>
               <button class="dropdown-item">Thai</button> */}
             </div>
-          </li>
-          {/* <li class="nav-item">
-            <a class="nav-link" href="#">
-              Orders
+          </li> 
+          {authenticationService.currentUserValue && <li class="nav-item">
+            <a class="nav-link" href="/logout">
+              Logout
             </a>
-          </li>
-          <li class="nav-item">
+          </li> }
+          {/* <li class="nav-item">
             <a class="nav-link" href="#">
               Customers
             </a>

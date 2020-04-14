@@ -53,6 +53,12 @@ class Signup extends Component {
         error: false
     }
 
+    componentDidMount() {
+        if (authenticationService.currentUserValue) {
+            this.props.history.push('/dashboard');
+        }
+    }
+
     setFirstName = (event) => {
         var value = event.target.value;
         this.setState({ firstname: value}, () => {console.log(this.state.firstname)});
@@ -194,15 +200,6 @@ class Signup extends Component {
                     </Button>
                 </Link>
                 {this.state.error && ErrorAlert(this.state.errorMessage)}
-                {/* { this.state.error && 
-                    <div class="alert alert-danger alert-dismissable fade show" role="alert">
-                        <strong>ohno! </strong>
-                        {this.state.error}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                } */}
             </div>
             </div>
          );
