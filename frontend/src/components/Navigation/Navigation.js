@@ -42,7 +42,7 @@ class Navigation extends Component {
               <button class="dropdown-item">Thai</button> */}
             </div>
           </li>
-          <li class="nav-item">
+          {/* <li class="nav-item">
             <a class="nav-link" href="#">
               Orders
             </a>
@@ -56,7 +56,7 @@ class Navigation extends Component {
             <a class="nav-link" href="/About#">
               About
             </a>
-          </li>
+          </li> */}
         </ul>
         <Searchbar history={this.props.history}/>
       </nav>

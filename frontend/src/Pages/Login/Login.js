@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import "./Login.css";
+import "./Login.scss";
 import NavBar from '../../components/Navigation/Navigation';
 import { authenticationService } from '../../services';
 import ErrorAlert from '../../components/ErrorAlert/ErrorAlert';

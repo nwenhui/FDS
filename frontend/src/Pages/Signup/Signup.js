@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
-import "./Signup.css";
+import "./Signup.scss";
 
 import NavBar from '../../components/Navigation/Navigation';
 import { authenticationService } from '../../services';
