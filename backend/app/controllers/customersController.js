@@ -98,7 +98,7 @@ import {
       const dbResponse = rows[0];
       if (!dbResponse) {
         errorMessage.error = 'Customer with this email does not exist';
-        console.log(errorMessage);
+        console.log(errorMessage.error);
         return res.status(status.notfound).send(errorMessage.error);
       }
       if (!comparePassword(dbResponse.password, password)) {
