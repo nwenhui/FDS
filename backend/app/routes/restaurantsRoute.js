@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchRestaurant, getRestaurant } from '../controllers/restaurantsController';
+import { searchRestaurant, getRestaurant, createRestaurant } from '../controllers/restaurantsController';
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ const router = express.Router();
 // router.post('/search', searchRestaurant);
 router.get('/search', searchRestaurant)
 router.post('/get', getRestaurant)
+router.post('/auth/signup', createRestaurant)
 
 export default router;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import "./Login.scss";
 import NavBar from '../../components/Navigation/Navigation';
 import { authenticationService } from '../../services';
-import ErrorAlert from '../../components/ErrorAlert/ErrorAlert';
+import ErrorAlert from '../../components/Alerts/ErrorAlert/ErrorAlert';
 
 const option = [
     { value: 1, label: 'FDS Manager' },

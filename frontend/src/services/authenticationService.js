@@ -4,12 +4,6 @@ import { handleErrors, userType } from '../helpers';
 const currentUserSubject = new BehaviorSubject(localStorage.getItem('currentUser'));
 const currentUserTypeSubject = new BehaviorSubject(localStorage.getItem('currentUserType'));
 
-// function searchRestaurantResults(data) {
-//     var results = [];
-//     data.forEach(result => results.push(result.resid));
-//     return results;
-// }
-
 const option = [
     { value: 1, label: 'FDS Manager' },
     { value: 2, label: 'Staff' },
@@ -113,10 +107,32 @@ function logout() {
     currentUserSubject.next(null);
 }
 
+function restaurantSignup(name, min, address) {
+    const data = {name: name, min: min, address: address};
+    const url = 'http://localhost:3000/api/v1/restaurant/auth/signup';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+        .then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log("resty sign up donezo!!! :D");
+                    return data;
+                })
+        });
+}
+
 export const authenticationService = {
     login,
     signup,
     logout,
+    restaurantSignup,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),
