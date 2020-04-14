@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Suggestion from '../../components/Suggestion';
 import NavBar from '../../components/Navigation/Navigation';
+import SearchResultButton from '../../components/SearchResultButton/SearchResultButton';
 
 import history from '../../history';
 
-import { searchService } from '../../services';
+import { restaurantService } from '../../services';
 
 
 class SearchResult extends Component {
@@ -12,18 +12,24 @@ class SearchResult extends Component {
         results: []
      }
 
+     fetchResults() {
+        const query = decodeURI(window.location.search.substring(10));
+
+        restaurantService.searchRestaurant(query).then((response) => {
+            response.json()
+            .then((data) => {
+                this.setState({ results: restaurantService.searchRestaurantResults(data) },() => console.log('results: ', this.state.results));
+
+            })
+        })
+     }
+
      componentDidMount() {
-         searchService.currentSearch.subscribe(x => this.setState({
-             results: x
-         }));
+        this.fetchResults();
 
-         console.log('hehe: ', this.state.results);
-
-        history.listen((location) => {
-            console.log('here', this.state.results);
-            // if (location.pathname == '/restaurant/search') {
-                window.location.reload(false); //reloading the same page to update state values (idky needed cos HARDCODE)
-            // }
+        history.listen(() => {
+            this.fetchResults();
+            window.location.reload(false);
         })
      }
 
@@ -31,8 +37,10 @@ class SearchResult extends Component {
         return ( 
             <div>
                 <NavBar history={this.props.history}/>
-                <h1>testing</h1>
-                <h2>hello: {this.state.results}</h2>
+                <h2>test test this is search results page :^)</h2>
+                {this.state.results.map((result, index) => (
+                    <SearchResultButton key={index} resid={result} />
+                ))}
             </div>
         );
     }
