@@ -29,7 +29,7 @@ export default class Routes extends Component {
           <Route path="/rider/home" exact component = {RiderHome} />
           <Route path="/manager/home" exact component = {ManagerHome} />
           <Route path="/staff/home" exact component = {StaffHome} />
-          <Route path="/restaurant/search" exact component = {RestaurantSearch} />
+          <Route path="/restaurant/search" component = {RestaurantSearch} />
         </Switch>
       </Router>
     );

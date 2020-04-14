@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 
-import searchbarError from './SearchbarError';
+import ErrorAlert from '../../ErrorAlert/ErrorAlert';
 
 import { searchService } from '../../../services';
 
@@ -24,9 +24,9 @@ class Searchbar extends Component {
         searchService.searchRestaurant(this.state.searchQuery)
           .then((data) => {
               // this.setState({ searchResult: searchService.currentSearch }, () => console.log('result: ', this.state.searchResult))
-              // const { from } = { from : { pathname: "/search" } }
+              const to = '/restaurant/search?keywords=' + this.state.searchQuery
               this.setState({ success: true })
-              this.props.history.push('/restaurant/search')
+              this.props.history.push(to)
             }
             // ,
             // error => {
@@ -34,11 +34,14 @@ class Searchbar extends Component {
             // }
           )
           .catch((error) => {
-            error.text().then( errorMessage => {
-              this.setState({ error: true });
-              this.setState({ errorMessage });
-              console.log('Error: ', error);
-            })
+            // error.text().then( errorMessage => {
+            //   this.setState({ error: true });
+            //   this.setState({ errorMessage });
+            //   console.log('Error: ', error);
+            // })
+            this.setState({ error: true });
+            console.log('test: ', this.state.error);
+            console.log('error: ', error);
         })
       }
 
@@ -79,7 +82,7 @@ class Searchbar extends Component {
                 <input
                     class="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search for restaurants dgrdrdtr"
+                    placeholder="Search for restaurants"
                     aria-label="Search"
                     onChange={this.setSearchQuery.bind(this)}
                 />
@@ -87,7 +90,7 @@ class Searchbar extends Component {
                     Search
                 </button>
             </form>
-            {this.state.error && searchbarError()}
+            {this.state.error && ErrorAlert("No restaurants found :(")}
           </div>
         );
     }

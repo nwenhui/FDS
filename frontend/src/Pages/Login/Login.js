@@ -3,7 +3,8 @@ import { Button, Form, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "./Login.css";
 import NavBar from '../../components/Navigation/Navigation';
-
+import { authenticationService } from '../../services';
+import ErrorAlert from '../../components/ErrorAlert/ErrorAlert';
 
 const option = [
     { value: 1, label: 'FDS Manager' },
@@ -45,7 +46,8 @@ class Login extends Component {
         email: "",
         password: "",
         type: "1",
-        errorMessage: ""
+        errorMessage: "",
+        error: false
 
     }
 
@@ -66,40 +68,59 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const data = {email: this.state.email, password: this.state.password};
-        const url = getURL(this.state.type);
-    
-        var request = new Request(url, {
-            method: 'POST',
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-            body: JSON.stringify(data)
-        });
-
-        fetch(request)
-            .then(handleErrors)
-            .then((response) => {
-                this.setState({ error: "" });
-                response.json()
-                    .then((data) => {
-                        console.log("sign in donezo!!! :D");
-                        var type = Number(this.state.type);
-                        if (type === option[0].value) {
-                            this.props.history.push('/manager/home');
-                        } else if (type === option[1].value) {
-                            this.props.history.push('/staff/home');
-                        } else if (type === option[2].value) {
-                            this.props.history.push('/rider/home');
-                        } else if (type === option[3].value) {
-                            this.props.history.push('/customer/home');
-                        }
-                    })
+        authenticationService.login(this.state.email, this.state.password, Number(this.state.type))
+        .then((data) => {
+            const to = '/dashboard';
+            this.setState({ error: false }, () => console.log(this.state.error));
+            this.props.history.push(to);
+        })
+        .catch((error) => {
+            error.text().then( errorMessage => {
+                this.setState({ error: true, errorMessage }, () => {
+                    console.log('error: ', this.state.errorMessage)
+                    console.log('status: ', this.state.error)
+                });
             })
-            .catch((error) => {
-                error.text().then( errorMessage => {
-                    this.setState({ error: errorMessage}, () => {console.log('Error: ', this.state.error)});
-                })
-            })
+        })
+        
     }
+
+    // handleSubmit(event) {
+    //     event.preventDefault();
+    //     const data = {email: this.state.email, password: this.state.password};
+    //     const url = getURL(this.state.type);
+    
+    //     var request = new Request(url, {
+    //         method: 'POST',
+    //         headers: new Headers({ 'Content-Type': 'application/json' }),
+    //         body: JSON.stringify(data)
+    //     });
+
+    //     fetch(request)
+    //         .then(handleErrors)
+    //         .then((response) => {
+    //             this.setState({ error: "" });
+    //             response.json()
+    //                 .then((data) => {
+    //                     console.log("sign in donezo!!! :D");
+    //                     var type = Number(this.state.type);
+    //                     if (type === option[0].value) {
+    //                         this.props.history.push('/manager/home');
+    //                     } else if (type === option[1].value) {
+    //                         this.props.history.push('/staff/home');
+    //                     } else if (type === option[2].value) {
+    //                         this.props.history.push('/rider/home');
+    //                     } else if (type === option[3].value) {
+    //                         this.props.history.push('/customer/home');
+    //                     }
+    //                 })
+    //         })
+    //         .catch((error) => {
+    //             error.text().then( errorMessage => {
+    //                 this.setState({ error: errorMessage}, () => {console.log('Error: ', this.state.error)});
+    //             })
+    //         })
+    // }
 
     render() { 
         return ( 
@@ -142,7 +163,8 @@ class Login extends Component {
                             back
                         </Button>
                     </Link>
-                    { this.state.error && 
+                    {this.state.error && ErrorAlert(this.state.errorMessage)}
+                    {/* { this.state.error && 
                         <div class="alert alert-danger alert-dismissable fade show" role="alert">
                             <strong>ohno! </strong>
                             {this.state.error}
@@ -150,7 +172,7 @@ class Login extends Component {
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    }
+                    } */}
                 </div>
             </div>
          );

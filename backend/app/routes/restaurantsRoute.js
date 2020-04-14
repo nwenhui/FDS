@@ -6,6 +6,7 @@ const router = express.Router();
 
 // restaurant Routes
 
-router.post('/search', searchRestaurant);
+// router.post('/search', searchRestaurant);
+router.get('/search', searchRestaurant)
 
 export default router;

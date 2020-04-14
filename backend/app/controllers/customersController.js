@@ -35,15 +35,15 @@ import {
     // const created_on = moment(new Date());
     if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
       errorMessage.error = 'Email, password, first name and last name fields cannot be empty';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!isValidEmail(email)) {
       errorMessage.error = 'Please enter a valid Email';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!validatePassword(password)) {
       errorMessage.error = 'Password must be more than five(5) characters';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     const hashedPassword = hashPassword(password);
     const createCustomerQuery = `INSERT INTO
@@ -69,10 +69,10 @@ import {
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Customer with that EMAIL already exist';
-        return res.status(status.conflict).send(errorMessage);
+        return res.status(status.conflict).send(errorMessage.error);
       }
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
     }
   };
   
@@ -98,7 +98,7 @@ import {
       const dbResponse = rows[0];
       if (!dbResponse) {
         errorMessage.error = 'Customer with this email does not exist';
-        console.log(errorMessage);
+        console.log(errorMessage.error);
         return res.status(status.notfound).send(errorMessage.error);
       }
       if (!comparePassword(dbResponse.password, password)) {
