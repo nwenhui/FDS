@@ -12,6 +12,7 @@ import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
 import RestaurantSearch from './Pages/SearchResult/SearchResult';
+import RestaurantSignup from './Pages/Signup/RestaurantSignup/RestaurantSignup';
 
 import history from "./history";
 import HomePage from './Pages/HomePage/HomePage';
@@ -55,6 +56,7 @@ export default class Routes extends Component {
           { this.state.isStaff && <Route path="/dashboard" exact component = {StaffHome} /> }
           <Route path="/restaurant/search" component = {RestaurantSearch} />
           <Route path="/logout" exact component = {Logout} />
+          <Route path="/restaurant/signup" exact component = {RestaurantSignup} />
         </Switch>
       </Router>
     );

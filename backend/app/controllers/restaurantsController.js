@@ -1,6 +1,14 @@
 import dbQuery from '../db/dev/dbQuery';
 
 import {
+  hashPassword,
+  comparePassword,
+  isValidEmail,
+  validatePassword,
+  isEmpty,
+} from '../helpers/validations';
+
+import {
     errorMessage, successMessage, status,
 } from '../helpers/status';
 
@@ -54,8 +62,65 @@ const getRestaurant = async (req, res) => {
     return res.status(status.error).send(errorMessage);
   }
 };
+
+/**
+   * Create A Restaurant
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} reflection object (of Customer)
+   */
+  const createRestaurant = async (req, res) => {
+    const {
+      name, min, address,
+    } = req.body;
+
+    console.log('name: ', name)
+    console.log('min: ', min)
+    console.log('address: ', address)
+
+
+    // const created_on = moment(new Date());
+    if (isEmpty(name) || isEmpty(toString(min)) || isEmpty(address)) {
+      errorMessage.error = 'Restaurant name, min. spending and address fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    // if (!validatePassword(password)) {
+    //   errorMessage.error = 'Password must be more than five(5) characters';
+    //   return res.status(status.bad).send(errorMessage.error);
+    // }
+    // const hashedPassword = hashPassword(password);
+    const createRestaurantQuery = `INSERT INTO
+        Restaurants(name, minspending, addressdetails)
+        VALUES($1, $2, $3)
+        returning *`;
+    const values = [
+      name,
+      min,
+      address,
+      // hashedPassword,
+      // created_on,
+    ];
+  
+    try {
+      const { rows } = await dbQuery.query(createRestaurantQuery, values);
+      const dbResponse = rows[0];
+      delete dbResponse.password;
+    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+      successMessage.data = dbResponse;
+    //   successMessage.data.token = token;
+      return res.status(status.created).send(successMessage);
+    } catch (error) {
+      // if (error.routine === '_bt_check_unique') {
+      //   errorMessage.error = 'Customer with that EMAIL already exist';
+      //   return res.status(status.conflict).send(errorMessage.error);
+      // }
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
   
 export {
     searchRestaurant,
-    getRestaurant
+    getRestaurant,
+    createRestaurant
 };

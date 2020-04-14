@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 
-import ErrorAlert from '../../ErrorAlert/ErrorAlert';
+import ErrorAlert from '../../Alerts/ErrorAlert/ErrorAlert';
 
 import { restaurantService } from '../../../services';
 
