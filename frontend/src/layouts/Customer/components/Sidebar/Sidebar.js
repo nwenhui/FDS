@@ -5,8 +5,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 var styles = {
   bmBurgerButton: {
     position: "fixed",
-    width: "36px",
-    height: "30px",
+    width: "23px",
+    height: "15px",
     left: "25px",
     top: "80px",
   },

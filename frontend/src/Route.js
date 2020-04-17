@@ -7,7 +7,7 @@ import About from "./Pages/About/About";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
-import CustomerHome from "./Pages/Customer/Home";
+import CustomerDashboard from "./Pages/CustomerDashboard/CustomerDashboard";
 import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
@@ -56,7 +56,7 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-            <Route path="/dashboard" exact component={CustomerHome} />
+            <Route path="/dashboard" exact component={CustomerDashboard} />
           )}
           {this.state.isRider && (
             <Route path="/dashboard" exact component={RiderHome} />
