@@ -110,20 +110,20 @@ class RestaurantSignup extends Component {
                 />
               </Form.Group>
               {/* <Form.Group controlId="password" bssize="large">
-                        <Form.Label>password</Form.Label>
-                        <Form.Control 
-                            autoFocus
-                            type="password"
-                            placeholder="password"
-                            onChange={this.setPassword.bind(this)}
-                        />
-                    </Form.Group> */}
+                          <Form.Label>password</Form.Label>
+                          <Form.Control 
+                              autoFocus
+                              type="password"
+                              placeholder="password"
+                              onChange={this.setPassword.bind(this)}
+                          />
+                      </Form.Group> */}
               {/* <Form.Group controlId="selectType">
-                        <Form.Label>type</Form.Label>
-                        <Form.Control as="select" custom onChange={this.setType.bind(this)}>
-                            {dropdown}
-                        </Form.Control>
-                    </Form.Group> */}
+                          <Form.Label>type</Form.Label>
+                          <Form.Control as="select" custom onChange={this.setType.bind(this)}>
+                              {dropdown}
+                          </Form.Control>
+                      </Form.Group> */}
               <Button
                 variant="outline-primary"
                 block
