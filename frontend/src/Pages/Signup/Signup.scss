@@ -1,37 +1,44 @@
 @media all and (min-width: 480px) {
-	.login {
-		padding: 60px 0;
-	}
+  .signup {
+    padding: 60px 0;
+  }
 
-	.login form {
-		margin: 0 auto;
-		max-width: 500px;
-	}
+  .signup form {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+}
+
+.welcome {
+  padding-left: 5px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 form {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-
 .form-group {
-	display: flex;
+  display: flex;
   justify-content: space-between;
-  margin: 5px;
-	height: 30px;
+  margin: 10px;
+  height: 30px;
 
-	label {
-		padding-top: 6px;
-		width: 50px;
-	}
+  label {
+    padding-top: 6px;
+    padding-right: 1px;
+    width: 160px;
+  }
 
-	.input {
-		border-radius: 4px;
-	}
+  .input {
+    margin-left: 5px;
+    border-radius: 4px;
+  }
 }
 
 button {
-	margin:5px;
+  margin: 5px;
 }

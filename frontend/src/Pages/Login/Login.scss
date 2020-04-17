@@ -1,37 +1,42 @@
 @media all and (min-width: 480px) {
-	.login {
-		padding: 60px 0;
-	}
+  .login {
+    padding: 60px 0;
+  }
 
-	.login form {
-		margin: 0 auto;
-		max-width: 500px;
-	}
+  .login form {
+    margin: 0 auto;
+    max-width: 600px;
+  }
 }
 
 form {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+.backbutton {
+  margin: 0 auto;
+  max-width: 600px;
+}
 
 .form-group {
-	display: flex;
+  display: flex;
   justify-content: space-between;
   margin: 5px;
-	height: 30px;
+  height: 30px;
 
-	label {
-		padding-top: 6px;
-		width: 50px;
-	}
+  label {
+    padding-top: 6px;
+    width: 100px;
+  }
 
-	.input {
-		border-radius: 4px;
-	}
+  .input {
+    border-radius: 4px;
+  }
 }
 
 button {
-	margin:5px;
+  margin: 5px;
+  max-width: 600px;
 }

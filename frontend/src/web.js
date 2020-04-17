@@ -9,7 +9,7 @@ let pool = new pg.Pool({
   database: "delivery",
   max: 10,
   host: "localhost",
-  user: "postgres"
+  user: "postgres",
 });
 
 pool.connect((err, db, done) => {
@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan("dev"));
 
-app.use(function(request, response, next) {
+app.use(function (request, response, next) {
   response.header("Access-Control-Allow-Origin", "*");
   response.header(
     "Access-Control-Allow-Headers",
