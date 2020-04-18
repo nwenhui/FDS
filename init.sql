@@ -1,44 +1,45 @@
-drop table if exists FoodItem cascade;
-drop table if exists Menu cascade;
-drop table if exists Listings cascade; 
-drop table if exists Category cascade; 
-drop table if exists LocalFood cascade; 
-drop table if exists WesternFood cascade; 
-drop table if exists Classifies cascade; 
-drop table if exists Restaurant cascade; 
-drop table if exists Inventory cascade; 
-drop table if exists Promotion cascade; 
-drop table if exists Discounts cascade; 
-drop table if exists Rider cascade; 
-drop table if exists PartTime cascade; 
-drop table if exists FullTime cascade; 
-drop table if exists Works cascade; 
-drop table if exists Shift cascade; 
-drop table if exists CreditCard cascade; 
-drop table if exists Customer cascade; 
-drop table if exists Uses cascade; 
-drop table if exists Order cascade; 
-drop table if exists Contains cascade; 
-drop table if exists Journey cascade; 
-drop table if exists Delivers cascade; 
-drop table if exists Receipt cascade; 
-drop table if exists Orders cascade; 
-drop table if exists Rates cascade; 
-drop table if exists Manager cascade;
-drop table if exists Staff cascade;
-
+DROP TABLE IF EXISTS FoodItem CASCADE;
+DROP TABLE IF EXISTS Menu CASCADE;
+DROP TABLE IF EXISTS Restaurant CASCADE;
+DROP TABLE IF EXISTS Listings CASCADE;
+DROP TABLE IF EXISTS Category CASCADE;
+DROP TABLE IF EXISTS Classifies CASCADE;
+DROP TABLE IF EXISTS Inventory CASCADE;
+DROP TABLE IF EXISTS Promotion CASCADE;
+DROP TABLE IF EXISTS Discounts CASCADE;
+DROP TABLE IF EXISTS Rider CASCADE;
+DROP TABLE IF EXISTS PartTime CASCADE;
+DROP TABLE IF EXISTS FullTime CASCADE;
+DROP TABLE IF EXISTS Works CASCADE;
+DROP TABLE IF EXISTS CreditCard CASCADE;
+DROP TABLE IF EXISTS Customer CASCADE;
+DROP TABLE IF EXISTS PaysWith CASCADE;
+DROP TABLE IF EXISTS OrderDetails CASCADE;
+DROP TABLE IF EXISTS Contains CASCADE;
+DROP TABLE IF EXISTS Journey CASCADE;
+DROP TABLE IF EXISTS Delivers CASCADE;
+DROP TABLE IF EXISTS Receipt CASCADE;
+DROP TABLE IF EXISTS Orders CASCADE;
+DROP TABLE IF EXISTS Rates CASCADE;
+DROP TABLE IF EXISTS Reviews CASCADE;
 
 CREATE TABLE FoodItem (
-    ItemID serial,
-    Available INTEGER,
+    ItemID SERIAL,
     Cost INTEGER,
     MaxLimit INTEGER,
+    Available INTEGER CHECK (Available <= MaxLimit),
     PRIMARY KEY (ItemID)
 );
 
 CREATE TABLE Menu (
-    MenuID serial,
+    MenuID SERIAL,
     PRIMARY KEY (MenuID)
+);
+
+CREATE TABLE Restaurant (
+    ResID SERIAL,
+    MinSpending INTEGER,
+    PRIMARY KEY (ResID)
 );
 
 CREATE TABLE Listings (
@@ -54,31 +55,12 @@ CREATE TABLE Category (
     PRIMARY KEY (CategoryName)
 );
 
-CREATE TABLE LocalFood (
-    CategoryName VARCHAR(20),
-    PRIMARY KEY (CategoryName),
-    FOREIGN KEY (CategoryName) REFERENCES Category
-);
-
-CREATE TABLE WesternFood (
-    CategoryName VARCHAR(20),
-    PRIMARY KEY (CategoryName),
-    FOREIGN KEY (CategoryName) REFERENCES Category
-);
-
 CREATE TABLE Classifies (
     CategoryName VARCHAR(20),
     ItemID INTEGER,
     PRIMARY KEY (CategoryName, ItemID),
     FOREIGN KEY (CategoryName) REFERENCES Category,
     FOREIGN KEY (ItemID) REFERENCES FoodItem
-);
-
-CREATE TABLE Restaurant (
-    ResID serial,
-    MinSpending INTEGER,
-    AddressDetails VARCHAR(60),
-    PRIMARY KEY (ResID)
 );
 
 CREATE TABLE Inventory (
@@ -90,98 +72,78 @@ CREATE TABLE Inventory (
 );
 
 CREATE TABLE Promotion (
-    PromotionID serial,
+    PromotionID SERIAL,
     PRIMARY KEY (PromotionID)
 );
 
 CREATE TABLE Discounts (
-    PromotionID serial,
+    PromotionID INTEGER,
     MinSpending INTEGER,
     PercentageOff INTEGER,
     PRIMARY KEY (PromotionID)
 );
 
 CREATE TABLE Rider (
-    RiderID serial,
+    Id SERIAL,
     email varchar(100) unique not null,
     first_name varchar(100),
     last_name varchar(100),
     password varchar(100) not null,
-    PRIMARY KEY (RiderID)
+    PRIMARY KEY (Id)
 );
 
---- MISSING WW/ MW DETAILS
 CREATE TABLE PartTime (
-    RiderID INTEGER,
-    PRIMARY KEY (RiderID),
-    FOREIGN KEY (RiderID) REFERENCES Rider
+    Id INTEGER,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Id) REFERENCES Rider
 );
 
 CREATE TABLE FullTime (
-    RiderID INTEGER,
-    PRIMARY KEY (WW),
-    FOREIGN KEY (RiderID) REFERENCES Rider
+    Id INTEGER,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Id) REFERENCES Rider
 );
----
 
 CREATE TABLE Works (
-    RiderID INTEGER,
-    StartTime TIMESTAMP,
-    EndTime TIMESTAMP,
-    PRIMARY KEY (RiderID, StartTime, EndTime),
-    FOREIGN KEY (RiderID) REFERENCES Rider,
-    FOREIGN KEY (StartTime, EndTime) REFERENCES Shift
-);
-
-CREATE TABLE Shift (
-    StartTime TIMESTAMP,
-    EndTime TIMESTAMP,
-    PRIMARY KEY (StartTime, EndTime)
+    Id INTEGER,
+    StartTime TIMESTAMP NOT NULL,
+    EndTime TIMESTAMP NOT NULL,
+    TotalHours INTEGER NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Id) REFERENCES Rider
 );
 
 CREATE TABLE CreditCard (
-    CCID serial NOT NULL,
+    CCID SERIAL,
     SecurityCode INTEGER NOT NULL,
     Bank VARCHAR(20) NOT NULL,
     PRIMARY KEY (CCID)
 );
 
 CREATE TABLE Customer (
-    CustomerID serial,
+    Id SERIAL,
     email varchar(100) unique not null,
     first_name varchar(100),
     last_name varchar(100),
     password varchar(100) not null,
     Points INTEGER default 0,
     CCID INTEGER,
-    PRIMARY KEY (CustomerID),
+    PRIMARY KEY (Id),
     FOREIGN KEY (CCID) REFERENCES CreditCard
 );
 
-CREATE TABLE Uses (
-    CustomerID INTEGER,
+CREATE TABLE PaysWith (
+    Id INTEGER,
     CCID INTEGER,
-    PRIMARY KEY (CUstomerID, CCID),
-    FOREIGN KEY (CustomerID) REFERENCES Customer,
+    PRIMARY KEY (Id, CCID),
+    FOREIGN KEY (Id) REFERENCES Customer,
     FOREIGN KEY (CCID) REFERENCES CreditCard
 );
 
-CREATE TABLE Order (
-    OrderID serial,
+CREATE TABLE OrderDetails (
+    OrderID SERIAL,
     AddressDetails VARCHAR(60) NOT NULL,
-    PRIMARY KEY (OrderID),
-);
-
-CREATE TABLE Rating (
-    Comment VARCHAR(100)
-);
-
-CREATE TABLE Orders (
-    CustomerID INTEGER,
-    OrderID INTEGER,
-    PRIMARY KEY (CustomerID, OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES Customer,
-    FOREIGN KEY (OrderID) REFERENCES Order
+    PRIMARY KEY (OrderID)
 );
 
 CREATE TABLE Contains (
@@ -189,14 +151,11 @@ CREATE TABLE Contains (
     Quantity INTEGER,
     FoodFee INTEGER,
     PRIMARY KEY (ItemID, Quantity),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem,
-    CHECK (
-        Quantity > 0 and Quantity <= Available
-    )
+    FOREIGN KEY (ItemID) REFERENCES FoodItem
 );
 
 CREATE TABLE Journey (
-    JourneyID serial,
+    JourneyID SERIAL,
     OrderedOn TIMESTAMP NOT NULL,
     RiderStartsJourney TIMESTAMP NOT NULL,
     RiderArrivesAtRes TIMESTAMP NOT NULL,
@@ -207,24 +166,16 @@ CREATE TABLE Journey (
 
 CREATE TABLE Delivers (
     OrderID INTEGER,
-    RiderID INTEGER,
+    Id INTEGER,
     JourneyID INTEGER REFERENCES Journey,
     DeliveryFee INTEGER,
-    PRIMARY KEY (OrderID, RiderID),
-    FOREIGN KEY (OrderID) REFERENCES Order,
-    FOREIGN KEY (RiderID) REFERENCES Rider
-);
-
-CREATE TABLE Contains (
-    ItemID INTEGER,
-    Quantity INTEGER NOT NULL,
-    FoodFee INTEGER,
-    PRIMARY KEY (ItemID),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    PRIMARY KEY (OrderID, Id),
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails,
+    FOREIGN KEY (Id) REFERENCES Rider
 );
 
 CREATE TABLE Receipt (
-    ReceiptID serial,
+    ReceiptID SERIAL,
     GainedPoints INTEGER,
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
@@ -234,37 +185,48 @@ CREATE TABLE Receipt (
 );
 
 CREATE TABLE Orders (
-    OrderID serial,
+    OrderID SERIAL,
     ReceiptID INTEGER REFERENCES Receipt,
-    CustomerID INTEGER REFERENCES Customer,
+    Id INTEGER REFERENCES Customer,
     PRIMARY KEY (OrderID),
-    -- FOREIGN KEY (OrderID) REFERENCES Order (omo idk but i just comment out cos we dont have Order table)
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
 
 CREATE TABLE Rates (
-    CustomerID INTEGER,
+    Id INTEGER,
     OrderID INTEGER,
-    Comment VARCHAR(100),
-    PRIMARY KEY (CustomerID, OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES Customer,
-    FOREIGN KEY (OrderID) REFERENCES Order
+    Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
+    PRIMARY KEY (Id, OrderID),
+    FOREIGN KEY (Id) REFERENCES Customer,
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
 
-create table Staff (
-    StaffID serial primary key,
+CREATE TABLE Reviews (
+    Id INTEGER,
+    ItemID INTEGER,
+    Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
+    Review VARCHAR(200),
+    PRIMARY KEY (Id, ItemID),
+    FOREIGN KEY (Id) REFERENCES Customer,
+    FOREIGN KEY (ItemID) REFERENCES FoodItem 
+);
+
+CREATE TABLE Staff (
+    Id SERIAL,
     RestaurantId INTEGER,
-    email varchar(100) unique not null,
-    first_name varchar(100),
-    last_name varchar(100),
-    password varchar(100) not null,
-    primary key (StaffID, RestaurandID),
-    foreign key (RestaurantID) REFERENCES Restaurants
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id, RestaurantId),
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant
 );
 
-create table Manager (
-    ManagerID serial primary key,
-    email varchar(100) unique not null,
-    first_name varchar(100),
-    last_name varchar(100),
-    password varchar(100) not null
+CREATE TABLE Manager (
+    Id SERIAL,
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id)
 );
