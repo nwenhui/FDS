@@ -7,13 +7,20 @@
 (frontend-old is last time stuff can ignore hehe)
 
 to run server:
-1. setup database in postgres called fakegrabdb
-2. run init.sql file (in database folder) for fakegrabdb
+1. setup new database in postgres (if not done before)
+2. run init.sql file (in database folder) for the database u wanna use for this application
+3. go into the .env file in backend and change DATABASE_URL to whatever ur url is
+    - postgresql://[user[:password]@][netloc][:port][/dbname]        <- formula for database url
+    - ignore square brackets when typing url
+    - ignore :password if ur postgres dont have password
+    - save the file hehe
 3. cd backend
 4. npm run setup
 
 to run client:
-1. npm start
+1. cd frontend
+2. npm install
+3. npm start
 
 ***** 
 - run 'npm install' in the folder after cloning/pulling
