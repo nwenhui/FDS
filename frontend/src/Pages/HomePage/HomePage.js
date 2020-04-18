@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import "./style.css";
 import foodpic from "../../../src/images/lily-banse--YHSwy6uqvk-unsplash.jpg";
+import NavBar from '../../components/Navigation/Navigation';
+
 
 class HomePage extends Component {
   render() {
     return (
       <div>
+        <NavBar history={this.props.history}/>
         <div class="image">
           <img
             src={foodpic}
