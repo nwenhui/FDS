@@ -1,6 +1,7 @@
 import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 var styles = {
   bmBurgerButton: {
@@ -50,12 +51,12 @@ var styles = {
 export default (props) => {
   return (
     <Menu {...props} styles={styles}>
-      <a className="menu-item" href="/dashboard">
+      <a className="menu-item" href="/customerDashboard">
         <DashboardIcon /> Dashboard
       </a>
 
-      <a className="menu-item" href="/jk">
-        Jing Kang
+      <a className="menu-item" href="/customerProfile">
+        <SettingsIcon /> Edit Profile
       </a>
 
       <a className="menu-item" href="/wh">
