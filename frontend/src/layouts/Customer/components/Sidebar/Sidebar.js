@@ -51,7 +51,7 @@ var styles = {
 export default (props) => {
   return (
     <Menu {...props} styles={styles}>
-      <a className="menu-item" href="/customerDashboard">
+      <a className="menu-item" href="/dashboard">
         <DashboardIcon /> Dashboard
       </a>
 

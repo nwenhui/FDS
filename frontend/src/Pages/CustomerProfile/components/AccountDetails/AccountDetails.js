@@ -22,7 +22,7 @@ const AccountDetails = (props) => {
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    userName: "Shen@gmail.com",
+    email: "Shen@gmail.com",
     password: "gfshdgdfah",
   });
 
