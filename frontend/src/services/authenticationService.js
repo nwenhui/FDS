@@ -62,6 +62,8 @@ function login(email, password, type) {
                 .then((data) => {
                     console.log("sign in donezo!!! :D");
                     currentUserSubject.next(data);
+                    const current = currentUserSubject.value.data;
+                    console.log('current: ', current.customerid);
                     localStorage.setItem('currentUser', data);
                     if (type === option[0].value) {
                         currentUserTypeSubject.next(userType.Manager);
