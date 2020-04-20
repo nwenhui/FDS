@@ -11,7 +11,7 @@ import SuccessAlert from "../../../components/Alerts/SuccessAlert/SuccessAlert";
 class RestaurantSignup extends Component {
   state = {
     restaurantName: "",
-    minSpending: 0,
+    minSpending: "",
     address: "",
     errorMessage: "",
     error: false,
@@ -26,7 +26,7 @@ class RestaurantSignup extends Component {
   };
 
   setMinSpending = (event) => {
-    var value = Number(event.target.value);
+    var value = event.target.value;
     this.setState({ minSpending: value }, () => {
       console.log(this.state.minSpending);
     });
@@ -86,7 +86,7 @@ class RestaurantSignup extends Component {
                 <Form.Label>name</Form.Label>
                 <Form.Control
                   autoFocus
-                  type="username"
+                  type="text"
                   placeholder="name of restaurant"
                   onChange={this.setRestaurantName.bind(this)}
                 />
@@ -95,7 +95,7 @@ class RestaurantSignup extends Component {
                 <Form.Label>min</Form.Label>
                 <Form.Control
                   autoFocus
-                  type="username"
+                  type="text"
                   placeholder="min. spending required (in numbers)"
                   onChange={this.setMinSpending.bind(this)}
                 />
@@ -104,7 +104,7 @@ class RestaurantSignup extends Component {
                 <Form.Label>address</Form.Label>
                 <Form.Control
                   autoFocus
-                  type="username"
+                  type="text"
                   placeholder="address of restaurant"
                   onChange={this.setAddress.bind(this)}
                 />

@@ -57,15 +57,13 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-            <Switch>
               <Route path="/dashboard" exact component={CustomerDashboard} />
-              <Route
+          )}
+          <Route
                 path="/customerProfile"
                 exact
                 component={CustomerProfile}
               />
-            </Switch>
-          )}
           {this.state.isRider && (
             <Route path="/dashboard" exact component={RiderHome} />
           )}

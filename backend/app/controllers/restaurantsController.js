@@ -6,6 +6,7 @@ import {
   isValidEmail,
   validatePassword,
   isEmpty,
+  isNum,
 } from '../helpers/validations';
 
 import {
@@ -80,8 +81,16 @@ const getRestaurant = async (req, res) => {
 
 
     // const created_on = moment(new Date());
-    if (isEmpty(name) || isEmpty(toString(min)) || isEmpty(address)) {
+    if (isEmpty(name) || isEmpty(min) || isEmpty(address)) {
       errorMessage.error = 'Restaurant name, min. spending and address fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (!isNum(min)) {
+      errorMessage.error = 'Please input a numerical value for min. spending';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (min.indexOf('.') != -1) {
+      errorMessage.error = 'Please input only whole numbers';
       return res.status(status.bad).send(errorMessage.error);
     }
     // if (!validatePassword(password)) {
