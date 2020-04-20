@@ -119,10 +119,10 @@ const getRestaurant = async (req, res) => {
     //   successMessage.data.token = token;
       return res.status(status.created).send(successMessage);
     } catch (error) {
-      // if (error.routine === '_bt_check_unique') {
-      //   errorMessage.error = 'Customer with that EMAIL already exist';
-      //   return res.status(status.conflict).send(errorMessage.error);
-      // }
+      if (error.routine === '_bt_check_unique') {
+        errorMessage.error = 'Restaurant with that name already exist';
+        return res.status(status.conflict).send(errorMessage.error);
+      }
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
     }

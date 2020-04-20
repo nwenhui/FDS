@@ -22,6 +22,8 @@ DROP TABLE IF EXISTS Receipt CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Rates CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
+DROP TABLE IF EXISTS Staff CASCADE;
+DROP TABLE IF EXISTS Manager CASCADE;
 
 CREATE TABLE FoodItem (
     ItemID SERIAL,
@@ -38,6 +40,7 @@ CREATE TABLE Menu (
 
 CREATE TABLE Restaurant (
     ResID SERIAL,
+    ResName VARCHAR(100) unique,
     MinSpending INTEGER,
     PRIMARY KEY (ResID)
 );
@@ -213,7 +216,7 @@ CREATE TABLE Reviews (
 
 CREATE TABLE Staff (
     Id SERIAL,
-    RestaurantId INTEGER,
+    RestaurantId INTEGER not null,
     email VARCHAR(100) unique NOT NULL,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
