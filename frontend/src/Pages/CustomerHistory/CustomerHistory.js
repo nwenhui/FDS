@@ -4,36 +4,25 @@ import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import NavBar from "../../components/Navigation/Navigation";
 import { Sidebar } from "../../layouts/Customer/components";
-import { PastOrders, TotalCustOrders, RewardPoints } from "./components";
+import { PastOrders, TotalCustOrders, data, AddPromo } from "./components";
 
-class CustomerDashboard extends Component {
+class CustomerHistory extends Component {
   state = {};
   render() {
     return (
       <div>
         <NavBar history={this.props.history} />
-        {/* <Grid container direction="column" spacing={}>
-          <Grid item xs={5}>
-            <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
-          </Grid>
-          <Grid item xs={6} id="page-wrap">
-            <PastOrders />
-          </Grid>
-        </Grid> */}
 
         <Grid container spacing={6}>
           <Grid item lg={6} sm={6} xl={6} xs={12}>
             <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
           </Grid>
           <Grid container item spacing={4} id="page-wrap">
-            <Grid item lg={6} sm={6} xl={6} xs={12}>
+            <Grid container justify="center">
               <TotalCustOrders />
             </Grid>
-            <Grid item lg={6} sm={6} xl={6} xs={12}>
-              <RewardPoints />
-            </Grid>
             <Grid item lg={12} md={12} xl={12} xs={12}>
-              <PastOrders />
+              <PastOrders data={data.restaurantreview} />
             </Grid>
           </Grid>
         </Grid>
@@ -42,4 +31,4 @@ class CustomerDashboard extends Component {
   }
 }
 
-export default CustomerDashboard;
+export default CustomerHistory;
