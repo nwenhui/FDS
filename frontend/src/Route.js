@@ -7,13 +7,16 @@ import About from "./Pages/About/About";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
-import CustomerDashboard from "./Pages/CustomerDashboard/CustomerDashboard";
+import CustomerHistory from "./Pages/CustomerHistory/CustomerHistory";
 import CustomerProfile from "./Pages/CustomerProfile/CustomerProfile";
 import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
 import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
+
+import EditRReview from "./Pages/EditRReview/EditRReview";
+import EditDRating from "./Pages/EditDRating/EditDRating";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -58,12 +61,19 @@ export default class Routes extends Component {
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
             <Switch>
-              <Route path="/dashboard" exact component={CustomerDashboard} />
+              <Route path="/dashboard" exact component={CustomerHistory} />
+              <Route
+                path="/customerHistory"
+                exact
+                component={CustomerHistory}
+              />
               <Route
                 path="/customerProfile"
                 exact
                 component={CustomerProfile}
               />
+              <Route path="/EditRReview" exact component={EditRReview} />
+              <Route path="/EditDRating" exact component={EditDRating} />
             </Switch>
           )}
           {this.state.isRider && (
