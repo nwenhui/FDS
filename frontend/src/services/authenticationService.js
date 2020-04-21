@@ -99,6 +99,57 @@ function signup(firstname, lastname, email, password, type) {
             response.json()
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
+                    currentUserSubject.next(data);
+                    currentUserTypeSubject.next(userType.Staff);
+                    localStorage.setItem('currentUserType', userType.Staff);
+                    return data;
+                })
+        });
+}
+
+function staffSignup(firstname, lastname, email, password, resid) {
+    const data = {first_name: firstname, last_name: lastname, email: email, password: password, resid: resid};
+    const url = 'http://localhost:3000/api/v1/staff/auth/signup';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+        .then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log("sign up donezo!!! :D");
+                    currentUserSubject.next(data);
+                    currentUserTypeSubject.next(userType.Staff);
+                    localStorage.setItem('currentUserType', userType.Staff);
+                    return data;
+                })
+        });
+}
+
+function riderSignup(firstname, lastname, email, password, type) {
+    const data = {first_name: firstname, last_name: lastname, email: email, password: password, type: type};
+    const url = 'http://localhost:3000/api/v1/rider/auth/signup';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+        .then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log("sign up donezo!!! :D");
+                    currentUserSubject.next(data);
+                    currentUserTypeSubject.next(userType.Rider);
+                    localStorage.setItem('currentUserType', userType.Rider);
                     return data;
                 })
         });
@@ -135,6 +186,8 @@ export const authenticationService = {
     signup,
     logout,
     restaurantSignup,
+    staffSignup,
+    riderSignup,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),

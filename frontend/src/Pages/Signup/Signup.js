@@ -20,6 +20,17 @@ const dropdown = option.map((option) => (
   </option>
 ));
 
+const rideroption = [
+  { value: 1, label: "Full time rider" },
+  { value: 2, label: "Part time rider" },
+];
+
+const riderdropdown = rideroption.map((option) => (
+  <option key={option.value.toString()} value={option.value}>
+    {option.label}
+  </option>
+));
+
 function handleErrors(response) {
   if (!response.ok) {
     throw response;
@@ -53,6 +64,8 @@ class Signup extends Component {
     type: "1",
     errorMessage: "",
     error: false,
+    resid: "",
+    rider: "1",
   };
 
   componentDidMount() {
@@ -96,29 +109,90 @@ class Signup extends Component {
     });
   };
 
+  setResid = (event) => {
+    var value = event.target.value;
+    this.setState({ resid: value }, () => {
+      console.log(this.state.resid);
+    })
+  }
+
+  setRider = (event) => {
+    var value = event.target.value;
+    this.setState({ rider: value }, () => {
+      console.log(this.state.rider);
+    });
+  };
+
   handleSubmit(event) {
     event.preventDefault();
-    authenticationService
-      .signup(
-        this.state.firstname,
-        this.state.lastname,
-        this.state.email,
-        this.state.password,
-        Number(this.state.type)
-      )
-      .then((data) => {
-        const to = "/dashboard";
-        this.setState({ error: false }, () => console.log(this.state.error));
-        this.props.history.push(to);
-      })
-      .catch((error) => {
-        error.text().then((errorMessage) => {
-          this.setState({ error: true, errorMessage }, () => {
-            console.log("error: ", this.state.errorMessage);
-            console.log("status: ", this.state.error);
+    if (Number(this.state.type) === option[1].value) {
+      authenticationService
+        .staffSignup(
+          this.state.firstname,
+          this.state.lastname,
+          this.state.email,
+          this.state.password,
+          this.state.resid
+        )
+        .then((data) => {
+          const to = "/dashboard";
+          this.setState({ error: false }, () => console.log(this.state.error));
+          this.props.history.push(to);
+        })
+        .catch((error) => {
+          error.text().then((errorMessage) => {
+            this.setState({ error: true, errorMessage }, () => {
+              console.log("error: ", this.state.errorMessage);
+              console.log("status: ", this.state.error);
+            });
           });
         });
-      });
+    } else if (Number(this.state.type) === option[2].value) {
+      authenticationService
+        .riderSignup(
+          this.state.firstname,
+          this.state.lastname,
+          this.state.email,
+          this.state.password,
+          Number(this.state.rider)
+        )
+        .then((data) => {
+          const to = "/dashboard";
+          this.setState({ error: false }, () => console.log(this.state.error));
+          this.props.history.push(to);
+        })
+        .catch((error) => {
+          error.text().then((errorMessage) => {
+            this.setState({ error: true, errorMessage }, () => {
+              console.log("error: ", this.state.errorMessage);
+              console.log("status: ", this.state.error);
+            });
+          });
+        });
+    }
+    else {
+      authenticationService
+        .signup(
+          this.state.firstname,
+          this.state.lastname,
+          this.state.email,
+          this.state.password,
+          Number(this.state.type)
+        )
+        .then((data) => {
+          const to = "/dashboard";
+          this.setState({ error: false }, () => console.log(this.state.error));
+          this.props.history.push(to);
+        })
+        .catch((error) => {
+          error.text().then((errorMessage) => {
+            this.setState({ error: true, errorMessage }, () => {
+              console.log("error: ", this.state.errorMessage);
+              console.log("status: ", this.state.error);
+            });
+          });
+        });
+    }
   }
 
   // handleSubmit(event) {
@@ -169,6 +243,16 @@ class Signup extends Component {
           </div>
           <div className="signupForm">
             <Form onSubmit={(e) => this.handleSubmit(e)}>
+            <Form.Group controlId="selectType">
+                <Form.Label>type</Form.Label>
+                <Form.Control
+                  as="select"
+                  custom
+                  onChange={this.setType.bind(this)}
+                >
+                  {dropdown}
+                </Form.Control>
+              </Form.Group>
               <Form.Group controlId="firstname" bssize="large">
                 <Form.Label>first name</Form.Label>
                 <Form.Control
@@ -205,16 +289,27 @@ class Signup extends Component {
                   onChange={this.setPassword.bind(this)}
                 />
               </Form.Group>
-              <Form.Group controlId="selectType">
-                <Form.Label>type</Form.Label>
-                <Form.Control
-                  as="select"
-                  custom
-                  onChange={this.setType.bind(this)}
-                >
-                  {dropdown}
-                </Form.Control>
-              </Form.Group>
+              {Number(this.state.type) === option[1].value &&
+              <Form.Group controlId="resid" bssize="large">
+              <Form.Label>restaurant id</Form.Label>
+              <Form.Control
+                autoFocus
+                type="text"
+                placeholder="restaurant id"
+                onChange={this.setResid.bind(this)}
+              />
+            </Form.Group>}
+            {Number(this.state.type) === option[2].value &&
+            <Form.Group controlId="selectRider">
+            <Form.Label>FT/PT</Form.Label>
+            <Form.Control
+              as="select"
+              custom
+              onChange={this.setRider.bind(this)}
+            >
+              {riderdropdown}
+            </Form.Control>
+          </Form.Group>}
               <Button
                 variant="outline-primary"
                 block
