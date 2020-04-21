@@ -100,8 +100,14 @@ function signup(firstname, lastname, email, password, type) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
-                    currentUserTypeSubject.next(userType.Staff);
-                    localStorage.setItem('currentUserType', userType.Staff);
+                    localStorage.setItem('currentUser', data);
+                    if (type === option[0].value) {
+                        currentUserTypeSubject.next(userType.Manager);
+                        localStorage.setItem('currentUserType', userType.Manager);
+                    } else if (type === option[3].value) {
+                        currentUserTypeSubject.next(userType.Customer);
+                        localStorage.setItem('currentUserType', userType.Customer);
+                    }
                     return data;
                 })
         });
@@ -124,6 +130,7 @@ function staffSignup(firstname, lastname, email, password, resid) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
+                    localStorage.setItem('currentUser', data);
                     currentUserTypeSubject.next(userType.Staff);
                     localStorage.setItem('currentUserType', userType.Staff);
                     return data;
@@ -148,6 +155,7 @@ function riderSignup(firstname, lastname, email, password, type) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
+                    localStorage.setItem('currentUser', data);
                     currentUserTypeSubject.next(userType.Rider);
                     localStorage.setItem('currentUserType', userType.Rider);
                     return data;
