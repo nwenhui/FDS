@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import NavBar from "../../components/Navigation/Navigation";
-import { Sidebar } from "../../layouts/Customer/components";
+import NavBar from "../../../components/Navigation/Navigation";
+import { Sidebar } from "../../../layouts/Customer/components";
 import { PastOrders, TotalCustOrders, data, AddPromo } from "./components";
 
 class CustomerHistory extends Component {

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import NavBar from "../../components/Navigation/Navigation";
+import NavBar from "../../../components/Navigation/Navigation";
 
 import { AccountDetails, RewardPoints } from "./components";
-import { Sidebar } from "../../layouts/Customer/components";
+import { Sidebar } from "../../../layouts/Customer/components";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {

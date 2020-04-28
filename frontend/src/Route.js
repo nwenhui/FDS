@@ -4,16 +4,16 @@ import { Router, Switch, Route } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
-import CustomerHistory from "./Pages/CustomerHistory/CustomerHistory";
-import CustomerProfile from "./Pages/CustomerProfile/CustomerProfile";
+import CustomerHistory from "./Pages/Customer/CustomerHistory/CustomerHistory";
+import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
 import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
 import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
 
-import EditRReview from "./Pages/EditRReview/EditRReview";
-import EditDRating from "./Pages/EditDRating/EditDRating";
+import EditRReview from "./Pages/Customer/EditRReview/EditRReview";
+import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";

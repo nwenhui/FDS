@@ -1,9 +1,9 @@
 import React, { useState, Component } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, Button } from "@material-ui/core";
-import NavBar from "../../components/Navigation/Navigation";
+import NavBar from "../../../components/Navigation/Navigation";
 import { RestaurantReview, data } from "./components";
-import { Sidebar } from "../../layouts/Customer/components";
+import { Sidebar } from "../../../layouts/Customer/components";
 
 const EditRReview = (props) => {
   // QUERY DATA for restaurant and delivery
