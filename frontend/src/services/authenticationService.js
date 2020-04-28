@@ -62,9 +62,10 @@ function login(email, password, type) {
                 .then((data) => {
                     console.log("sign in donezo!!! :D");
                     currentUserSubject.next(data);
-                    const current = currentUserSubject.value.data;
-                    console.log('current: ', current.customerid);
                     localStorage.setItem('currentUser', data);
+                    const current = currentUserSubject.value;
+                    console.log('current: ', current.id);
+                    console.log('data: ', data);
                     if (type === option[0].value) {
                         currentUserTypeSubject.next(userType.Manager);
                         localStorage.setItem('currentUserType', userType.Manager);
@@ -199,5 +200,5 @@ export const authenticationService = {
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),
-    get currentUserTypeValue () { return currentUserTypeSubject.value }
+    get currentUserTypeValue () { return currentUserTypeSubject.value },
 }

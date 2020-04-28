@@ -21,6 +21,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import { authenticationService } from "./services";
 import { userType } from "./helpers";
 
+
 export default class Routes extends Component {
   state = {
     currentUser: null,
@@ -57,7 +58,7 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-              <Route path="/dashboard" exact component={CustomerDashboard} />
+              <Route path="/dashboard" exact component={CustomerDashboard} user={this.state.currentUser}/>
           )}
           <Route
                 path="/customerProfile"

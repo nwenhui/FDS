@@ -6,8 +6,23 @@ import NavBar from "../../components/Navigation/Navigation";
 import { Sidebar } from "../../layouts/Customer/components";
 import { PastOrders, TotalCustOrders, RewardPoints } from "./components";
 
+import { authenticationService } from '../../services';
+
 class CustomerDashboard extends Component {
-  state = {};
+  state = {
+    user: null
+  }
+
+  async componentWillMount() {
+    await authenticationService.currentUser.subscribe((x) =>
+      this.setState({
+        user: x,
+      }, () => {console.log('user: ', this.state.user)})
+    );
+  }
+
+
+
   render() {
     return (
       <div>
@@ -27,7 +42,7 @@ class CustomerDashboard extends Component {
           </Grid>
           <Grid container item spacing={4} id="page-wrap">
             <Grid item lg={6} sm={6} xl={6} xs={12}>
-              <TotalCustOrders />
+              <TotalCustOrders user={this.state.user}/>
             </Grid>
             <Grid item lg={6} sm={6} xl={6} xs={12}>
               <RewardPoints />

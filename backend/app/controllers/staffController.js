@@ -41,11 +41,11 @@ import {
     }
     if (!isValidEmail(email)) {
       errorMessage.error = 'Please enter a valid Email';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!validatePassword(password)) {
       errorMessage.error = 'Password must be more than five(5) characters';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!isNum(resid)) {
       errorMessage.error = 'Please input a numerical value for your restaurant id';
@@ -75,7 +75,7 @@ import {
       const dbResponse = rows[0];
       delete dbResponse.password;
       successMessage.data = dbResponse;
-      return res.status(status.created).send(successMessage);
+      return res.status(status.created).send(successMessage.data);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Staff with that EMAIL already exist';
@@ -124,7 +124,7 @@ import {
       delete dbResponse.password;
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     } catch (error) {
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
@@ -145,14 +145,14 @@ import {
       const dbResponse = rows;
       if (!dbResponse[0]) {
         errorMessage.error = 'No user with such names';
-        return res.status(status.notfound).send(errorMessage);
+        return res.status(status.notfound).send(errorMessage.error);
       }
       successMessage.data = dbResponse;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     }
     catch (error) {
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
 
     }
   };

@@ -34,7 +34,7 @@ const searchRestaurant = async (req, res) => {
     return res.status(status.success).send(dbResponse);
   } catch (error) {
     errorMessage.error = 'Operation was not successful';
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.error).send(errorMessage.error);
   }
 };
 
@@ -60,7 +60,7 @@ const getRestaurant = async (req, res) => {
     return res.status(status.success).send(dbResponse);
   } catch (error) {
     errorMessage.error = 'Operation was not successful';
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.error).send(errorMessage.error);
   }
 };
 

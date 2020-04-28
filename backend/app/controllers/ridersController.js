@@ -67,16 +67,16 @@ import {
       await dbQuery.query('commit');
       delete dbResponse.password;
       successMessage.data = dbResponse;
-      return res.status(status.created).send(successMessage);
+      return res.status(status.created).send(successMessage.data);
     } catch (error) {
       await dbQuery.query('rollback');
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Rider with that EMAIL already exist';
-        return res.status(status.conflict).send(errorMessage);
+        return res.status(status.conflict).send(errorMessage.error);
       }
       errorMessage.error = 'Operation was not successful';
       console.log('error: ', error);
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
     }
   };
   
@@ -113,7 +113,7 @@ import {
       delete dbResponse.password;
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     } catch (error) {
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
@@ -134,14 +134,14 @@ import {
       const dbResponse = rows;
       if (!dbResponse[0]) {
         errorMessage.error = 'No user with such names';
-        return res.status(status.notfound).send(errorMessage);
+        return res.status(status.notfound).send(errorMessage.error);
       }
       successMessage.data = dbResponse;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     }
     catch (error) {
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
 
     }
   };

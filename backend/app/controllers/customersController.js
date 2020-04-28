@@ -65,7 +65,7 @@ import {
     //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
-      return res.status(status.created).send(successMessage);
+      return res.status(status.created).send(successMessage.data);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Customer with that EMAIL already exist';
@@ -109,7 +109,7 @@ import {
       delete dbResponse.password;
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     } catch (error) {
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
@@ -130,14 +130,14 @@ import {
       const dbResponse = rows;
       if (!dbResponse[0]) {
         errorMessage.error = 'No user with such names';
-        return res.status(status.notfound).send(errorMessage);
+        return res.status(status.notfound).send(errorMessage.error);
       }
       successMessage.data = dbResponse;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     }
     catch (error) {
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
 
     }
   };
