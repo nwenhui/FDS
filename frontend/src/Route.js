@@ -61,9 +61,9 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-            <Switch>
               <Route path="/dashboard" exact component={CustomerHistory} />
-              <Route
+          )}
+          <Route
                 path="/customerHistory"
                 exact
                 component={CustomerHistory}
@@ -75,8 +75,6 @@ export default class Routes extends Component {
               />
               <Route path="/EditRReview" exact component={EditRReview} />
               <Route path="/EditDRating" exact component={EditDRating} />
-            </Switch>
-          )}
           {this.state.isRider && (
             <Route path="/dashboard" exact component={RiderHome} />
           )}
