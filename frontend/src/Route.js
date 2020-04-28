@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
-import About from "./Pages/About/About";
-// import Contact from "./Contact/Contact";
-// import Products from "./Product/Products";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
