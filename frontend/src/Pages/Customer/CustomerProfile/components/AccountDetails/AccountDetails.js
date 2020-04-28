@@ -25,7 +25,7 @@ const AccountDetails = (props) => {
     firstname: props.firstname,
     lastname: props.lastname,
     email: props.email,
-    password: "props.password",
+    password: "*****",
     creditcard: props.creditcard,
   });
 
