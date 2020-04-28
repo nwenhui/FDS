@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { handleErrors, userType } from '../helpers';
 
-const currentUserSubject = new BehaviorSubject(localStorage.getItem('currentUser'));
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 const currentUserTypeSubject = new BehaviorSubject(localStorage.getItem('currentUserType'));
 
 const option = [
@@ -62,10 +62,10 @@ function login(email, password, type) {
                 .then((data) => {
                     console.log("sign in donezo!!! :D");
                     currentUserSubject.next(data);
-                    localStorage.setItem('currentUser', data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
                     const current = currentUserSubject.value;
                     console.log('current: ', current.id);
-                    console.log('data: ', data);
+                    console.log('data: ', JSON.stringify(data));
                     if (type === option[0].value) {
                         currentUserTypeSubject.next(userType.Manager);
                         localStorage.setItem('currentUserType', userType.Manager);
@@ -101,7 +101,7 @@ function signup(firstname, lastname, email, password, type) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
-                    localStorage.setItem('currentUser', data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
                     if (type === option[0].value) {
                         currentUserTypeSubject.next(userType.Manager);
                         localStorage.setItem('currentUserType', userType.Manager);
@@ -131,7 +131,7 @@ function staffSignup(firstname, lastname, email, password, resid) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
-                    localStorage.setItem('currentUser', data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
                     currentUserTypeSubject.next(userType.Staff);
                     localStorage.setItem('currentUserType', userType.Staff);
                     return data;
@@ -156,7 +156,7 @@ function riderSignup(firstname, lastname, email, password, type) {
                 .then((data) => {
                     console.log("sign up donezo!!! :D");
                     currentUserSubject.next(data);
-                    localStorage.setItem('currentUser', data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
                     currentUserTypeSubject.next(userType.Rider);
                     localStorage.setItem('currentUserType', userType.Rider);
                     return data;

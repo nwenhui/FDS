@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
@@ -22,12 +22,24 @@ const AccountDetails = (props) => {
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    email: "Shen@gmail.com",
-    password: "gfshdgdfah",
+    firstname: props.firstname,
+    lastname: props.lastname,
+    email: props.email,
+    password: "props.password",
+    creditcard: props.creditcard,
   });
 
-  const [creditcard, setCreditcard] = useState(["425543", "543321"]);
-  const [location, setLocation] = useState(["Jurong Street 10"]);
+  useEffect(() => {
+    setValues(props);
+  }, [props])
+
+  const [changed, setChanged] = useState({
+    firstname: false,
+    lastname: false,
+    email: false,
+    password: false,
+    creditcard: false,
+  })
 
   /**** Fetch current user data from the backend ****
   let data;
@@ -71,36 +83,19 @@ const AccountDetails = (props) => {
       ...values,
       [event.target.name]: event.target.value,
     });
+    setChanged({
+      ...changed,
+      [event.target.name]: true,
+    });
   };
 
-  const handleAddCreditCard = () => {
-    setCreditcard(creditcard.concat(""));
-  };
+  const handleSaveDetails = () => {
 
-  const handleCreditCardChange = (event, index) => {
-    console.log("The index is: " + index);
-    let cards = [...creditcard];
-    let card = [...cards[index]];
-    card = event.target.value;
-    cards[index] = card;
-    console.log("Cards are: " + cards);
-    setCreditcard(cards);
-    console.log(typeof event.target.value);
-  };
+  }
 
-  const handleAddLocation = () => {
-    setLocation(location.concat(""));
-  };
+  const handleDeleteAccount = () => {
 
-  const handleLocationChange = (event, index) => {
-    console.log("The index is: " + index);
-    let locs = [...location];
-    let loc = [...location[index]];
-    loc = event.target.value;
-    locs[index] = loc;
-    console.log("Locations are: " + locs);
-    setLocation(locs);
-  };
+  }
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -109,15 +104,36 @@ const AccountDetails = (props) => {
         <Divider />
         <CardContent>
           <Grid container spacing={1}>
+          <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="First Name"
+                margin="dense"
+                name="firstname"
+                onChange={handleChange}
+                value={values.firstname}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+            <TextField
+                fullWidth
+                label="Last Name"
+                margin="dense"
+                name="lastname"
+                onChange={handleChange}
+                value={values.lastname}
+                variant="outlined"
+              />
+            </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the email"
+                // helperText="Please specify the email"
                 label="Email"
                 margin="dense"
                 name="email"
                 onChange={handleChange}
-                required
                 value={values.email}
                 variant="outlined"
               />
@@ -129,58 +145,30 @@ const AccountDetails = (props) => {
                 margin="dense"
                 name="password"
                 onChange={handleChange}
-                required
                 value={values.password}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              {creditcard.map((value, index) => {
-                return (
-                  <div key={index}>
-                    <TextField
-                      fullWidth
-                      label="CreditCard"
-                      margin="dense"
-                      name="creditCard"
-                      onChange={(e) => handleCreditCardChange(e, index)}
-                      type="number"
-                      value={value}
-                      variant="outlined"
-                    />
-                  </div>
-                );
-              })}
-
-              <Button onClick={handleAddCreditCard}>Add CreditCard</Button>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              {location.map((value, index) => {
-                return (
-                  <div key={index}>
-                    <TextField
-                      fullWidth
-                      label="Location"
-                      margin="dense"
-                      name="location"
-                      onChange={(e) => handleLocationChange(e, index)}
-                      value={value}
-                      variant="outlined"
-                    />
-                  </div>
-                );
-              })}
-
-              <Button onClick={handleAddLocation}>Add Location</Button>
+              <TextField
+                fullWidth
+                label="Credit Card No."
+                margin="dense"
+                name="creditcard"
+                onChange={handleChange}
+                type="number"
+                value={values.creditcard}
+                variant="outlined"
+              />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={handleSaveDetails}>
             Save details
           </Button>
-          <Button color="primary" variant="contained">
+          <Button color="secondary" variant="contained" onClick={handleDeleteAccount}>
             Delete Account
           </Button>
         </CardActions>

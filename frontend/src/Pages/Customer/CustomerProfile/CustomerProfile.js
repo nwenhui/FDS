@@ -5,6 +5,7 @@ import NavBar from "../../../components/Navigation/Navigation";
 
 import { AccountDetails, RewardPoints } from "./components";
 import { Sidebar } from "../../../layouts/Customer/components";
+import { authenticationService } from "../../../services";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -13,7 +14,24 @@ import { Sidebar } from "../../../layouts/Customer/components";
 // }));
 
 class Account extends Component {
-  state = {};
+  state = { 
+    id: null,
+    email: null,
+    firstname: null,
+    lastname: null,
+    points: null,
+    creditcard: null
+  }
+
+  componentDidMount() {
+    authenticationService.currentUser.subscribe((x) => {
+        console.log('omo',x);
+        if (x !== null) {
+            this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points }, () => {console.log('weewoo')})
+        }
+    });
+  }
+
   render() {
     return (
       <div>
@@ -28,7 +46,7 @@ class Account extends Component {
             </Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <AccountDetails />
+              <AccountDetails email={this.state.email} firstname={this.state.firstname} lastname={this.state.lastname} creditcard={this.state.creditcard} />
             </Grid>
           </Grid>
         </Grid>

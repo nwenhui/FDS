@@ -50,6 +50,7 @@ const RewardPoints = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const rewardPoints = 53;
+  const points = props.points;
 
   /**** Fetch the reward points for the customer
 
@@ -69,7 +70,7 @@ const RewardPoints = (props) => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Reward Points" />
+      {/* <CardHeader title="Reward Points" /> */}
       <CardContent>
         <Grid container justify="space-between">
           <Grid item>
@@ -81,7 +82,7 @@ const RewardPoints = (props) => {
             >
               REWARD POINTS
             </Typography>
-            <Typography variant="h3">{rewardPoints}</Typography>
+            <Typography variant="h3">{points}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

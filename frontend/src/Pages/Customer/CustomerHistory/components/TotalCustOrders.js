@@ -43,6 +43,8 @@ const TotalCustOrders = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const totalCustOrders = 20;
+  const id = props.id;
+  console.log('id: ', id);
 
   /**** Fetch the total number of orders for the customer
 
@@ -73,7 +75,7 @@ const TotalCustOrders = (props) => {
             >
               TOTAL NUMBER OF ORDERS
             </Typography>
-            <Typography variant="h3">{totalCustOrders}</Typography>
+            <Typography variant="h3">{id}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

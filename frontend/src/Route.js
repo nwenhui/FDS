@@ -15,6 +15,8 @@ import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
 import EditRReview from "./Pages/Customer/EditRReview/EditRReview";
 import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
 
+import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard"
+
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
 
@@ -58,7 +60,7 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-              <Route path="/dashboard" exact component={CustomerHistory} />
+              <Route path="/dashboard" exact component={CustomerDashboard} />
           )}
           <Route
                 path="/customerHistory"
