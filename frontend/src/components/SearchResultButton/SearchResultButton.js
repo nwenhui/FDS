@@ -21,7 +21,7 @@ class SearchResultButton extends Component {
             response.json()
                 .then((data) => {
                     console.log('found resty stuff hehe', data.resid);
-                    this.setState({ resname: data.name, min: data.minspending, address: data.addressdetails });
+                    this.setState({ resname: data.resname, min: data.minspending });
                 })
         })
     }
@@ -39,9 +39,6 @@ class SearchResultButton extends Component {
                     </Typography>
                     <Typography class="pos" color="textSecondary">
                         min. spending: ${this.state.min}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        {this.state.address}
                     </Typography>
                 </CardContent>
                 <CardActions>

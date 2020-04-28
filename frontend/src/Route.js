@@ -1,28 +1,28 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
-import About from "./Pages/About/About";
-// import Contact from "./Contact/Contact";
-// import Products from "./Product/Products";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
-import CustomerHistory from "./Pages/CustomerHistory/CustomerHistory";
-import CustomerProfile from "./Pages/CustomerProfile/CustomerProfile";
+import CustomerHistory from "./Pages/Customer/CustomerHistory/CustomerHistory";
+import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
 import ManagerHome from "./Pages/Manager/Home";
 import RiderHome from "./Pages/Rider/Home";
 import StaffHome from "./Pages/Staff/Home";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
 import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
 
-import EditRReview from "./Pages/EditRReview/EditRReview";
-import EditDRating from "./Pages/EditDRating/EditDRating";
+import EditRReview from "./Pages/Customer/EditRReview/EditRReview";
+import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
+
+import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard"
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
 
 import { authenticationService } from "./services";
 import { userType } from "./helpers";
+
 
 export default class Routes extends Component {
   state = {
@@ -60,9 +60,9 @@ export default class Routes extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           {this.state.isCustomer && (
-            <Switch>
-              <Route path="/dashboard" exact component={CustomerHistory} />
-              <Route
+              <Route path="/dashboard" exact component={CustomerDashboard} />
+          )}
+          <Route
                 path="/customerHistory"
                 exact
                 component={CustomerHistory}
@@ -74,8 +74,6 @@ export default class Routes extends Component {
               />
               <Route path="/EditRReview" exact component={EditRReview} />
               <Route path="/EditDRating" exact component={EditDRating} />
-            </Switch>
-          )}
           {this.state.isRider && (
             <Route path="/dashboard" exact component={RiderHome} />
           )}

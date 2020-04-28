@@ -6,6 +6,7 @@ import {
   isValidEmail,
   validatePassword,
   isEmpty,
+  isNum,
 } from '../helpers/validations';
 
 import {
@@ -21,7 +22,7 @@ import {
 const searchRestaurant = async (req, res) => {
   const { keywords } = req.query;
 
-  const searchQuery = "SELECT * from Restaurants WHERE lower(name) like '%' || lower($1) || '%'";
+  const searchQuery = "SELECT * from Restaurant WHERE lower(resname) like '%' || lower($1) || '%'";
   try {
     const { rows } = await dbQuery.query(searchQuery, [keywords]);
     const dbResponse = rows;
@@ -33,7 +34,7 @@ const searchRestaurant = async (req, res) => {
     return res.status(status.success).send(dbResponse);
   } catch (error) {
     errorMessage.error = 'Operation was not successful';
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.error).send(errorMessage.error);
   }
 };
 
@@ -47,7 +48,7 @@ const getRestaurant = async (req, res) => {
   const { resid } = req.body;
   console.log('resid: ', resid);
 
-  const searchQuery = "SELECT * from Restaurants WHERE resid=$1";
+  const searchQuery = "SELECT * from Restaurant WHERE resid=$1";
   try {
     const { rows } = await dbQuery.query(searchQuery, [resid]);
     const dbResponse = rows[0];
@@ -59,7 +60,7 @@ const getRestaurant = async (req, res) => {
     return res.status(status.success).send(dbResponse);
   } catch (error) {
     errorMessage.error = 'Operation was not successful';
-    return res.status(status.error).send(errorMessage);
+    return res.status(status.error).send(errorMessage.error);
   }
 };
 
@@ -71,49 +72,46 @@ const getRestaurant = async (req, res) => {
    */
   const createRestaurant = async (req, res) => {
     const {
-      name, min, address,
+      name, min, 
     } = req.body;
 
     console.log('name: ', name)
     console.log('min: ', min)
-    console.log('address: ', address)
 
 
     // const created_on = moment(new Date());
-    if (isEmpty(name) || isEmpty(toString(min)) || isEmpty(address)) {
-      errorMessage.error = 'Restaurant name, min. spending and address fields cannot be empty';
+    if (isEmpty(name) || isEmpty(min)) {
+      errorMessage.error = 'Restaurant name and min. spending fields cannot be empty';
       return res.status(status.bad).send(errorMessage.error);
     }
-    // if (!validatePassword(password)) {
-    //   errorMessage.error = 'Password must be more than five(5) characters';
-    //   return res.status(status.bad).send(errorMessage.error);
-    // }
-    // const hashedPassword = hashPassword(password);
+    if (!isNum(min)) {
+      errorMessage.error = 'Please input a numerical value for min. spending';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (min.indexOf('.') != -1) {
+      errorMessage.error = 'Please input only whole numbers';
+      return res.status(status.bad).send(errorMessage.error);
+    }
     const createRestaurantQuery = `INSERT INTO
-        Restaurants(name, minspending, addressdetails)
-        VALUES($1, $2, $3)
+        Restaurant(ResName, MinSpending)
+        VALUES($1, $2)
         returning *`;
     const values = [
       name,
       min,
-      address,
-      // hashedPassword,
-      // created_on,
     ];
   
     try {
       const { rows } = await dbQuery.query(createRestaurantQuery, values);
       const dbResponse = rows[0];
       delete dbResponse.password;
-    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       successMessage.data = dbResponse;
-    //   successMessage.data.token = token;
       return res.status(status.created).send(successMessage);
     } catch (error) {
-      // if (error.routine === '_bt_check_unique') {
-      //   errorMessage.error = 'Customer with that EMAIL already exist';
-      //   return res.status(status.conflict).send(errorMessage.error);
-      // }
+      if (error.routine === '_bt_check_unique') {
+        errorMessage.error = 'Restaurant with that name already exist';
+        return res.status(status.conflict).send(errorMessage.error);
+      }
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
     }

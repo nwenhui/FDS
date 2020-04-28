@@ -22,7 +22,7 @@ import {
    */
   const createRider = async (req, res) => {
     const {
-      email, first_name, last_name, password,
+      email, first_name, last_name, password, type
     } = req.body;
 
     console.log('body: ', req.body)
@@ -30,6 +30,7 @@ import {
     console.log('first_name: ', first_name)
     console.log('last_name: ', last_name)
     console.log('password: ', password)
+    console.log('type: ', type)
 
 
     // const created_on = moment(new Date());
@@ -55,24 +56,27 @@ import {
       first_name,
       last_name,
       hashedPassword,
-      // created_on,
     ];
+    const addTypeQuery = (type === 1) ? 'insert into fulltime(id) values($1)' : 'insert into parttime(id) values($1)';
   
     try {
+      await dbQuery.query('begin')
       const { rows } = await dbQuery.query(createRiderQuery, values);
       const dbResponse = rows[0];
+      await dbQuery.query(addTypeQuery, [dbResponse.id]);
+      await dbQuery.query('commit');
       delete dbResponse.password;
-    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       successMessage.data = dbResponse;
-    //   successMessage.data.token = token;
-      return res.status(status.created).send(successMessage);
+      return res.status(status.created).send(successMessage.data);
     } catch (error) {
+      await dbQuery.query('rollback');
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Rider with that EMAIL already exist';
-        return res.status(status.conflict).send(errorMessage);
+        return res.status(status.conflict).send(errorMessage.error);
       }
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      console.log('error: ', error);
+      return res.status(status.error).send(errorMessage.error);
     }
   };
   
@@ -109,7 +113,7 @@ import {
       delete dbResponse.password;
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     } catch (error) {
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
@@ -130,14 +134,14 @@ import {
       const dbResponse = rows;
       if (!dbResponse[0]) {
         errorMessage.error = 'No user with such names';
-        return res.status(status.notfound).send(errorMessage);
+        return res.status(status.notfound).send(errorMessage.error);
       }
       successMessage.data = dbResponse;
-      return res.status(status.success).send(successMessage);
+      return res.status(status.success).send(successMessage.data);
     }
     catch (error) {
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage);
+      return res.status(status.error).send(errorMessage.error);
 
     }
   };

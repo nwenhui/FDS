@@ -41,6 +41,7 @@ const validatePassword = (password) => {
     return false;
   } return true;
 };
+
 /**
    * isEmpty helper method
    * @param {string, integer} input
@@ -54,6 +55,12 @@ const isEmpty = (input) => {
     return false;
   } return true;
 };
+
+const isNum = (input) => {
+  if (!isNaN(Number(input))) {
+    return true;
+  } return false;
+}
 
 // /**
 //    * empty helper method
@@ -103,4 +110,5 @@ export {
   isEmpty,
   empty,
   generateUserToken,
+  isNum,
 };
