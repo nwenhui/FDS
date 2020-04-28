@@ -3,7 +3,9 @@ import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import AddPromo from "./AddPromo.js";
 import {
+  Button,
   Card,
   CardActions,
   CardHeader,
@@ -17,16 +19,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 
-import mockData from "./data";
-
 const useStyles = makeStyles((theme) => ({
-  root: {
-    borderTopWidth: 0.5,
-    borderLeftWidth: 0,
-    borderBottomWidth: 0,
-    borderColor: "grey",
-    borderStyle: "solid",
-  },
   content: {
     padding: 0,
   },
@@ -48,12 +41,16 @@ const useStyles = makeStyles((theme) => ({
 const PastOrders = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const [orders] = useState(mockData);
+  const [orders] = useState(props.data);
+  const [openDiv, setOpenDiv] = useState(false);
+
+  const handleOpenDiv = () => {
+    setOpenDiv(!openDiv);
+  };
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      {/* <CardHeader action={""} title="Past Orders" />
-      <Divider /> */}
+      <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
@@ -66,18 +63,17 @@ const PastOrders = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Order Ref</TableCell>
                   <TableCell>Restaurant</TableCell>
                   <TableCell>Food Item</TableCell>
                   <TableCell>Total Price</TableCell>
                   <TableCell>Payment Method</TableCell>
                   <TableCell>Order Date</TableCell>
+                  <TableCell>Add a Review</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow hover key={order.id}>
-                    <TableCell>{order.ref}</TableCell>
+                  <TableRow>
                     <TableCell>{order.restaurant}</TableCell>
                     <TableCell>
                       <ol>
@@ -89,14 +85,24 @@ const PastOrders = (props) => {
                     <TableCell>{order.price}</TableCell>
                     <TableCell>{order.payment}</TableCell>
                     <TableCell>{order.date}</TableCell>
+                    <TableCell>
+                      <Button
+                        color="primary"
+                        size="small"
+                        variant="contained"
+                        onClick={handleOpenDiv}
+                      >
+                        Add Promotion
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
+          {openDiv && <AddPromo onClick={handleOpenDiv} />}
         </PerfectScrollbar>
       </CardContent>
-      {/* <CardActions className={classes.actions}></CardActions> */}
     </Card>
   );
 };

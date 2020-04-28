@@ -2,6 +2,10 @@ import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
+import RateReviewIcon from "@material-ui/icons/RateReview";
+import GradeIcon from "@material-ui/icons/Grade";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import HistoryIcon from "@material-ui/icons/History";
 
 var styles = {
   bmBurgerButton: {
@@ -31,7 +35,7 @@ var styles = {
   bmMenu: {
     background: "#373a47",
     padding: "2.5em 1.5em 0",
-    fontSize: "1.5em",
+    fontSize: "1.3em",
   },
   bmMorphShape: {
     fill: "#373a47",
@@ -59,20 +63,19 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      <a className="menu-item" href="/wh">
-        Wen Hui
+      <a className="menu-item" href="/customerHistory">
+        <HistoryIcon /> History
+      </a>
+      <a className="menu-item" href="/EditRReview">
+        <RateReviewIcon /> Restaurant Reviews
       </a>
 
-      <a className="menu-item" href="/sy">
-        Si Ying
+      <a className="menu-item" href="/EditDRating">
+        <GradeIcon /> Rider Ratings
       </a>
 
       <a className="menu-item" href="/ja">
-        Janel
-      </a>
-
-      <a className="menu-item" href="/logout">
-        Log Out
+        <ShoppingCartIcon /> CheckOut
       </a>
     </Menu>
   );
