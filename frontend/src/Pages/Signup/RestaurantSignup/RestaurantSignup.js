@@ -11,7 +11,7 @@ import SuccessAlert from "../../../components/Alerts/SuccessAlert/SuccessAlert";
 class RestaurantSignup extends Component {
   state = {
     restaurantName: "",
-    minSpending: 0,
+    minSpending: "",
     address: "",
     errorMessage: "",
     error: false,
@@ -26,7 +26,7 @@ class RestaurantSignup extends Component {
   };
 
   setMinSpending = (event) => {
-    var value = Number(event.target.value);
+    var value = event.target.value;
     this.setState({ minSpending: value }, () => {
       console.log(this.state.minSpending);
     });
@@ -63,6 +63,7 @@ class RestaurantSignup extends Component {
         );
       })
       .catch((error) => {
+        console.log(error);
         error.text().then((errorMessage) => {
           this.setState({ error: true, errorMessage }, () => {
             console.log("error: ", this.state.errorMessage);
@@ -82,48 +83,24 @@ class RestaurantSignup extends Component {
           </div>
           <div className="signupForm">
             <Form onSubmit={(e) => this.handleSubmit(e)}>
-              <Form.Group controlId="firstname" bssize="large">
+              <Form.Group controlId="resname" bssize="large">
                 <Form.Label>name</Form.Label>
                 <Form.Control
                   autoFocus
-                  type="username"
+                  type="text"
                   placeholder="name of restaurant"
                   onChange={this.setRestaurantName.bind(this)}
                 />
               </Form.Group>
               <Form.Group controlId="minspending" bssize="large">
-                <Form.Label>min</Form.Label>
+                <Form.Label>min. spending</Form.Label>
                 <Form.Control
                   autoFocus
-                  type="username"
-                  placeholder="min. spending required (in numbers)"
+                  type="text"
+                  placeholder="whole numbers only"
                   onChange={this.setMinSpending.bind(this)}
                 />
               </Form.Group>
-              <Form.Group controlId="address" bssize="large">
-                <Form.Label>address</Form.Label>
-                <Form.Control
-                  autoFocus
-                  type="username"
-                  placeholder="address of restaurant"
-                  onChange={this.setAddress.bind(this)}
-                />
-              </Form.Group>
-              {/* <Form.Group controlId="password" bssize="large">
-                          <Form.Label>password</Form.Label>
-                          <Form.Control 
-                              autoFocus
-                              type="password"
-                              placeholder="password"
-                              onChange={this.setPassword.bind(this)}
-                          />
-                      </Form.Group> */}
-              {/* <Form.Group controlId="selectType">
-                          <Form.Label>type</Form.Label>
-                          <Form.Control as="select" custom onChange={this.setType.bind(this)}>
-                              {dropdown}
-                          </Form.Control>
-                      </Form.Group> */}
               <Button
                 variant="outline-primary"
                 block

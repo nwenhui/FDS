@@ -13,12 +13,16 @@ class Navigation extends Component {
           <li>
             <a class="navbar-brand">Delivermeow</a>
           </li>
-          <li class="nav-item">
+          {!authenticationService.currentUserValue && <li class="nav-item">
             <a class="nav-link" href="/Home#">
               Home
             </a>
-          </li>
-  
+          </li>}
+          {authenticationService.currentUserValue && <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+              Home
+            </a>
+          </li>}
           <li></li>
           <li class="nav-item dropdown">
             <a
