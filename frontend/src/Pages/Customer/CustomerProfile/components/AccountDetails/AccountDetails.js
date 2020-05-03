@@ -82,11 +82,11 @@ const AccountDetails = (props) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
-    });
+    }, () => {console.log("value: ", values.email);});
     setChanged({
       ...changed,
       [event.target.name]: true,
-    });
+    }, () => {console.log("change: ", changed.email);});
   };
 
   const handleSaveDetails = () => {
@@ -145,7 +145,8 @@ const AccountDetails = (props) => {
                 margin="dense"
                 name="password"
                 onChange={handleChange}
-                value={values.password}
+                // defaultValue="****"
+                // value={values.password}
                 variant="outlined"
               />
             </Grid>
