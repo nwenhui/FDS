@@ -234,6 +234,26 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * get no. of customer's orders
+   */
+  const ordersByCustomer = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select count(id) from orders where id = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,
@@ -241,4 +261,5 @@ import {
     searchCustomerFirstnameOrLastname,
     editCustomer,
     deleteCustomer,
+    ordersByCustomer,
   };
