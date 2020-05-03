@@ -1,22 +1,15 @@
 import React, { Component } from "react";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import NavBar from "../../../components/Navigation/Navigation";
-import { Sidebar } from "../../../layouts/Customer/components";
-import AccountInfo from "./components/AccountInfo";
+import NavBar from "../../../../components/Navigation/Navigation";
+import { Sidebar } from "../../../../layouts/Rider/components";
 import Typography from "@material-ui/core/Typography";
+import AccountInfo from "../components/AccountInfo";
 
-import {
-  PastOrders,
-  TotalCustOrders,
-  data,
-  AddPromo,
-} from "../CustomerHistory/components";
-import { RewardPoints } from "../CustomerProfile/components";
-import { authenticationService } from "../../../services";
-import history from "../../../history";
+import { authenticationService } from "../../../../services";
+import history from "../../../../history";
 
-class CustomerDashboard extends Component {
+class RiderDashboard extends Component {
   state = {
     id: null,
     email: null,
@@ -87,4 +80,4 @@ class CustomerDashboard extends Component {
   }
 }
 
-export default CustomerDashboard;
+export default RiderDashboard;

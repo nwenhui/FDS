@@ -26,7 +26,6 @@ const AccountDetails = (props) => {
     lastname: props.lastname,
     email: props.email,
     password: "*****",
-    creditcard: props.creditcard,
   });
 
   useEffect(() => {
@@ -38,45 +37,7 @@ const AccountDetails = (props) => {
     lastname: false,
     email: false,
     password: false,
-    creditcard: false,
   });
-
-  /**** Fetch current user data from the backend ****
-  let data;
-
-  const url = 'api/v1/...';
-
-  fetch(url)
-  .then((response) => response.json())
-  .then((result) => {
-    data = JSON.parse(result);
-  })
-  .catch((error) => {
-    console.log('Error: ', error);
-  });
-
-  ****/
-
-  /**** Upload modified user data to the backend ****
-
-  const url = 'api/v1/...';
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  .then((response) => response.json())
-  .then(() => {
-    console.log('Success!');
-  })
-  .catch((error) => {
-    console.log('Error: ', error);
-  });
-
-  ****/
 
   const handleChange = (event) => {
     setValues({
@@ -142,18 +103,6 @@ const AccountDetails = (props) => {
                 name="password"
                 onChange={handleChange}
                 value={values.password}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Credit Card No."
-                margin="dense"
-                name="creditcard"
-                onChange={handleChange}
-                type="number"
-                value={values.creditcard}
                 variant="outlined"
               />
             </Grid>
