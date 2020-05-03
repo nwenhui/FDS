@@ -170,6 +170,7 @@ function riderSignup(firstname, lastname, email, password, type) {
   return fetch(request)
     .then(handleErrors)
     .then((response) => {
+      console.log('response: ', response);
       response.json().then((data) => {
         console.log("sign up donezo!!! :D");
         currentUserSubject.next(data);
@@ -254,6 +255,54 @@ function deleteCustomerProfile(id) {
         })
 }
 
+function editRiderProfile(firstname, lastname, email, password, id) {
+  const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
+  const url = 'http://localhost:3000/api/v1/rider/edit';
+
+  console.log('data: ', JSON.stringify(data));
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('edit profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+                  currentUserSubject.next(data);
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+              })
+      })
+}
+
+function deleteRiderProfile(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/rider/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('delete profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+              })
+      })
+}
+
 export const authenticationService = {
     login,
     signup,
@@ -263,6 +312,8 @@ export const authenticationService = {
     riderSignup,
     editCustomerProfile,
     deleteCustomerProfile,
+    editRiderProfile,
+    deleteRiderProfile,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),

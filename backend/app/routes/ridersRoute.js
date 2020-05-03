@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createRider, signinRider, searchRiderFirstnameOrLastname } from '../controllers/ridersController';
+import { createRider, signinRider, searchRiderFirstnameOrLastname, editRider, deleteRider } from '../controllers/ridersController';
 
 const router = express.Router();
 
@@ -9,5 +9,7 @@ const router = express.Router();
 router.post('/auth/signup', createRider);
 router.post('/auth/signin', signinRider);
 router.get('/search', searchRiderFirstnameOrLastname);
+router.post('/edit', editRider);
+router.post('/delete', deleteRider);
 
 export default router;

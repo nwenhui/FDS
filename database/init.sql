@@ -98,13 +98,13 @@ CREATE TABLE Rider (
 CREATE TABLE PartTime (
     Id INTEGER,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE FullTime (
     Id INTEGER,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Works (
@@ -113,7 +113,7 @@ CREATE TABLE Works (
     EndTime TIMESTAMP NOT NULL,
     TotalHours INTEGER NOT NULL,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE CreditCard (

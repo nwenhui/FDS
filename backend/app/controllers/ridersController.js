@@ -66,7 +66,7 @@ import {
       await dbQuery.query(addTypeQuery, [dbResponse.id]);
       await dbQuery.query('commit');
       // delete dbResponse.password;
-      // successMessage.data = dbResponse;
+      successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);
     } catch (error) {
       await dbQuery.query('rollback');
@@ -145,9 +145,84 @@ import {
 
     }
   };
+
+  /**
+   * Edit A Rider
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} reflection object (of Customer)
+   */
+  const editRider = async (req, res) => {
+    const {
+      email, first_name, last_name, password, id
+    } = req.body;
+
+    console.log('body: ', req.body)
+    console.log('email: ', email)
+    console.log('first_name: ', first_name)
+    console.log('last_name: ', last_name)
+    console.log('password: ', password)
+    console.log('id: ', id)
+
+    if (!isValidEmail(email)) {
+      errorMessage.error = 'Please enter a valid Email';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (!validatePassword(password)) {
+      errorMessage.error = 'Password must be more than five(5) characters';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    const editRiderQuery = `UPDATE Rider set
+        email = $1,
+        first_name = $2,
+        last_name = $3,
+        password = $4
+        where id = $5
+        returning *`;
+    const values = [
+      email,
+      first_name,
+      last_name,
+      password,
+      id
+    ];
+  
+    try {
+      const { rows } = await dbQuery.query(editRiderQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.created).send(successMessage.data);
+    } catch (error) {
+      if (error.routine === '_bt_check_unique') {
+        errorMessage.error = 'Customer with that EMAIL already exist';
+        return res.status(status.conflict).send(errorMessage.error);
+      }
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+  /**
+   * delete a rider
+   */
+  const deleteRider = async (req, res) => {
+    const { id } = req.body;
+    const deleteRiderQuery = 'delete from rider where id = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deleteRiderQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
   
   export {
     createRider,
     signinRider,
     searchRiderFirstnameOrLastname,
+    editRider,
+    deleteRider
   };

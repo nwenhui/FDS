@@ -15,9 +15,11 @@ import { authenticationService } from "../../../../services";
 
 class Account extends Component {
   state = {
+    id: null,
     email: null,
     firstname: null,
     lastname: null,
+    password: null,
   };
 
   componentDidMount() {
@@ -26,9 +28,11 @@ class Account extends Component {
       if (x !== null) {
         this.setState(
           {
+            id: x.id,
             email: x.email,
             firstname: x.first_name,
             lastname: x.last_name,
+            password: x.password,
           },
           () => {
             console.log("weewoo");
@@ -54,6 +58,9 @@ class Account extends Component {
                 firstname={this.state.firstname}
                 lastname={this.state.lastname}
                 email={this.state.email}
+                password={this.state.password}
+                id={this.state.id}
+                history={this.props.history}
               />
             </Grid>
           </Grid>

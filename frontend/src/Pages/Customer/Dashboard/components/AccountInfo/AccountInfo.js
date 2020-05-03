@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import { authenticationService } from "../../../../../services";
+import { customerService } from "../../../../../services";
 
 import {
   Card,
@@ -21,7 +22,17 @@ class AccountInfo extends Component {
     lastname: null,
     points: null,
     creditcard: null,
+    orders: null,
   };
+
+  fetchTotalOrders() {
+    customerService.customerOrderCount(this.state.id).then((response) => {
+      response.json()
+      .then((data) => {
+        this.setState({ orders: data.count })
+      })
+    });
+  }
 
   componentDidMount() {
     authenticationService.currentUser.subscribe((x) => {
@@ -35,6 +46,7 @@ class AccountInfo extends Component {
             points: x.points,
           },
           () => {
+            this.fetchTotalOrders();
             console.log("stuff happened");
           }
         );
@@ -85,7 +97,7 @@ class AccountInfo extends Component {
 
               <Grid item md={12} xs={12}>
                 <Typography variant="h6" component="h2">
-                  Total Orders: {this.state.id}
+                  Total Orders: {this.state.orders}
                 </Typography>
               </Grid>
             </Grid>
