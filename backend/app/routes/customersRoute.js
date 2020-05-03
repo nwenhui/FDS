@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createCustomer, signinCustomer, searchCustomerFirstnameOrLastname } from '../controllers/customersController';
+import { createCustomer, signinCustomer, searchCustomerFirstnameOrLastname, editCustomer, deleteCustomer } from '../controllers/customersController';
 
 const router = express.Router();
 
@@ -9,5 +9,7 @@ const router = express.Router();
 router.post('/auth/signup', createCustomer);
 router.post('/auth/signin', signinCustomer);
 router.get('/search', searchCustomerFirstnameOrLastname);
+router.post('/edit', editCustomer);
+router.post('/delete', deleteCustomer);
 
 export default router;
