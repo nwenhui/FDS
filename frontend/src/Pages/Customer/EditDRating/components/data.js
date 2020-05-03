@@ -9,7 +9,7 @@ export default {
       date: "20/3/2020",
     },
     {
-      ridername: "Adam",
+      ridername: "Bob",
       food: ["Chicken Rice", "Duck Rice"],
       price: 30.5,
       payment: "Cash",
@@ -17,7 +17,7 @@ export default {
       date: "20/3/2020",
     },
     {
-      ridername: "Adam",
+      ridername: "Cat",
       food: ["Chicken Rice", "Duck Rice"],
       price: 30.5,
       payment: "Cash",

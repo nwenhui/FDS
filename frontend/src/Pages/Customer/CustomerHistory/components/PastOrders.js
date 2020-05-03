@@ -92,7 +92,7 @@ const PastOrders = (props) => {
                         variant="contained"
                         onClick={handleOpenDiv}
                       >
-                        Add Promotion
+                        Add Review
                       </Button>
                     </TableCell>
                   </TableRow>
