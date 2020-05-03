@@ -104,7 +104,7 @@ const getRestaurant = async (req, res) => {
     try {
       const { rows } = await dbQuery.query(createRestaurantQuery, values);
       const dbResponse = rows[0];
-      delete dbResponse.password;
+      // delete dbResponse.password;
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage);
     } catch (error) {

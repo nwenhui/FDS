@@ -206,19 +206,65 @@ function restaurantSignup(name, min, address) {
     });
 }
 
+function editCustomerProfile(firstname, lastname, email, password, id) {
+    const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
+    const url = 'http://localhost:3000/api/v1/customer/edit';
+
+    console.log('data: ', JSON.stringify(data));
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+        .then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log('edit profile donezo!');
+                    localStorage.removeItem('currentUser');
+                    currentUserSubject.next(null);
+                    currentUserSubject.next(data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                })
+        })
+}
+
+function deleteCustomerProfile(id) {
+    const data = {id: id};
+    const url = 'http://localhost:3000/api/v1/customer/delete';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+        .then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log('delete profile donezo!');
+                    localStorage.removeItem('currentUser');
+                    currentUserSubject.next(null);
+                })
+        })
+}
+
 export const authenticationService = {
-  login,
-  signup,
-  logout,
-  restaurantSignup,
-  staffSignup,
-  riderSignup,
-  currentUser: currentUserSubject.asObservable(),
-  get currentUserValue() {
-    return currentUserSubject.value;
-  },
-  currentUserType: currentUserTypeSubject.asObservable(),
-  get currentUserTypeValue() {
-    return currentUserTypeSubject.value;
-  },
-};
+    login,
+    signup,
+    logout,
+    restaurantSignup,
+    staffSignup,
+    riderSignup,
+    editCustomerProfile,
+    deleteCustomerProfile,
+    currentUser: currentUserSubject.asObservable(),
+    get currentUserValue () { return currentUserSubject.value },
+    currentUserType: currentUserTypeSubject.asObservable(),
+    get currentUserTypeValue () { return currentUserTypeSubject.value },
+}

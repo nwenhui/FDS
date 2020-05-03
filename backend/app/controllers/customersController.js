@@ -45,23 +45,31 @@ import {
       errorMessage.error = 'Password must be more than five(5) characters';
       return res.status(status.bad).send(errorMessage.error);
     }
-    const hashedPassword = hashPassword(password);
+    // const hashedPassword = hashPassword(password);
     const createCustomerQuery = `INSERT INTO
         Customer(email, first_name, last_name, password)
         VALUES($1, $2, $3, $4)
         returning *`;
+    // const values = [
+    //   email,
+    //   first_name,
+    //   last_name,
+    //   hashedPassword,
+    //   // created_on,
+    // ];
+
     const values = [
       email,
       first_name,
       last_name,
-      hashedPassword,
+      password,
       // created_on,
     ];
   
     try {
       const { rows } = await dbQuery.query(createCustomerQuery, values);
       const dbResponse = rows[0];
-      delete dbResponse.password;
+      // delete dbResponse.password;
     //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
@@ -83,7 +91,7 @@ import {
      * @returns {object} customer object
      */
   const signinCustomer = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, firstname, lastname, creditcard } = req.body;
     if (isEmpty(email) || isEmpty(password)) {
       errorMessage.error = 'Email or Password detail is missing';
       return res.status(status.bad).send(errorMessage.error);
@@ -106,7 +114,7 @@ import {
         return res.status(status.bad).send(errorMessage.error);
       }
       // const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
-      delete dbResponse.password;
+      // delete dbResponse.password;
       successMessage.data = dbResponse;
     //   successMessage.data.token = token;
       return res.status(status.success).send(successMessage.data);
@@ -141,9 +149,117 @@ import {
 
     }
   };
+
+  /**
+   * Edit A Customer
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} reflection object (of Customer)
+   */
+  const editCustomer = async (req, res) => {
+    const {
+      email, first_name, last_name, password, id
+    } = req.body;
+
+    console.log('body: ', req.body)
+    console.log('email: ', email)
+    console.log('first_name: ', first_name)
+    console.log('last_name: ', last_name)
+    console.log('password: ', password)
+    console.log('id: ', id)
+
+
+    // const created_on = moment(new Date());
+    // if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
+    //   errorMessage.error = 'Email, password, first name and last name fields cannot be empty';
+    //   return res.status(status.bad).send(errorMessage.error);
+    // }
+    if (!isValidEmail(email)) {
+      errorMessage.error = 'Please enter a valid Email';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (!validatePassword(password)) {
+      errorMessage.error = 'Password must be more than five(5) characters';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    // const hashedPassword = hashPassword(password);
+    const editCustomerQuery = `UPDATE Customer set
+        email = $1,
+        first_name = $2,
+        last_name = $3,
+        password = $4
+        where id = $5
+        returning *`;
+    const values = [
+      email,
+      first_name,
+      last_name,
+      password,
+      id
+      // creditcard
+      // created_on,
+    ];
+  
+    try {
+      const { rows } = await dbQuery.query(editCustomerQuery, values);
+      const dbResponse = rows[0];
+      // delete dbResponse.password;
+    //   const token = generateUserToken(dbResponse.email, dbResponse.id, dbResponse.is_admin, dbResponse.first_name, dbResponse.last_name);
+      successMessage.data = dbResponse;
+    //   successMessage.data.token = token;
+      return res.status(status.created).send(successMessage.data);
+    } catch (error) {
+      if (error.routine === '_bt_check_unique') {
+        errorMessage.error = 'Customer with that EMAIL already exist';
+        return res.status(status.conflict).send(errorMessage.error);
+      }
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+  /**
+   * delete a customer
+   */
+  const deleteCustomer = async (req, res) => {
+    const { id } = req.body;
+    const deleteCustomerQuery = 'delete from customer where id = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deleteCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+  /**
+   * get no. of customer's orders
+   */
+  const ordersByCustomer = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select count(id) from orders where id = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,
     signinCustomer,
     searchCustomerFirstnameOrLastname,
+    editCustomer,
+    deleteCustomer,
+    ordersByCustomer,
   };
