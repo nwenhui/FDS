@@ -199,7 +199,7 @@ import {
     ];
   
     try {
-      const { rows } = await dbQuery.query(editStaffQuery, [values]);
+      const { rows } = await dbQuery.query(editStaffQuery, values);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);

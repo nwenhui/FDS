@@ -184,7 +184,7 @@ import {
     ];
   
     try {
-      const { rows } = await dbQuery.query(editManagerQuery, [values]);
+      const { rows } = await dbQuery.query(editManagerQuery, values);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);
@@ -193,6 +193,7 @@ import {
         errorMessage.error = 'Manager with that EMAIL already exist';
         return res.status(status.conflict).send(errorMessage.error);
       }
+      console.log('errorrr: ', error);
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
     }

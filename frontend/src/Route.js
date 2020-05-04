@@ -6,9 +6,9 @@ import Signup from "./Pages/Signup/Signup";
 import Logout from "./Pages/Logout/Logout";
 import CustomerHistory from "./Pages/Customer/CustomerHistory/CustomerHistory";
 import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
-import ManagerHome from "./Pages/Manager/Home";
+import ManagerDashboard from "./Pages/Manager/Dashboard/Dashboard";
 import RiderDashboard from "./Pages/Rider/PartTimeRider/Dashboard/Dashboard";
-import StaffHome from "./Pages/Staff/Home";
+import StaffDashboard from "./Pages/Staff/Dashboard/Dashboard";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
 import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
 
@@ -17,6 +17,10 @@ import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
 
 import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
+
+import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
+
+import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -75,11 +79,14 @@ export default class Routes extends Component {
             component={PartTimeRiderProfile}
           />
           {this.state.isManager && (
-            <Route path="/dashboard" exact component={ManagerHome} />
+            <Route path="/dashboard" exact component={ManagerDashboard} />
           )}
+          <Route path="/managerProfile" exact component={ManagerProfile} />
           {this.state.isStaff && (
-            <Route path="/dashboard" exact component={StaffHome} />
+            <Route path="/dashboard" exact component={StaffDashboard} />
           )}
+          <Route path="/staffProfile" exact component={StaffProfile} />
+          
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />

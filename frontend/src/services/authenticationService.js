@@ -187,26 +187,6 @@ function logout() {
   currentUserSubject.next(null);
 }
 
-function restaurantSignup(name, min, address) {
-  const data = { name: name, min: min, address: address };
-  const url = "http://localhost:3000/api/v1/restaurant/auth/signup";
-
-  var request = new Request(url, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify(data),
-  });
-
-  return fetch(request)
-    .then(handleErrors)
-    .then((response) => {
-      response.json().then((data) => {
-        console.log("resty sign up donezo!!! :D");
-        return data;
-      });
-    });
-}
-
 function editCustomerProfile(firstname, lastname, email, password, id) {
     const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
     const url = 'http://localhost:3000/api/v1/customer/edit';
@@ -403,7 +383,6 @@ export const authenticationService = {
     login,
     signup,
     logout,
-    restaurantSignup,
     staffSignup,
     riderSignup,
     editCustomerProfile,

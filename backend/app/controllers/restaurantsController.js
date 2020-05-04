@@ -106,7 +106,8 @@ const getRestaurant = async (req, res) => {
       const dbResponse = rows[0];
       // delete dbResponse.password;
       successMessage.data = dbResponse;
-      return res.status(status.created).send(successMessage);
+      console.log(successMessage.data);
+      return res.status(status.created).send(successMessage.data);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Restaurant with that name already exist';
