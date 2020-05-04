@@ -36,15 +36,15 @@ import {
     // const created_on = moment(new Date());
     if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
       errorMessage.error = 'Email, password, first name and last name fields cannot be empty';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!isValidEmail(email)) {
       errorMessage.error = 'Please enter a valid Email';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     if (!validatePassword(password)) {
       errorMessage.error = 'Password must be more than five(5) characters';
-      return res.status(status.bad).send(errorMessage);
+      return res.status(status.bad).send(errorMessage.error);
     }
     // const hashedPassword = hashPassword(password);
     const createRiderQuery = `INSERT INTO
@@ -188,13 +188,13 @@ import {
     ];
   
     try {
-      const { rows } = await dbQuery.query(editRiderQuery, values);
+      const { rows } = await dbQuery.query(editRiderQuery, [values]);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
-        errorMessage.error = 'Customer with that EMAIL already exist';
+        errorMessage.error = 'Rider with that EMAIL already exist';
         return res.status(status.conflict).send(errorMessage.error);
       }
       errorMessage.error = 'Operation was not successful';
@@ -218,11 +218,32 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * get no. of orders delivered by rider
+   */
+  const ordersByRider = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByRiderQuery = 'select count(id) from delivers where id = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByRiderQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createRider,
     signinRider,
     searchRiderFirstnameOrLastname,
     editRider,
-    deleteRider
+    deleteRider,
+    ordersByRider
   };
