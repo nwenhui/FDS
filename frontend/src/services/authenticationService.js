@@ -303,6 +303,102 @@ function deleteRiderProfile(id) {
       })
 }
 
+function editStaffProfile(firstname, lastname, email, password, id) {
+  const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
+  const url = 'http://localhost:3000/api/v1/staff/edit';
+
+  console.log('data: ', JSON.stringify(data));
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('edit profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+                  currentUserSubject.next(data);
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+              })
+      })
+}
+
+function deleteStaffProfile(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/staff/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('delete profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+              })
+      })
+}
+
+function editManagerProfile(firstname, lastname, email, password, id) {
+  const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
+  const url = 'http://localhost:3000/api/v1/manager/edit';
+
+  console.log('data: ', JSON.stringify(data));
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('edit profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+                  currentUserSubject.next(data);
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+              })
+      })
+}
+
+function deleteManagerProfile(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/manager/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('delete profile donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+              })
+      })
+}
+
 export const authenticationService = {
     login,
     signup,
@@ -314,6 +410,10 @@ export const authenticationService = {
     deleteCustomerProfile,
     editRiderProfile,
     deleteRiderProfile,
+    editStaffProfile,
+    deleteStaffProfile,
+    editManagerProfile,
+    deleteManagerProfile,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),

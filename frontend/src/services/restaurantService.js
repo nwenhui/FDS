@@ -37,8 +37,30 @@ function getRestaurant(resid) {
         })
 }
 
+function deleteRestaurant(resid) {
+    const data = {resid: resid};
+    const url = 'http://localhost:3000/api/v1/restaurant/delete';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('delete resty donezo!');
+              })
+      })
+
+}
+
 export const restaurantService = {
     searchRestaurant,
     searchRestaurantResults,
-    getRestaurant
+    getRestaurant,
+    deleteRestaurant
 }
