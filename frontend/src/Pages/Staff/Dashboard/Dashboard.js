@@ -6,7 +6,7 @@ import { Sidebar } from "../../../layouts/Staff/components";
 import Typography from "@material-ui/core/Typography";
 import AccountInfo from "../components/AccountInfo";
 
-import { authenticationService } from "../../../services";
+import { authenticationService, restaurantService } from "../../../services";
 import history from "../../../history";
 
 class RiderDashboard extends Component {
@@ -16,6 +16,8 @@ class RiderDashboard extends Component {
     firstname: null,
     lastname: null,
     resid: null,
+    resname: null,
+    min: null,
   };
 
   componentDidMount() {
@@ -30,6 +32,13 @@ class RiderDashboard extends Component {
             resid: x.restaurantid,
           },
           () => {
+            restaurantService.getRestaurant(this.state.resid).then((response) => {
+              response.json()
+                  .then((data) => {
+                      console.log('found resty stuff hehe', data.resid);
+                      this.setState({ resname: data.resname, min: data.minspending });
+                  })
+          })
             console.log("stuff happened");
           }
         );
