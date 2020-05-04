@@ -4,6 +4,7 @@ import { handleErrors } from '../helpers';
 function restaurantSignup(name, min, address) {
     const data = { name: name, min: min, address: address };
     const url = "http://localhost:3000/api/v1/restaurant/auth/signup";
+    console.log('data???: ', data);
   
     var request = new Request(url, {
       method: "POST",
@@ -52,14 +53,15 @@ function getRestaurant(resid) {
 
     return fetch(request)
         .then(handleErrors)
-        .catch((error) => {
-            console.log('error: ', error);
-        })
+        // .catch((error) => {
+        //     console.log('error: ', error);
+        // })
 }
 
-function deleteRestaurant(resid) {
-    const data = {resid: resid};
-    const url = 'http://localhost:3000/api/v1/restaurant/delete';
+function editRestaurant(resname, min, id) {
+    const data = {resname: resname, min: min, id: id};
+    const url = 'http://localhost:3000/api/v1/restaurant/edit';
+    console.log('data!!!!: ', data);
 
     var request = new Request(url, {
         method: 'POST',
@@ -69,13 +71,12 @@ function deleteRestaurant(resid) {
 
     return fetch(request)
       .then(handleErrors)
-      .then((response) => {
-          response.json()
-              .then((data) => {
-                  console.log('delete resty donezo!');
-              })
-      })
-
+    //   .then((response) => {
+    //       response.json()
+    //           .then((data) => {
+    //               console.log('edit resty donezo!');
+    //           })
+    //   })
 }
 
 export const restaurantService = {
@@ -83,5 +84,5 @@ export const restaurantService = {
     searchRestaurant,
     searchRestaurantResults,
     getRestaurant,
-    deleteRestaurant
+    editRestaurant
 }

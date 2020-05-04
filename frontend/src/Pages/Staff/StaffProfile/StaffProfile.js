@@ -4,8 +4,9 @@ import { Grid } from "@material-ui/core";
 import NavBar from "../../../components/Navigation/Navigation";
 
 import AccountDetails from "./components/AccountDetails";
+import RestaurantDetails from "./components/RestaurantDetails";
 import { Sidebar } from "../../../layouts/Staff/components";
-import { authenticationService } from "../../../services";
+import { authenticationService, restaurantService } from "../../../services";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -21,11 +22,12 @@ class Account extends Component {
     lastname: null,
     password: null,
     resid: null,
+    resname: null,
+    min: null,
   };
 
   componentDidMount() {
     authenticationService.currentUser.subscribe((x) => {
-      console.log("omo", x);
       if (x !== null) {
         this.setState(
           {
@@ -33,11 +35,18 @@ class Account extends Component {
             email: x.email,
             firstname: x.first_name,
             lastname: x.last_name,
-            password: x.password,
             resid: x.restaurantid,
+            password: x.password,
           },
           () => {
-            console.log("weewoo");
+            restaurantService.getRestaurant(this.state.resid).then((response) => {
+              response.json()
+                  .then((data) => {
+                      console.log('found resty stuff hehe', data.resid);
+                      this.setState({ resname: data.resname, min: data.minspending });
+                  })
+          })
+            console.log("stuff happened");
           }
         );
       }
@@ -65,6 +74,7 @@ class Account extends Component {
                 resid={this.state.resid}
                 history={this.props.history}
               />
+              <RestaurantDetails resid={this.state.resid} resname={this.state.resname} min={this.state.min} history={this.props.history} />
             </Grid>
           </Grid>
         </Grid>

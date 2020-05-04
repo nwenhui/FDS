@@ -12,7 +12,7 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
-import { authenticationService } from "../../../../../services";
+import { restaurantService, authenticationService } from "../../../../../services";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 
@@ -20,27 +20,19 @@ const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-const AccountDetails = (props) => {
+const RestaurantDetails = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    firstname: props.firstname,
-    lastname: props.lastname,
-    email: props.email,
-    password: props.password,
+    resname: "",
+    min: "",
   });
 
   useEffect(() => {
     setValues(props);
   }, [props]);
 
-  const [changed, setChanged] = useState({
-    firstname: false,
-    lastname: false,
-    email: false,
-    password: false,
-  });
 
   const [status, setStatus] = useState({
     error: false,
@@ -58,8 +50,8 @@ const AccountDetails = (props) => {
   const handleSaveDetails = (event) => {
     console.log('values: ', values);
     event.preventDefault();
-    authenticationService
-      .editStaffProfile(values.firstname, values.lastname, values.email, values.password, props.id)
+    restaurantService
+      .editRestaurant(values.resname, values.min.toString(), props.resid)
       .then((data) => {
         setStatus({
           ...status,
@@ -68,6 +60,7 @@ const AccountDetails = (props) => {
         })
       })
       .catch((error) => {
+        console.log('err:or: ', error)
         error.text().then((errorMessage) => {
           setStatus({
             ...status,
@@ -79,10 +72,10 @@ const AccountDetails = (props) => {
       })
   }
 
-  const handleDeleteAccount = (event) => {
+  const handleDeleteRestaurant = (event) => {
     event.preventDefault();
     authenticationService
-      .deleteStaffProfile(props.id)
+      .deleteRestaurant(props.resid)
       .then((data) => {
         setStatus({
           ...status,
@@ -107,33 +100,33 @@ const AccountDetails = (props) => {
     <div>
       <Card {...rest} className={clsx(classes.root, className)}>
         <form autoComplete="off" noValidate>
-          <CardHeader subheader="Please edit accordingly" title="Profile" />
+          <CardHeader subheader="Please edit accordingly" title="Restaurant" />
           <Divider />
           <CardContent>
             <Grid container spacing={1}>
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  label="First Name"
+                  label="Restaurant Name"
                   margin="dense"
-                  name="firstname"
+                  name="resname"
                   onChange={handleChange}
-                  value={values.firstname}
+                  value={values.resname}
                   variant="outlined"
                 />
               </Grid>
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  label="Last Name"
+                  label="Minimum Spending"
                   margin="dense"
-                  name="lastname"
+                  name="min"
                   onChange={handleChange}
-                  value={values.lastname}
+                  value={values.min}
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              {/* <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
                   // helperText="Please specify the email"
@@ -155,7 +148,7 @@ const AccountDetails = (props) => {
                   value={values.password}
                   variant="outlined"
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </CardContent>
           <Divider />
@@ -170,9 +163,9 @@ const AccountDetails = (props) => {
             <Button
               color="secondary"
               variant="contained"
-              onClick={handleDeleteAccount}
+              onClick={handleDeleteRestaurant}
             >
-              Delete Account
+              Delete Restaurant
             </Button>
           </CardActions>
         </form>
@@ -183,8 +176,8 @@ const AccountDetails = (props) => {
   );
 };
 
-AccountDetails.propTypes = {
+RestaurantDetails.propTypes = {
   className: PropTypes.string,
 };
 
-export default AccountDetails;
+export default RestaurantDetails;

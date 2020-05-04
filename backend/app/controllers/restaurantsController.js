@@ -129,11 +129,16 @@ const getRestaurant = async (req, res) => {
       resname, min, id
     } = req.body;
 
-    console.log('body: ', req.body)
-    console.log('resname: ', resname)
+    console.log('name: ', resname)
     console.log('min: ', min)
     console.log('id: ', id)
 
+
+    // const created_on = moment(new Date());
+    if (isEmpty(resname) || isEmpty(min)) {
+      errorMessage.error = 'Restaurant name and min. spending fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
     if (!isNum(min)) {
       errorMessage.error = 'Please input a numerical value for min. spending';
       return res.status(status.bad).send(errorMessage.error);
@@ -142,16 +147,15 @@ const getRestaurant = async (req, res) => {
       errorMessage.error = 'Please input only whole numbers';
       return res.status(status.bad).send(errorMessage.error);
     }
-
-    const editRestaurantQuery = `UPDATE restaurant set
-        ResName = $1,
-        Min_Spending = $2,
-        where id = $3
-        returning *`;
+    const editRestaurantQuery = `update restaurant set
+      resname = $1,
+      minspending = $2
+      where resid = $3
+      returning *`;
     const values = [
       resname,
       min,
-      id
+      id,
     ];
   
     try {
@@ -160,6 +164,7 @@ const getRestaurant = async (req, res) => {
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);
     } catch (error) {
+      console.log(error);
       if (error.routine === '_bt_check_unique') {
         errorMessage.error = 'Restaurant with that NAME already exist';
         return res.status(status.conflict).send(errorMessage.error);
@@ -174,13 +179,14 @@ const getRestaurant = async (req, res) => {
    */
   const deleteRestaurant = async (req, res) => {
     const { id } = req.body;
-    const deleteRestaurantQuery = 'delete from restaurant where id = $1 returning *';
+    const deleteRestaurantQuery = 'delete from restaurant where resid = $1 returning *';
     try {
       const { rows } = await dbQuery.query(deleteRestaurantQuery, [id]);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
+      console.log(error);
       errorMessage.error = 'Operation was not successful';
       return res.status(status.error).send(errorMessage.error);
     }

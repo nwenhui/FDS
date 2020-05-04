@@ -379,6 +379,28 @@ function deleteManagerProfile(id) {
       })
 }
 
+function deleteRestaurant(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+      .then((response) => {
+          response.json()
+              .then((data) => {
+                  console.log('delete restaurant donezo!');
+                  localStorage.removeItem('currentUser');
+                  currentUserSubject.next(null);
+              })
+      })
+}
+
 export const authenticationService = {
     login,
     signup,
@@ -393,6 +415,7 @@ export const authenticationService = {
     deleteStaffProfile,
     editManagerProfile,
     deleteManagerProfile,
+    deleteRestaurant,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),
