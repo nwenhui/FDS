@@ -188,7 +188,7 @@ import {
     ];
   
     try {
-      const { rows } = await dbQuery.query(editRiderQuery, [values]);
+      const { rows } = await dbQuery.query(editRiderQuery, values);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       return res.status(status.created).send(successMessage.data);
