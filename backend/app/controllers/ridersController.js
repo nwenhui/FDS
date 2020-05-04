@@ -164,6 +164,10 @@ import {
     console.log('password: ', password)
     console.log('id: ', id)
 
+    if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
+      errorMessage.error = 'Email, password, first name and last name fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
     if (!isValidEmail(email)) {
       errorMessage.error = 'Please enter a valid Email';
       return res.status(status.bad).send(errorMessage.error);
