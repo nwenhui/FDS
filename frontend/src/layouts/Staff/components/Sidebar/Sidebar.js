@@ -2,8 +2,10 @@ import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
+import RestaurantMenu from "@material-ui/icons/RestaurantMenuRounded";
+import Promotion from "@material-ui/icons/MoneyOffRounded";
 import RateReviewIcon from "@material-ui/icons/RateReview";
-import GradeIcon from "@material-ui/icons/Grade";
+import SummaryIcon from "@material-ui/icons/AssessmentRounded";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import HistoryIcon from "@material-ui/icons/History";
 
@@ -63,20 +65,21 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      {/* <a className="menu-item" href="/customerHistory">
-        <HistoryIcon /> Past Orders
+      <a className="menu-item" href="/customerHistory">
+        <HistoryIcon /> Restaurant Menu
       </a>
       <a className="menu-item" href="/EditRReview">
-        <RateReviewIcon /> Restaurant Reviews
+        <RateReviewIcon /> Review
       </a>
 
       <a className="menu-item" href="/EditDRating">
-        <GradeIcon /> Rider Ratings
+        <GradeIcon />
+        Promotions
       </a>
 
-      <a className="menu-item" >
+      <a className="menu-item">
         <ShoppingCartIcon /> Check Out
-      </a> */}
+      </a>
     </Menu>
   );
 };

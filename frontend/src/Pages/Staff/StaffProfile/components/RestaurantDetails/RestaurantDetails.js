@@ -12,7 +12,10 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
-import { restaurantService, authenticationService } from "../../../../../services";
+import {
+  restaurantService,
+  authenticationService,
+} from "../../../../../services";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 
@@ -33,12 +36,11 @@ const RestaurantDetails = (props) => {
     setValues(props);
   }, [props]);
 
-
   const [status, setStatus] = useState({
     error: false,
     success: false,
     errorMessage: "",
-  })
+  });
 
   const handleChange = (event) => {
     setValues({
@@ -48,7 +50,7 @@ const RestaurantDetails = (props) => {
   };
 
   const handleSaveDetails = (event) => {
-    console.log('values: ', values);
+    console.log("values: ", values);
     event.preventDefault();
     restaurantService
       .editRestaurant(values.resname, values.min.toString(), props.resid)
@@ -57,20 +59,20 @@ const RestaurantDetails = (props) => {
           ...status,
           success: true,
           error: false,
-        })
+        });
       })
       .catch((error) => {
-        console.log('err:or: ', error)
+        console.log("err:or: ", error);
         error.text().then((errorMessage) => {
           setStatus({
             ...status,
             success: false,
             error: true,
-            errorMessage: errorMessage
-          })
-        })
-      })
-  }
+            errorMessage: errorMessage,
+          });
+        });
+      });
+  };
 
   const handleDeleteRestaurant = (event) => {
     event.preventDefault();
@@ -80,21 +82,21 @@ const RestaurantDetails = (props) => {
         setStatus({
           ...status,
           error: false,
-          success: true
+          success: true,
         });
-        const to = '/Home';
+        const to = "/Home";
         props.history.push(to);
       })
       .catch((error) => {
-        console.log('error???: ', error);
+        console.log("error???: ", error);
         setStatus({
           ...status,
           error: true,
           success: false,
-          errorMessage: "Oops something went wrong..."
+          errorMessage: "Oops something went wrong...",
         });
-      })
-  }
+      });
+  };
 
   return (
     <div>

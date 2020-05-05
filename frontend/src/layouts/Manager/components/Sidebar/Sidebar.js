@@ -63,7 +63,7 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      {/* <a className="menu-item" href="/customerHistory">
+      <a className="menu-item" href="/customerHistory">
         <HistoryIcon /> Past Orders
       </a>
       <a className="menu-item" href="/EditRReview">
@@ -74,9 +74,9 @@ export default (props) => {
         <GradeIcon /> Rider Ratings
       </a>
 
-      <a className="menu-item" >
+      <a className="menu-item">
         <ShoppingCartIcon /> Check Out
-      </a> */}
+      </a>
     </Menu>
   );
 };
