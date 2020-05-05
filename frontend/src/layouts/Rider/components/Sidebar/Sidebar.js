@@ -5,7 +5,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import HistoryIcon from "@material-ui/icons/History";
 import ScheduleIcon from "@material-ui/icons/Schedule";
-
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 var styles = {
   bmBurgerButton: {
     position: "fixed",
@@ -70,8 +70,8 @@ export default (props) => {
         <HistoryIcon /> Past Work
       </a>
 
-      <a className="menu-item">
-        <ShoppingCartIcon /> Check Out
+      <a className="menu-item" href="/partTimeSummary">
+        <InsertChartIcon /> Summary
       </a>
     </Menu>
   );
