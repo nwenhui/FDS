@@ -71,6 +71,7 @@ CREATE TABLE Classifies (
 CREATE TABLE Inventory (
     itemid integer,
     amt_available integer,
+    available boolean default TRUE, /* add trigger to update this boolean whenever amt available change */
     PRIMARY KEY (itemid),
     FOREIGN KEY (itemid) REFERENCES fooditem
 );
@@ -117,12 +118,12 @@ CREATE TABLE Works (
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
-CREATE TABLE CreditCard (
-    CCID SERIAL,
-    SecurityCode INTEGER NOT NULL,
-    Bank VARCHAR(20) NOT NULL,
-    PRIMARY KEY (CCID)
-);
+-- CREATE TABLE CreditCard (
+--     CCID SERIAL,
+--     SecurityCode INTEGER NOT NULL,
+--     Bank VARCHAR(20) NOT NULL,
+--     PRIMARY KEY (CCID)
+-- );
 
 CREATE TABLE Customer (
     Id SERIAL,
@@ -134,7 +135,7 @@ CREATE TABLE Customer (
     CCID INTEGER,
     joined_at timestamp default now(),
     PRIMARY KEY (Id),
-    FOREIGN KEY (CCID) REFERENCES CreditCard
+    -- FOREIGN KEY (CCID) REFERENCES CreditCard
 );
 
 CREATE TABLE PaysWith (
