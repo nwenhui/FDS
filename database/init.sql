@@ -27,21 +27,22 @@ DROP TABLE IF EXISTS Manager CASCADE;
 
 CREATE TABLE FoodItem (
     ItemID SERIAL,
+    itemname varchar(50),
     Cost INTEGER,
     MaxLimit INTEGER,
-    Available INTEGER CHECK (Available <= MaxLimit),
     PRIMARY KEY (ItemID)
 );
 
-CREATE TABLE Menu (
-    MenuID SERIAL,
-    PRIMARY KEY (MenuID)
-);
+-- CREATE TABLE Menu (
+--     MenuID SERIAL,
+--     PRIMARY KEY (MenuID)
+-- );
 
 CREATE TABLE Restaurant (
     ResID SERIAL,
     ResName VARCHAR(100) unique,
     MinSpending INTEGER,
+    joined_at timestamp default now(),
     PRIMARY KEY (ResID)
 );
 
@@ -54,24 +55,24 @@ CREATE TABLE Listings (
 );
 
 CREATE TABLE Category (
+    catid serial,
     CategoryName VARCHAR(20),
-    PRIMARY KEY (CategoryName)
+    PRIMARY KEY (catid)
 );
 
 CREATE TABLE Classifies (
-    CategoryName VARCHAR(20),
+    catid integer,
     ItemID INTEGER,
-    PRIMARY KEY (CategoryName, ItemID),
-    FOREIGN KEY (CategoryName) REFERENCES Category,
+    PRIMARY KEY (catid, ItemID),
+    FOREIGN KEY (catid) REFERENCES Category,
     FOREIGN KEY (ItemID) REFERENCES FoodItem
 );
 
 CREATE TABLE Inventory (
-    ResID INTEGER,
-    MenuID INTEGER,
-    PRIMARY KEY (ResID, MenuID),
-    FOREIGN KEY (ResID) REFERENCES Restaurant on delete cascade,
-    FOREIGN KEY (MenuID) REFERENCES Menu
+    itemid integer,
+    amt_available integer,
+    PRIMARY KEY (itemid),
+    FOREIGN KEY (itemid) REFERENCES fooditem
 );
 
 CREATE TABLE Promotion (
@@ -131,6 +132,7 @@ CREATE TABLE Customer (
     password varchar(100) not null,
     Points INTEGER default 0,
     CCID INTEGER,
+    joined_at timestamp default now(),
     PRIMARY KEY (Id),
     FOREIGN KEY (CCID) REFERENCES CreditCard
 );
@@ -190,6 +192,7 @@ CREATE TABLE Receipt (
 CREATE TABLE Orders (
     OrderID SERIAL,
     ReceiptID INTEGER REFERENCES Receipt,
+    ordered_on timestamp default now(),
     Id INTEGER REFERENCES Customer on delete cascade,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID) REFERENCES OrderDetails
