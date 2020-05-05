@@ -43,30 +43,41 @@ const AvailableSchedule = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [schedules] = useState(mockData);
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
+  // const [state, setState] = React.useState({
+  //   gilad: true,
+  //   jason: false,
+  //   antoine: false,
+  // });
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  // const handleChange = (event) => {
+  //   setState({ ...state, [event.target.name]: event.target.checked });
+  // };
 
-  const {
-    slot1,
-    slot2,
-    slot3,
-    slot4,
-    slot5,
-    slot6,
-    slot7,
-    slot8,
-    slot9,
-    slot10,
-    slot11,
-    slot12,
-  } = state;
+  const week = Array(7).fill(false).map(x => Array(12).fill(false))
+
+  const [sched, setSched] = useState(week);
+
+  const handleChange = (index, slot, event) => {
+    const update = [...sched];
+    update[index][slot] = event.target.checked;
+    setSched(update);
+    console.log(update);
+  }
+
+  // const {
+  //   slot1,
+  //   slot2,
+  //   slot3,
+  //   slot4,
+  //   slot5,
+  //   slot6,
+  //   slot7,
+  //   slot8,
+  //   slot9,
+  //   slot10,
+  //   slot11,
+  //   slot12,
+  // } = state;
   // const error =
   //   [
   //     slot1,
@@ -118,160 +129,172 @@ const AvailableSchedule = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {schedules.map((schedule) => (
-                  <TableRow hover key={schedule.id}>
+                {schedules.map((schedule, index) => (
+                  <TableRow hover key={index} >
                     <TableCell>{schedule.day}</TableCell>
 
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot1}
-                              onChange={handleChange}
+                              // checked={slot1}
+                              checked={sched[index][0]}
+                              onChange={(e) => handleChange(index,0,e)}
                               name="slot1"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot2}
-                              onChange={handleChange}
+                              // checked={slot2}
+                              checked={sched[index][1]}
+                              onChange={(e) => handleChange(index,1,e)}
                               name="slot2"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot3}
-                              onChange={handleChange}
+                              // checked={slot3}
+                              checked={sched[index][2]}
+                              onChange={(e) => handleChange(index,2,e)}
                               name="slot3"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot4}
-                              onChange={handleChange}
+                              // checked={slot4}
+                              checked={sched[index][3]}
+                              onChange={(e) => handleChange(index,3,e)}
                               name="slot4"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot5}
-                              onChange={handleChange}
+                              // checked={slot5}
+                              checked={sched[index][4]}
+                              onChange={(e) => handleChange(index,4,e)}
                               name="slot5"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot6}
-                              onChange={handleChange}
+                              // checked={slot6}
+                              checked={sched[index][5]}
+                              onChange={(e) => handleChange(index,5,e)}
                               name="slot6"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot7}
-                              onChange={handleChange}
+                              // checked={slot7}
+                              checked={sched[index][6]}
+                              onChange={(e) => handleChange(index,6,e)}
                               name="slot7"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot8}
-                              onChange={handleChange}
+                              // checked={slot8}
+                              checked={sched[index][7]}
+                              onChange={(e) => handleChange(index,7,e)}
                               name="slot8"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot9}
-                              onChange={handleChange}
+                              // checked={slot9}
+                              checked={sched[index][8]}
+                              onChange={(e) => handleChange(index,8,e)}
                               name="slot9"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot10}
-                              onChange={handleChange}
+                              // checked={slot9}
+                              checked={sched[index][9]}
+                              onChange={(e) => handleChange(index,9,e)}
                               name="slot10"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot11}
-                              onChange={handleChange}
+                              // checked={slot11}
+                              checked={sched[index][10]}
+                              onChange={(e) => handleChange(index,10,e)}
                               name="slot11"
                             />
                           }
                         />
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot12}
-                              onChange={handleChange}
+                              // checked={slot12}
+                              checked={sched[index][11]}
+                              onChange={(e) => handleChange(index,11,e)}
                               name="slot12"
                             />
                           }
