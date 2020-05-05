@@ -12,6 +12,9 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+import { authenticationService } from "../../../../../services";
+import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
+import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -25,13 +28,19 @@ const AccountDetails = (props) => {
     firstname: props.firstname,
     lastname: props.lastname,
     email: props.email,
-    password: "*****",
+    password: props.password,
     creditcard: props.creditcard,
   });
 
+  const [status, setStatus] = useState({
+    error: false,
+    success: false,
+    errorMessage: "",
+  })
+
   useEffect(() => {
     setValues(props);
-  }, [props])
+  }, [props]);
 
   const [changed, setChanged] = useState({
     firstname: false,
@@ -39,7 +48,7 @@ const AccountDetails = (props) => {
     email: false,
     password: false,
     creditcard: false,
-  })
+  });
 
   /**** Fetch current user data from the backend ****
   let data;
@@ -82,29 +91,68 @@ const AccountDetails = (props) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
-    });
+    }, () => {console.log("value: ", values.email);});
     setChanged({
       ...changed,
       [event.target.name]: true,
-    });
+    }, () => {console.log("change: ", changed.email);});
   };
 
-  const handleSaveDetails = () => {
-
+  const handleSaveDetails = (event) => {
+    console.log('values: ', values);
+    event.preventDefault();
+    authenticationService
+      .editCustomerProfile(values.firstname, values.lastname, values.email, values.password, props.id)
+      .then((data) => {
+        setStatus({
+          ...status,
+          success: true,
+          error: false,
+        })
+      })
+      .catch((error) => {
+        error.text().then((errorMessage) => {
+          setStatus({
+            ...status,
+            success: false,
+            error: true,
+            errorMessage: errorMessage
+          })
+        })
+      })
   }
 
-  const handleDeleteAccount = () => {
-
+  const handleDeleteAccount = (event) => {
+    event.preventDefault();
+    authenticationService
+      .deleteCustomerProfile(props.id)
+      .then((data) => {
+        setStatus({
+          ...status,
+          error: false
+        });
+        const to = '/Home';
+        props.history.push(to);
+      })
+      .catch((error) => {
+        setStatus({
+          ...status,
+          error: true,
+          success: false,
+          errorMessage: "Oops something went wrong..."
+        });
+      })
   }
 
   return (
+    <div>
     <Card {...rest} className={clsx(classes.root, className)}>
       <form autoComplete="off" noValidate>
         <CardHeader subheader="Please edit accordingly" title="Profile" />
         <Divider />
         <CardContent>
           <Grid container spacing={1}>
-          <Grid item md={6} xs={12}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="First Name"
@@ -116,7 +164,7 @@ const AccountDetails = (props) => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-            <TextField
+              <TextField
                 fullWidth
                 label="Last Name"
                 margin="dense"
@@ -165,15 +213,26 @@ const AccountDetails = (props) => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained" onClick={handleSaveDetails}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleSaveDetails}
+          >
             Save details
           </Button>
-          <Button color="secondary" variant="contained" onClick={handleDeleteAccount}>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={handleDeleteAccount}
+          >
             Delete Account
           </Button>
         </CardActions>
       </form>
     </Card>
+    {status.error && ErrorAlert(status.errorMessage)}
+    {status.success && SuccessAlert("Profile successfully edited!")}
+    </div>
   );
 };
 

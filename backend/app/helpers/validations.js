@@ -18,7 +18,8 @@ const hashPassword = password => bcrypt.hashSync(password, salt);
    * @returns {Boolean} return True or False
    */
 const comparePassword = (hashedPassword, password) => {
-  return bcrypt.compareSync(password, hashedPassword);
+  return (hashedPassword === password);
+  // return bcrypt.compareSync(password, hashedPassword);
 };
 
 /**

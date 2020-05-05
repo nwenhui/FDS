@@ -20,14 +20,15 @@ class Account extends Component {
     firstname: null,
     lastname: null,
     points: null,
-    creditcard: null
+    creditcard: null,
+    password: null
   }
 
   componentDidMount() {
     authenticationService.currentUser.subscribe((x) => {
         console.log('omo',x);
         if (x !== null) {
-            this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points }, () => {console.log('weewoo')})
+            this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points, password: x.password }, () => {console.log('weewoo', this.state.password)})
         }
     });
   }
@@ -46,7 +47,7 @@ class Account extends Component {
             </Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <AccountDetails email={this.state.email} firstname={this.state.firstname} lastname={this.state.lastname} creditcard={this.state.creditcard} />
+              <AccountDetails email={this.state.email} firstname={this.state.firstname} lastname={this.state.lastname} creditcard={this.state.creditcard} password={this.state.password} id={this.state.id} history={this.props.history} />
             </Grid>
           </Grid>
         </Grid>

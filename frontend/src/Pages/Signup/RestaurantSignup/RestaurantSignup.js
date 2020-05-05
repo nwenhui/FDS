@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./RestaurantSignup.scss";
 
 import NavBar from "../../../components/Navigation/Navigation";
-import { authenticationService } from "../../../services";
+import { restaurantService } from "../../../services";
 import ErrorAlert from "../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert/SuccessAlert";
 
@@ -16,6 +16,7 @@ class RestaurantSignup extends Component {
     errorMessage: "",
     error: false,
     success: false,
+    id: null,
   };
 
   setRestaurantName = (event) => {
@@ -51,16 +52,17 @@ class RestaurantSignup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    authenticationService
+    restaurantService
       .restaurantSignup(
         this.state.restaurantName,
         this.state.minSpending,
         this.state.address
       )
-      .then((data) => {
-        this.setState({ error: false, success: true }, () =>
-          console.log(this.state.error)
-        );
+      .then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          this.setState({ error: false, success: true, id: data.resid }, () => {console.log('id???: ', this.state.id)})
+        })
       })
       .catch((error) => {
         console.log(error);
@@ -117,7 +119,7 @@ class RestaurantSignup extends Component {
                 </Button>
               </div>
             </Link>
-            {this.state.success && SuccessAlert("signup donezo")}
+            {this.state.success && SuccessAlert("Restaurant successfully signed up! Your id is: " + this.state.id + ". Please use this id for your staff's sign up.")}
             {this.state.error && ErrorAlert(this.state.errorMessage)}
           </div>
         </div>
