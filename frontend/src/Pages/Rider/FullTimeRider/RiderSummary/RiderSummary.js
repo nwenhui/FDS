@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Grid } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 
-import { Sidebar } from "../../../../layouts/RiderPT/components";
+import { Sidebar } from "../../../../layouts/RiderFT/components";
 import SummaryDetails from "./components/SummaryDetails";
 
 class RiderSummary extends Component {

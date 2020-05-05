@@ -4,7 +4,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import moment from "moment";
-import { Sidebar } from "../../../../layouts/Rider/components";
+import { Sidebar } from "../../../../layouts/RiderPT/components";
 
 import AvailableSchedule from "./components/AvailableSchedule";
 
