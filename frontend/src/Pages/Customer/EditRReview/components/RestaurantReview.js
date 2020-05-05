@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import EditIcon from "@material-ui/icons/Edit";
@@ -30,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  status: {
-    // marginRight: theme.spacing(1)
-  },
   actions: {
     justifyContent: "flex-end",
   },
@@ -56,13 +52,12 @@ const RestaurantReview = (props) => {
     setOpenEdit(!openEdit);
   };
 
-  // QUERY: DELETE
   const handleDelete = (rid) => {
     console.log(rid);
   };
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
+    <Card {...rest}>
       <CardHeader title="Restaurant Reviews (Edit)" />
       <Divider />
       <CardContent className={classes.content}>
@@ -71,7 +66,6 @@ const RestaurantReview = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell>Restaurant ID</TableCell> */}
                   <TableCell>Restaurant</TableCell>
                   <TableCell>Food</TableCell>
                   <TableCell>Price</TableCell>
@@ -86,7 +80,6 @@ const RestaurantReview = (props) => {
               <TableBody>
                 {orders.map((order) => (
                   <TableRow>
-                    {/* <TableCell>{order.rid}</TableCell> */}
                     <TableCell>{order.restaurant}</TableCell>
                     <TableCell>
                       <ol>
