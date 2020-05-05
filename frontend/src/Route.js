@@ -25,6 +25,8 @@ import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
 
+import CustomerMenu from "./Pages/Restaurant/CustomerMenu/CustomerMenu";
+
 import { authenticationService } from "./services";
 import { userType } from "./helpers";
 
@@ -90,6 +92,7 @@ export default class Routes extends Component {
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
+          {this.state.isCustomer && <Route path="/restaurant/menu" component={CustomerMenu} />}
         </Switch>
       </Router>
     );

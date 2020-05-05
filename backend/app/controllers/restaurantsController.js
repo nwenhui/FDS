@@ -191,11 +191,52 @@ const getRestaurant = async (req, res) => {
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * get restaurant's menu (entire list of food items)
+   * return itemid
+   */
+  const getRestaurantMenu = async (req, res) => {
+    const { id } = req.query;
+    const getRestaurantMenuQuery = 'select itemid from fooditem where itemid = any(select itemid from listings where resid = $1)';
+    try {
+      const { rows } = await dbQuery.query(getRestaurantMenuQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get details of food item
+   */
+  const getFood = async (req, res) => {
+    const { id } = req.body;
+    const getFoodQuery = 'select * from fooditem where itemid = $1';
+    try {
+      const { rows } = await dbQuery.query(getFoodQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
 export {
     searchRestaurant,
     getRestaurant,
     createRestaurant,
     editRestaurant,
-    deleteRestaurant
+    deleteRestaurant,
+    getRestaurantMenu,
+    getFood,
 };
