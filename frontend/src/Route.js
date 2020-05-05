@@ -19,6 +19,7 @@ import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
 import PartTimeRiderHistory from "./Pages/Rider/PartTimeRider/RiderHistory/RiderHistory";
 import PartTimeRiderSched from "./Pages/Rider/PartTimeRider/RiderSubmitSched/RiderSubmitSched";
+import PartTimeRiderSummary from "./Pages/Rider/PartTimeRider/RiderSummary/RiderSummary";
 
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
@@ -86,6 +87,11 @@ export default class Routes extends Component {
             component={PartTimeRiderHistory}
           />
           <Route path="/partTimeSched" exact component={PartTimeRiderSched} />
+          <Route
+            path="/partTimeSummary"
+            exact
+            component={PartTimeRiderSummary}
+          />
 
           {this.state.isManager && (
             <Route path="/dashboard" exact component={ManagerDashboard} />

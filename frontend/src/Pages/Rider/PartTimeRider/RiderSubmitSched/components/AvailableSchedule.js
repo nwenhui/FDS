@@ -24,7 +24,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import mockData from "./data";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
   content: {
     padding: 0,
   },
