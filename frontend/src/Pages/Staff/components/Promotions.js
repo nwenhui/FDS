@@ -22,23 +22,17 @@ import {
 } from "@material-ui/core";
 import MaterialTable, { Column } from "material-table";
 
-//const [columnState, setColumnState] = useState("");
-
-// function MaterialTableDemo() {
-const MaterialTableDemo = (props) => {
+function MaterialTableDemo() {
   const [state, setState] = React.useState({
     columns: [
-      { title: "Name", field: "name" },
-      { title: "Surname", field: "surname" },
-      { title: "Birth Year", field: "birthYear", type: "numeric" },
-      {
-        title: "Birth Place",
-        field: "birthCity",
-        lookup: { 34: "İstanbul", 63: "Şanlıurfa" },
-      },
+      { title: "Food Item", field: "food item" },
+      { title: "Duration", field: "duration" },
+      { title: "Discount", field: "Discount" },
+      { title: "Free Delivery", field: "Yes/No", type: "boolean" },
+      { title: "Condition", field: "Conditions" },
     ],
     data: [
-      { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 },
+      { name: "", surname: "", birthYear: "", birthCity: "" },
       {
         name: "Zerya Betül",
         surname: "Baran",
@@ -48,40 +42,7 @@ const MaterialTableDemo = (props) => {
     ],
   });
   return (
-    <div>
-      {/* <NavBar history={this.props.history} /> */}
-      <Grid container spacing={6}>
-        <Grid item lg={6} sm={6} xl={6} xs={12}>
-          <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
-        </Grid>
-        <Grid container item spacing={4} id="page-wrap">
-          <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
-
-          <Grid item lg={12} sm={12} xl={12} xs={12}>
-            <Button
-              color="primary"
-              size="small"
-              variant="contained"
-              //   onClick={addRow}
-            >
-              Add Promotion
-            </Button>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Food Item</TableCell>
-                    <TableCell>Duration</TableCell>
-                    <TableCell>Discount</TableCell>
-                    <TableCell>Free Delivery</TableCell>
-                    <TableCell>Condition</TableCell>
-                  </TableRow>
-                </TableHead>
-              </Table>
-            </TableContainer>
-          </Grid>
-        </Grid>
-      </Grid>
+    <Paper>
       <MaterialTable
         title="Editable Example"
         columns={state.columns}
@@ -124,10 +85,9 @@ const MaterialTableDemo = (props) => {
             }),
         }}
       />
-      //{" "}
-    </div>
+    </Paper>
   );
-};
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -159,11 +119,6 @@ class Promotions extends Component {
   render() {
     return (
       <div>
-        <p>You clicked {this.state.count} times</p>
-        {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
-          Click me
-        </button> */}
-
         <NavBar history={this.props.history} />
         <MaterialTableDemo></MaterialTableDemo>
         <Grid container spacing={6}>
