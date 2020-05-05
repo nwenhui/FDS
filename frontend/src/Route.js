@@ -21,6 +21,7 @@ import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/Rider
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
+import StaffPromotions from "./Pages/Staff/components/Promotions";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -86,7 +87,7 @@ export default class Routes extends Component {
             <Route path="/dashboard" exact component={StaffDashboard} />
           )}
           <Route path="/staffProfile" exact component={StaffProfile} />
-          
+          <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />

@@ -9,7 +9,7 @@ import AccountInfo from "../components/AccountInfo";
 import { authenticationService } from "../../../services";
 import history from "../../../history";
 
-class Promo extends Component {
+class RiderDashboard extends Component {
   state = {
     id: null,
     email: null,
@@ -79,4 +79,4 @@ class Promo extends Component {
   }
 }
 
-export default Promo;
+export default RiderDashboard;
