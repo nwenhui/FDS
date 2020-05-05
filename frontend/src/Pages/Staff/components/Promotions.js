@@ -11,6 +11,14 @@ import {
   MenuItem,
   Select,
   Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Divider,
+  TableContainer,
+  Paper,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +92,16 @@ const useStyles = makeStyles((theme) => ({
 //     props.onClick();
 //   };
 // };
-
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+const rows = [
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+];
 class Promotions extends Component {
   render() {
     return (
@@ -112,15 +129,27 @@ class Promotions extends Component {
                 min={this.state.min}
                 history={this.props.history}
               /> */}
-              <table></table>
               <Button
                 color="primary"
                 size="small"
                 variant="contained"
-                // onClick={handleEnterButton}
+                onClick={addRow}
               >
                 Add Promotion
               </Button>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Food Item</TableCell>
+                      <TableCell>Duration</TableCell>
+                      <TableCell>Discount</TableCell>
+                      <TableCell>Free Delivery</TableCell>
+                      <TableCell>Condition</TableCell>
+                    </TableRow>
+                  </TableHead>
+                </Table>
+              </TableContainer>
             </Grid>
           </Grid>
         </Grid>
@@ -128,5 +157,8 @@ class Promotions extends Component {
     );
   }
 }
+const addRow = () => {
+  //   props.onClick();
+};
 
 export default Promotions;
