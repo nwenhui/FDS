@@ -17,6 +17,9 @@ import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
 
 import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
+import PartTimeRiderHistory from "./Pages/Rider/PartTimeRider/RiderHistory/RiderHistory";
+import PartTimeRiderSched from "./Pages/Rider/PartTimeRider/RiderSubmitSched/RiderSubmitSched";
+import PartTimeRiderSummary from "./Pages/Rider/PartTimeRider/RiderSummary/RiderSummary";
 
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
@@ -80,6 +83,18 @@ export default class Routes extends Component {
             exact
             component={PartTimeRiderProfile}
           />
+          <Route
+            path="/partTimeHistory"
+            exact
+            component={PartTimeRiderHistory}
+          />
+          <Route path="/partTimeSched" exact component={PartTimeRiderSched} />
+          <Route
+            path="/partTimeSummary"
+            exact
+            component={PartTimeRiderSummary}
+          />
+
           {this.state.isManager && (
             <Route path="/dashboard" exact component={ManagerDashboard} />
           )}
@@ -90,6 +105,7 @@ export default class Routes extends Component {
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/AddPromos" exact component={AddPromos} />
+
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
