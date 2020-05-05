@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Button } from 'react-bootstrap';
 import "./style.css";
 
 import { restaurantService } from '../../services';
+import history from '../../history';
 
 class SearchResultButton extends Component {
     state = {  
@@ -30,21 +27,24 @@ class SearchResultButton extends Component {
         this.fetchData();
     }
 
+    handleClick(event) {
+        console.log('clicky');
+        event.preventDefault();
+        const to = '/restaurant/menu?id=' + this.state.resid;
+        this.props.history.push(to);
+    }
+
     render() { 
         return (
-            <Card class="root">
-                <CardContent>
-                    <Typography variant="h5" component="h2">
-                        {this.state.resname}
-                    </Typography>
-                    <Typography class="pos" color="textSecondary">
-                        min. spending: ${this.state.min}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small">View Menu</Button>
-                </CardActions>
-            </Card>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{this.state.resname}</h5>
+                    <p class="card-text">min. spending: ${this.state.min}</p>
+                    <form>
+                        <Button onClick={(e) => this.handleClick(e)}>View Menu</Button>
+                    </form>
+                </div>
+            </div>
         );
     }
 }
