@@ -7,7 +7,9 @@ import Logout from "./Pages/Logout/Logout";
 import CustomerHistory from "./Pages/Customer/CustomerHistory/CustomerHistory";
 import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
 import ManagerDashboard from "./Pages/Manager/Dashboard/Dashboard";
-import RiderDashboard from "./Pages/Rider/PartTimeRider/Dashboard/Dashboard";
+import PartTimeRiderDashboard from "./Pages/Rider/PartTimeRider/Dashboard/Dashboard";
+import FullTimeRiderDashboard from "./Pages/Rider/FullTimeRider/Dashboard/Dashboard";
+
 import StaffDashboard from "./Pages/Staff/Dashboard/Dashboard";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
 import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
@@ -20,6 +22,9 @@ import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/Rider
 import PartTimeRiderHistory from "./Pages/Rider/PartTimeRider/RiderHistory/RiderHistory";
 import PartTimeRiderSched from "./Pages/Rider/PartTimeRider/RiderSubmitSched/RiderSubmitSched";
 import PartTimeRiderSummary from "./Pages/Rider/PartTimeRider/RiderSummary/RiderSummary";
+import FullTimeRiderSummary from "./Pages/Rider/FullTimeRider/RiderSummary/RiderSummary";
+import FullTimeRiderProfile from "./Pages/Rider/FullTimeRider/RiderProfile/RiderProfile";
+import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/RiderHistory";
 
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
@@ -76,7 +81,7 @@ export default class Routes extends Component {
           <Route path="/EditRReview" exact component={EditRReview} />
           <Route path="/EditDRating" exact component={EditDRating} />
           {this.state.isRider && (
-            <Route path="/dashboard" exact component={RiderDashboard} />
+            <Route path="/dashboard" exact component={PartTimeRiderDashboard} />
           )}
           <Route
             path="/partTimeProfile"
@@ -93,6 +98,29 @@ export default class Routes extends Component {
             path="/partTimeSummary"
             exact
             component={PartTimeRiderSummary}
+          />
+          {this.state.isRider && (
+            <Route path="/dashboard" exact component={FullTimeRiderDashboard} />
+          )}
+          <Route
+            path="/fullTimeProfile"
+            exact
+            component={FullTimeRiderProfile}
+          />
+          <Route
+            path="/fullTimeHistory"
+            exact
+            component={FullTimeRiderHistory}
+          />
+
+          {/* <Route path="/partTimeSched" 
+          exact 
+          component={PartTimeRiderSched} /> */}
+
+          <Route
+            path="/fullTimeSummary"
+            exact
+            component={FullTimeRiderSummary}
           />
 
           {this.state.isManager && (
