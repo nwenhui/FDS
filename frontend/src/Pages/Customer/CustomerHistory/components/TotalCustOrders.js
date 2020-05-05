@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { customerService } from "../../../../services";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +46,20 @@ const TotalCustOrders = (props) => {
   const totalCustOrders = 20;
   const id = props.id;
   console.log('id: ', id);
+  const [total, setTotal] = useState();
+
+  useEffect(() => {
+    customerService.customerOrderCount(id).then((response) => {
+      response.json()
+      .then((data) => {
+        setTotal(data.count);
+      })
+      // console.log('what value sia:', data);
+      // setTotal(data.count);
+    });
+  });
+
+  
 
   /**** Fetch the total number of orders for the customer
 
@@ -75,7 +90,7 @@ const TotalCustOrders = (props) => {
             >
               TOTAL NUMBER OF ORDERS
             </Typography>
-            <Typography variant="h3">{id}</Typography>
+            <Typography variant="h3">{total}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>

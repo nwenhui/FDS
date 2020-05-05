@@ -49,7 +49,7 @@ CREATE TABLE Listings (
     ResID INTEGER,
     ItemID INTEGER,
     PRIMARY KEY (ResID, ItemID),
-    FOREIGN KEY (ResID) REFERENCES Restaurant,
+    FOREIGN KEY (ResID) REFERENCES Restaurant on delete cascade,
     FOREIGN KEY (ItemID) REFERENCES FoodItem
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE Inventory (
     ResID INTEGER,
     MenuID INTEGER,
     PRIMARY KEY (ResID, MenuID),
-    FOREIGN KEY (ResID) REFERENCES Restaurant,
+    FOREIGN KEY (ResID) REFERENCES Restaurant on delete cascade,
     FOREIGN KEY (MenuID) REFERENCES Menu
 );
 
@@ -98,13 +98,13 @@ CREATE TABLE Rider (
 CREATE TABLE PartTime (
     Id INTEGER,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE FullTime (
     Id INTEGER,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Works (
@@ -113,7 +113,7 @@ CREATE TABLE Works (
     EndTime TIMESTAMP NOT NULL,
     TotalHours INTEGER NOT NULL,
     PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE CreditCard (
@@ -139,7 +139,7 @@ CREATE TABLE PaysWith (
     Id INTEGER,
     CCID INTEGER,
     PRIMARY KEY (Id, CCID),
-    FOREIGN KEY (Id) REFERENCES Customer,
+    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
     FOREIGN KEY (CCID) REFERENCES CreditCard
 );
 
@@ -174,7 +174,7 @@ CREATE TABLE Delivers (
     DeliveryFee INTEGER,
     PRIMARY KEY (OrderID, Id),
     FOREIGN KEY (OrderID) REFERENCES OrderDetails,
-    FOREIGN KEY (Id) REFERENCES Rider
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Receipt (
@@ -190,7 +190,7 @@ CREATE TABLE Receipt (
 CREATE TABLE Orders (
     OrderID SERIAL,
     ReceiptID INTEGER REFERENCES Receipt,
-    Id INTEGER REFERENCES Customer,
+    Id INTEGER REFERENCES Customer on delete cascade,
     PRIMARY KEY (OrderID),
     FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
@@ -200,7 +200,7 @@ CREATE TABLE Rates (
     OrderID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     PRIMARY KEY (Id, OrderID),
-    FOREIGN KEY (Id) REFERENCES Customer,
+    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
     FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
 
@@ -210,7 +210,7 @@ CREATE TABLE Reviews (
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     Review VARCHAR(200),
     PRIMARY KEY (Id, ItemID),
-    FOREIGN KEY (Id) REFERENCES Customer,
+    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
     FOREIGN KEY (ItemID) REFERENCES FoodItem 
 );
 
@@ -222,7 +222,7 @@ CREATE TABLE Staff (
     last_name VARCHAR(100),
     password VARCHAR(100) NOT NULL,
     PRIMARY KEY (Id, RestaurantId),
-    FOREIGN KEY (RestaurantID) REFERENCES Restaurant
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant on delete cascade
 );
 
 CREATE TABLE Manager (
