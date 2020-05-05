@@ -2,10 +2,9 @@ import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
-import RateReviewIcon from "@material-ui/icons/RateReview";
-import GradeIcon from "@material-ui/icons/Grade";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import HistoryIcon from "@material-ui/icons/History";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 
 var styles = {
   bmBurgerButton: {
@@ -63,8 +62,12 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      <a className="menu-item" href="/RiderHistory">
-        <HistoryIcon /> Past Orders
+      <a className="menu-item" href="/partTimeSched">
+        <ScheduleIcon /> Submit Schedule
+      </a>
+
+      <a className="menu-item" href="/partTimeHistory">
+        <HistoryIcon /> Past Work
       </a>
 
       <a className="menu-item">
