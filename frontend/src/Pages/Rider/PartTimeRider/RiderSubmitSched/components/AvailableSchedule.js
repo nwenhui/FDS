@@ -67,21 +67,21 @@ const AvailableSchedule = (props) => {
     slot11,
     slot12,
   } = state;
-  const error =
-    [
-      slot1,
-      slot2,
-      slot3,
-      slot4,
-      slot5,
-      slot6,
-      slot7,
-      slot8,
-      slot9,
-      slot10,
-      slot11,
-      slot12,
-    ].filter((v) => v).length < 2;
+  // const error =
+  //   [
+  //     slot1,
+  //     slot2,
+  //     slot3,
+  //     slot4,
+  //     slot5,
+  //     slot6,
+  //     slot7,
+  //     slot8,
+  //     slot9,
+  //     slot10,
+  //     slot11,
+  //     slot12,
+  //   ].filter((v) => v).length < 2;
 
   /*testing*/
   return (
@@ -127,7 +127,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              //checked={slot1}
+                              checked={slot1}
                               onChange={handleChange}
                               name="slot1"
                             />
@@ -244,7 +244,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={slot9}
+                              checked={slot10}
                               onChange={handleChange}
                               name="slot10"
                             />
