@@ -22,6 +22,7 @@ import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import StaffPromotions from "./Pages/Staff/components/Promotions";
+import AddPromos from "./Pages/Customer/CustomerHistory/components/AddPromo";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -88,6 +89,7 @@ export default class Routes extends Component {
           )}
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
+          <Route path="/AddPromos" exact component={AddPromos} />
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
