@@ -80,6 +80,8 @@ CREATE TABLE Inventory (
 
 CREATE TABLE Promotion (
     PromotionID SERIAL,
+    startdate timestamp not null,
+    enddate timestamp not null,
     MinSpending INTEGER default 0,
     PercentageOff INTEGER default 0,
     freedelivery boolean default false,
@@ -87,14 +89,14 @@ CREATE TABLE Promotion (
 );
 
 create table restaurantpromotion (
-    promotionid integer unique references promotion,
-    staffid integer references Staff,
-    primary key (promotionid, staffid)
+    promotionid integer unique references promotion on delete cascade,
+    resid integer references restaurant on delete cascade, /* add trigger to delete promotion is deleted from promotion table when restaurant is deleted */
+    primary key (promotionid, resid)
 )
 
 create table fdspromotion (
-    promotionid integer unique references promotion,
-    managerid integer references Manager,
+    promotionid integer unique references promotion on delete cascade,
+    managerid integer references Manager on delete cascade, /* need to delete promotion is manager is deleted??? :O */
     primary key (promotionid, managerid)
 )
 

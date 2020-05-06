@@ -17,6 +17,10 @@ class MenuRow extends Component {
         price: 0,
         qty: 0,
         availabile: 0,
+        error: false,
+        succes: false,
+        errorMessage: "",
+        successMessage: "",
     }
 
     fetchData() {
@@ -55,8 +59,20 @@ class MenuRow extends Component {
     }
 
     handleAddtoCart() {
-        console.log('helloooo')
-        orderService.addToCheckOut(this.state.itemid, this.state.qty);
+        console.log('helloooo');
+        let cart = 0;
+        try {
+            cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.props.resid);
+            if (this.state.qty > 0) {
+                this.setState({ error: false, success: true, successMessage: "You have added " + this.state.name + " to cart. There are now " + cart + " item(s) in your cart." });
+            } else {
+                this.setState({ success: false, error: true, errorMessage: "Nothing to add... You have selected 0 qty" })
+            }
+        } catch (error) {
+            // error.text().then((errorMessage) => {
+                this.setState({ error: true, success: false, errorMessage: error });
+            // })
+        }
     }
 
     render() { 
@@ -75,6 +91,8 @@ class MenuRow extends Component {
                 <TableCell align="right">
                     <Button variant="contained" onClick={() => this.handleAddtoCart()}>Add to Cart</Button>
                 </TableCell>
+                {this.state.error && ErrorAlert(this.state.errorMessage)}
+                {this.state.success && SuccessAlert(this.state.successMessage)}
             </TableRow>
         );
     }
