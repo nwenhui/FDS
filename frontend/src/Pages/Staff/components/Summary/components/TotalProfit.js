@@ -3,7 +3,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
-import Trophy from "@material-ui/icons/EmojiEvents";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
   },
   avatar: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.info.light,
     height: 56,
     width: 56,
   },
@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TopFive = (props) => {
+const TotalProfit = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const topFive = props.data;
+  const totalProfit = props.data;
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -55,16 +55,14 @@ const TopFive = (props) => {
               gutterBottom
               variant="body2"
             >
-              TOP FIVE
+              TOTAL PROFIT
             </Typography>
-            <Grid item>
-              <Avatar className={classes.avatar}>
-                <Trophy className={classes.icon} />
-              </Avatar>
-            </Grid>
-            {topFive.map((item) => {
-              return <Typography variant="h4">{item}</Typography>;
-            })}
+            <Typography variant="h3">{totalProfit}</Typography>
+          </Grid>
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              <AttachMoneyIcon className={classes.icon} />
+            </Avatar>
           </Grid>
         </Grid>
       </CardContent>
@@ -72,8 +70,8 @@ const TopFive = (props) => {
   );
 };
 
-TopFive.propTypes = {
+TotalProfit.propTypes = {
   className: PropTypes.string,
 };
 
-export default TopFive;
+export default TotalProfit;

@@ -15,11 +15,13 @@ import MenuRow from './components/MenuRow/MenuRow';
 
 class CustomerMenu extends Component {
     state = { 
-        items: []
+        items: [],
+        resid: null,
      }
 
      fetchResults() {
         const id = decodeURI(window.location.search.substring(4));
+         this.setState({ resid: id })
 
         restaurantService.getMenu(id).then((response) => {
             response.json()
@@ -58,7 +60,7 @@ class CustomerMenu extends Component {
                         </TableHead>
                         <TableBody>
                            {this.state.items.map((item, index) => (
-                               <MenuRow key={index} itemid={item} />
+                               <MenuRow key={index} itemid={item} resid={this.state.resid} />
                            ))} 
                         </TableBody>
                     </Table>

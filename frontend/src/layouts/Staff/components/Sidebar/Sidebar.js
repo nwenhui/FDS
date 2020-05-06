@@ -5,6 +5,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import RestaurantMenu from "@material-ui/icons/RestaurantMenuRounded";
 import Promotion from "@material-ui/icons/MoneyOffRounded";
 import SummaryIcon from "@material-ui/icons/AssignmentRounded";
+import StarIcon from "@material-ui/icons/Star";
 
 // import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 // import HistoryIcon from "@material-ui/icons/History";
@@ -71,8 +72,11 @@ export default (props) => {
       <a className="menu-item" href="/staffPromotions">
         <Promotion /> Promotions
       </a>
-
-      <a className="menu-item" href="/staffPromotions">
+      <a className="menu-item" href="/restaurantReview">
+        <StarIcon />
+        Review
+      </a>
+      <a className="menu-item" href="/monthlyReview">
         <SummaryIcon />
         Monthly Summary
       </a>

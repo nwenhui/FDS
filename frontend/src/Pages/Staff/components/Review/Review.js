@@ -1,9 +1,9 @@
 import React, { Component, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Staff/components";
-import { AddFood, data, FoodItem } from "./components";
+import { List, data } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,38 +14,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StaffFoodItem = () => {
+const RestaurantReview = () => {
   const classes = useStyles();
-  const [openDiv, setOpenDiv] = useState(false);
-
-  const handleOpenDiv = () => {
-    setOpenDiv(!openDiv);
-  };
 
   return (
     <div className={classes.root}>
       <Grid container item spacing={4}>
-        <Grid item lg={2} sm={2} xl={2} xs={2}>
-          <Button
-            color="primary"
-            size="small"
-            variant="contained"
-            onClick={handleOpenDiv}
-            style={{ width: "130px" }}
-          >
-            Add New Food Item
-          </Button>
-          {openDiv && <AddFood onClick={handleOpenDiv} />}
-        </Grid>
-        <Grid item lg={12} sm={12} xl={12} xs={12}>
-          <FoodItem data={data} />
+        <Grid item lg={12} sm={10} xl={12} xs={12}>
+          <List data={data} />
         </Grid>
       </Grid>
     </div>
   );
 };
 
-class Menu extends Component {
+class Review extends Component {
   render() {
     return (
       <div>
@@ -58,7 +41,7 @@ class Menu extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <StaffFoodItem></StaffFoodItem>
+              <RestaurantReview></RestaurantReview>
             </Grid>
           </Grid>
         </Grid>
@@ -67,4 +50,4 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+export default Review;

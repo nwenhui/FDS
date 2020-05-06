@@ -7,6 +7,10 @@ const currentUserSubject = new BehaviorSubject(
 const currentUserTypeSubject = new BehaviorSubject(
   localStorage.getItem("currentUserType")
 );
+const currentResidSubject = new BehaviorSubject(
+  localStorage.getItem("currentResis")
+);
+
 
 const option = [
   { value: 1, label: "FDS Manager" },
@@ -78,6 +82,9 @@ function login(email, password, type) {
         } else if (type === option[1].value) {
           currentUserTypeSubject.next(userType.Staff);
           localStorage.setItem("currentUserType", userType.Staff);
+          currentResidSubject.next(data.restaurantid);
+          localStorage.setItem("currentResid", JSON.stringify(data.restaurantid));
+          console.log('resid: ', currentResidSubject.value);
         } else if (type === option[2].value) {
           const data = {id: id};
           const url = 'http://localhost:3000/api/v1/rider/type';
@@ -169,6 +176,8 @@ function staffSignup(firstname, lastname, email, password, resid) {
         localStorage.setItem("currentUser", JSON.stringify(data));
         currentUserTypeSubject.next(userType.Staff);
         localStorage.setItem("currentUserType", userType.Staff);
+        currentResidSubject.next(data.restaurantid);
+        localStorage.setItem("currentResid", JSON.stringify(data.restaurantid));
         return data;
       });
     });
@@ -467,4 +476,6 @@ export const authenticationService = {
     get currentUserValue () { return currentUserSubject.value },
     currentUserType: currentUserTypeSubject.asObservable(),
     get currentUserTypeValue () { return currentUserTypeSubject.value },
+    currentResid: currentResidSubject.asObservable(),
+    get currentResidValue () { return currentResidSubject.value },
 }

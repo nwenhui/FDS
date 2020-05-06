@@ -1,3 +1,3 @@
 export { default as TopFive } from "./TopFive";
-export { default as NumberOfOrders } from "./NumberOfOrders";
-export { default as TotalCost } from "./TotalCost";
+export { default as TotalProfit } from "./TotalProfit";
+export { default as NumOfOrders } from "./NumOfOrders";

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
-import Trophy from "@material-ui/icons/EmojiEvents";
+import ViewListIcon from "@material-ui/icons/ViewList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
   },
   avatar: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.warning.main,
     height: 56,
     width: 56,
   },
@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TopFive = (props) => {
+const NumOfOrders = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const topFive = props.data;
+  const numOrders = props.data;
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -55,16 +55,14 @@ const TopFive = (props) => {
               gutterBottom
               variant="body2"
             >
-              TOP FIVE
+              TOTAL NUMBER OF ORDERS
             </Typography>
-            <Grid item>
-              <Avatar className={classes.avatar}>
-                <Trophy className={classes.icon} />
-              </Avatar>
-            </Grid>
-            {topFive.map((item) => {
-              return <Typography variant="h4">{item}</Typography>;
-            })}
+            <Typography variant="h3">{numOrders}</Typography>
+          </Grid>
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              <ViewListIcon className={classes.icon} />
+            </Avatar>
           </Grid>
         </Grid>
       </CardContent>
@@ -72,8 +70,8 @@ const TopFive = (props) => {
   );
 };
 
-TopFive.propTypes = {
+NumOfOrders.propTypes = {
   className: PropTypes.string,
 };
 
-export default TopFive;
+export default NumOfOrders;
