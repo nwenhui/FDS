@@ -36,7 +36,7 @@ const AccountDetails = (props) => {
     error: false,
     success: false,
     errorMessage: "",
-  })
+  });
 
   useEffect(() => {
     setValues(props);
@@ -88,27 +88,43 @@ const AccountDetails = (props) => {
   ****/
 
   const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    }, () => {console.log("value: ", values.email);});
-    setChanged({
-      ...changed,
-      [event.target.name]: true,
-    }, () => {console.log("change: ", changed.email);});
+    setValues(
+      {
+        ...values,
+        [event.target.name]: event.target.value,
+      },
+      () => {
+        console.log("value: ", values.email);
+      }
+    );
+    setChanged(
+      {
+        ...changed,
+        [event.target.name]: true,
+      },
+      () => {
+        console.log("change: ", changed.email);
+      }
+    );
   };
 
   const handleSaveDetails = (event) => {
-    console.log('values: ', values);
+    console.log("values: ", values);
     event.preventDefault();
     authenticationService
-      .editCustomerProfile(values.firstname, values.lastname, values.email, values.password, props.id)
+      .editCustomerProfile(
+        values.firstname,
+        values.lastname,
+        values.email,
+        values.password,
+        props.id
+      )
       .then((data) => {
         setStatus({
           ...status,
           success: true,
           error: false,
-        })
+        });
       })
       .catch((error) => {
         error.text().then((errorMessage) => {
@@ -116,11 +132,11 @@ const AccountDetails = (props) => {
             ...status,
             success: false,
             error: true,
-            errorMessage: errorMessage
-          })
-        })
-      })
-  }
+            errorMessage: errorMessage,
+          });
+        });
+      });
+  };
 
   const handleDeleteAccount = (event) => {
     event.preventDefault();
@@ -129,9 +145,9 @@ const AccountDetails = (props) => {
       .then((data) => {
         setStatus({
           ...status,
-          error: false
+          error: false,
         });
-        const to = '/Home';
+        const to = "/Home";
         props.history.push(to);
       })
       .catch((error) => {
@@ -139,99 +155,99 @@ const AccountDetails = (props) => {
           ...status,
           error: true,
           success: false,
-          errorMessage: "Oops something went wrong..."
+          errorMessage: "Oops something went wrong...",
         });
-      })
-  }
+      });
+  };
 
   return (
     <div>
-    <Card {...rest} className={clsx(classes.root, className)}>
-      <form autoComplete="off" noValidate>
-        <CardHeader subheader="Please edit accordingly" title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={1}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="First Name"
-                margin="dense"
-                name="firstname"
-                onChange={handleChange}
-                value={values.firstname}
-                variant="outlined"
-              />
+      <Card {...rest} className={clsx(classes.root, className)}>
+        <form autoComplete="off" noValidate>
+          <CardHeader subheader="Please edit accordingly" title="Profile" />
+          <Divider />
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  margin="dense"
+                  name="firstname"
+                  onChange={handleChange}
+                  value={values.firstname}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  margin="dense"
+                  name="lastname"
+                  onChange={handleChange}
+                  value={values.lastname}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  // helperText="Please specify the email"
+                  label="Email"
+                  margin="dense"
+                  name="email"
+                  onChange={handleChange}
+                  value={values.email}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  margin="dense"
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Credit Card No."
+                  margin="dense"
+                  name="creditcard"
+                  onChange={handleChange}
+                  type="number"
+                  value={values.creditcard}
+                  variant="outlined"
+                />
+              </Grid>
             </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last Name"
-                margin="dense"
-                name="lastname"
-                onChange={handleChange}
-                value={values.lastname}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                // helperText="Please specify the email"
-                label="Email"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Password"
-                margin="dense"
-                name="password"
-                onChange={handleChange}
-                value={values.password}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Credit Card No."
-                margin="dense"
-                name="creditcard"
-                onChange={handleChange}
-                type="number"
-                value={values.creditcard}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleSaveDetails}
-          >
-            Save details
-          </Button>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={handleDeleteAccount}
-          >
-            Delete Account
-          </Button>
-        </CardActions>
-      </form>
-    </Card>
-    {status.error && ErrorAlert(status.errorMessage)}
-    {status.success && SuccessAlert("Profile successfully edited!")}
+          </CardContent>
+          <Divider />
+          <CardActions>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={handleSaveDetails}
+            >
+              Save details
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={handleDeleteAccount}
+            >
+              Delete Account
+            </Button>
+          </CardActions>
+        </form>
+      </Card>
+      {status.error && ErrorAlert(status.errorMessage)}
+      {status.success && SuccessAlert("Profile successfully edited!")}
     </div>
   );
 };

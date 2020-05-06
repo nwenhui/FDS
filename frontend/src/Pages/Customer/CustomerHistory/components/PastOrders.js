@@ -87,7 +87,7 @@ const PastOrders = (props) => {
                     <TableCell>{order.date}</TableCell>
                     <TableCell>
                       <Button
-                        color="primary"
+                        color="secondary"
                         size="small"
                         variant="contained"
                         onClick={handleOpenDiv}

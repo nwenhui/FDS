@@ -49,7 +49,7 @@ var styles = {
     color: "#b8b7ad",
   },
   bmItem: {
-    color: "#038162",
+    color: "#ffa8b6",
     display: "block",
   },
   bmOverlay: {

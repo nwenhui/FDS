@@ -32,7 +32,7 @@ const RiderHistory = (props) => {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker value={selectedDate} onChange={handleDateChange} />
             </MuiPickersUtilsProvider>
-            <Button color="primary" size="small" onClick={handleEnterButton}>
+            <Button color="secondary" size="small" onClick={handleEnterButton}>
               Enter
             </Button>
           </Grid>

@@ -61,8 +61,10 @@ class RestaurantSignup extends Component {
       .then((response) => {
         response.json().then((data) => {
           console.log(data);
-          this.setState({ error: false, success: true, id: data.resid }, () => {console.log('id???: ', this.state.id)})
-        })
+          this.setState({ error: false, success: true, id: data.resid }, () => {
+            console.log("id???: ", this.state.id);
+          });
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +106,7 @@ class RestaurantSignup extends Component {
                 />
               </Form.Group>
               <Button
-                variant="outline-primary"
+                variant="outline-secondary"
                 block
                 bssize="large"
                 type="submit"
@@ -119,7 +121,12 @@ class RestaurantSignup extends Component {
                 </Button>
               </div>
             </Link>
-            {this.state.success && SuccessAlert("Restaurant successfully signed up! Your id is: " + this.state.id + ". Please use this id for your staff's sign up.")}
+            {this.state.success &&
+              SuccessAlert(
+                "Restaurant successfully signed up! Your id is: " +
+                  this.state.id +
+                  ". Please use this id for your staff's sign up."
+              )}
             {this.state.error && ErrorAlert(this.state.errorMessage)}
           </div>
         </div>

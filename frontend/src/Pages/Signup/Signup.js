@@ -312,7 +312,7 @@ class Signup extends Component {
                 </Form.Group>
               )}
               <Button
-                variant="outline-primary"
+                variant="outline-secondary"
                 block
                 bssize="large"
                 type="submit"
