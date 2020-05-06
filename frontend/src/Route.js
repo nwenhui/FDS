@@ -31,7 +31,7 @@ import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/Rider
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
-import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu";
+import RestaurantMenu from "./Pages/Staff/RestaurantMenu/RestaurantMenu";
 import StaffPromotions from "./Pages/Staff/components/Promotion/Promotion";
 
 import history from "./history";
