@@ -18,6 +18,7 @@ class SearchResult extends Component {
         restaurantService.searchRestaurant(query).then((response) => {
             response.json()
             .then((data) => {
+                console.log(data);
                 this.setState({ results: restaurantService.searchRestaurantResults(data) },() => console.log('results: ', this.state.results));
 
             })
@@ -39,7 +40,7 @@ class SearchResult extends Component {
                 <NavBar history={this.props.history}/>
                 <h2>test test this is search results page :^)</h2>
                 {this.state.results.map((result, index) => (
-                    <SearchResultButton key={index} resid={result} />
+                    <SearchResultButton key={index} resid={result} history={this.props.history} />
                 ))}
             </div>
         );

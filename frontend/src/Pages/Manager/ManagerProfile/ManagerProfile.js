@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 import NavBar from "../../../components/Navigation/Navigation";
 
 import AccountDetails from "./components/AccountDetails";
-import { Sidebar } from "../../../layouts/Rider/components";
+import { Sidebar } from "../../../layouts/Manager/components";
 import { authenticationService } from "../../../services";
 
 // const useStyles = makeStyles((theme) => ({

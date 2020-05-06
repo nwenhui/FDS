@@ -28,6 +28,12 @@ function searchRestaurantResults(data) {
     return results;
 }
 
+function restaurantMenuResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.itemid));
+  return results;
+}
+
 function searchRestaurant(searchQuery) {
     const url = 'http://localhost:3000/api/v1/restaurant/search?keywords=' + searchQuery;
     console.log('url ', url);
@@ -79,10 +85,39 @@ function editRestaurant(resname, min, id) {
     //   })
 }
 
+function getMenu(resid) {
+  const url = 'http://localhost:3000/api/v1/restaurant/menu?id=' + resid;
+
+  var request = new Request(url, {
+    method: 'GET',
+    headers: new Headers({ 'Content-Type': 'application/json' })
+});
+
+return fetch(request)
+  .then(handleErrors);
+}
+
+function getFood(foodid) {
+  const data = {id: foodid};
+    const url = 'http://localhost:3000/api/v1/restaurant/food';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request)
+        .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
     searchRestaurantResults,
     getRestaurant,
-    editRestaurant
+    editRestaurant,
+    getMenu,
+    getFood,
+    restaurantMenuResults
 }
