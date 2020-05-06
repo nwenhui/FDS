@@ -29,6 +29,7 @@ import FullTimeRiderProfile from "./Pages/Rider/FullTimeRider/RiderProfile/Rider
 import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/RiderHistory";
 
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
+import ManagerPromo from "./Pages/Manager/components/ManagerPromo/Promo";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
@@ -136,6 +137,8 @@ export default class Routes extends Component {
           {this.state.isStaff && (
             <Route path="/dashboard" exact component={StaffDashboard} />
           )}
+          <Route path="/managerPromo" exact component={ManagerPromo} />
+
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/RestaurantMenu" exact component={RestaurantMenu} />
