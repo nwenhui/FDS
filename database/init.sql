@@ -46,12 +46,21 @@ CREATE TABLE Restaurant (
     PRIMARY KEY (ResID)
 );
 
+INSERT INTO Restaurant VALUES (DEFAULT, 'Western Food', 19, DEFAULT);
+INSERT INTO Restaurant VALUES (DEFAULT, 'Drinks Stall', 10, DEFAULT);
+INSERT INTO Restaurant VALUES (DEFAULT, 'Chinese Food', 5, DEFAULT);
+INSERT INTO Restaurant VALUES (DEFAULT, 'Malay Food', 25, DEFAULT);
+INSERT INTO Restaurant VALUES (DEFAULT, 'Indian Food', 50, DEFAULT);
+
 CREATE TABLE Listings (
     ResID INTEGER,
     ItemID INTEGER,
     PRIMARY KEY (ResID, ItemID),
-    FOREIGN KEY (ResID) REFERENCES Restaurant on delete cascade,
+    FOREIGN KEY (ResID) REFERENCES Restaurant 
+        on update cascade 
+        on delete cascade,
     FOREIGN KEY (ItemID) REFERENCES FoodItem
+        on update cascade
 );
 
 CREATE TABLE Category (
@@ -71,7 +80,7 @@ CREATE TABLE Classifies (
 CREATE TABLE Inventory (
     itemid integer,
     amt_available integer,
-    available boolean default TRUE, /* add trigger to update this boolean whenever amt available change */
+    available boolean default TRUE,
     PRIMARY KEY (itemid),
     FOREIGN KEY (itemid) REFERENCES fooditem
 );
@@ -155,20 +164,6 @@ CREATE TRIGGER promotion_date_trigger
 
 INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
     DEFAULT, now(), '2020-09-28 01:00:00');
-
-/**
-create table restaurantpromotion (
-    promotionid integer unique references promotion,
-    staffid integer references Staff,
-    primary key (promotionid, staffid)
-)
-
-create table fdspromotion (
-    promotionid integer unique references promotion,
-    managerid integer references Manager,
-    primary key (promotionid, managerid)
-)
-*/
 
 CREATE TABLE Rider (
     Id SERIAL,
