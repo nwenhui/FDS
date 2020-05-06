@@ -21,6 +21,8 @@ import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
 import PartTimeRiderHistory from "./Pages/Rider/PartTimeRider/RiderHistory/RiderHistory";
 import PartTimeRiderSched from "./Pages/Rider/PartTimeRider/RiderSubmitSched/RiderSubmitSched";
+import FullTimeRiderSched from "./Pages/Rider/FullTimeRider/RiderSubmitSched/RiderSubmitSched";
+
 import PartTimeRiderSummary from "./Pages/Rider/PartTimeRider/RiderSummary/RiderSummary";
 import FullTimeRiderSummary from "./Pages/Rider/FullTimeRider/RiderSummary/RiderSummary";
 import FullTimeRiderProfile from "./Pages/Rider/FullTimeRider/RiderProfile/RiderProfile";
@@ -29,8 +31,10 @@ import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/Rider
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
-import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu";
+import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
 import StaffPromotions from "./Pages/Staff/components/Promotion/Promotion";
+import StaffSummary from "./Pages/Staff/components/Summary/Summary";
+import StaffReview from "./Pages/Staff/components/Review/Review";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -117,9 +121,7 @@ export default class Routes extends Component {
             component={FullTimeRiderHistory}
           />
 
-          {/* <Route path="/partTimeSched" 
-          exact 
-          component={PartTimeRiderSched} /> */}
+          <Route path="/fullTimeSched" exact component={FullTimeRiderSched} />
 
           <Route
             path="/fullTimeSummary"
@@ -137,6 +139,8 @@ export default class Routes extends Component {
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/RestaurantMenu" exact component={RestaurantMenu} />
+          <Route path="/monthlyReview" exact component={StaffSummary} />
+          <Route path="/restaurantReview" exact component={StaffReview} />
 
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />

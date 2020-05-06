@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS FoodItem CASCADE;
--- DROP TABLE IF EXISTS Menu CASCADE;
 DROP TABLE IF EXISTS Restaurant CASCADE;
 DROP TABLE IF EXISTS Listings CASCADE;
 DROP TABLE IF EXISTS Category CASCADE;
 DROP TABLE IF EXISTS Classifies CASCADE;
 DROP TABLE IF EXISTS Inventory CASCADE;
+DROP TABLE IF EXISTS Staff CASCADE;
+DROP TABLE IF EXISTS Manager CASCADE;
 DROP TABLE IF EXISTS Promotion CASCADE;
-DROP TABLE IF EXISTS Discounts CASCADE;
+DROP TABLE IF EXISTS restaurantpromotion CASCADE;
+DROP TABLE IF EXISTS fdspromotion CASCADE;
 DROP TABLE IF EXISTS Rider CASCADE;
 DROP TABLE IF EXISTS PartTime CASCADE;
 DROP TABLE IF EXISTS FullTime CASCADE;
-DROP TABLE IF EXISTS Works CASCADE;
--- DROP TABLE IF EXISTS CreditCard CASCADE;
+DROP TABLE IF EXISTS Shifts CASCADE;
 DROP TABLE IF EXISTS Customer CASCADE;
--- DROP TABLE IF EXISTS PaysWith CASCADE;
 DROP TABLE IF EXISTS OrderDetails CASCADE;
 DROP TABLE IF EXISTS Contains CASCADE;
 DROP TABLE IF EXISTS Journey CASCADE;
@@ -22,10 +22,7 @@ DROP TABLE IF EXISTS Receipt CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Rates CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
-DROP TABLE IF EXISTS Staff CASCADE;
-DROP TABLE IF EXISTS Manager CASCADE;
-DROP TABLE IF EXISTS restaurantpromotion CASCADE;
-DROP TABLE IF EXISTS fdspromotion CASCADE;
+DROP TABLE IF EXISTS Salary CASCADE;
 
 CREATE TABLE FoodItem (
     ItemID SERIAL,
@@ -34,11 +31,6 @@ CREATE TABLE FoodItem (
     MaxLimit INTEGER,
     PRIMARY KEY (ItemID)
 );
-
--- CREATE TABLE Menu (
---     MenuID SERIAL,
---     PRIMARY KEY (MenuID)
--- );
 
 CREATE TABLE Restaurant (
     ResID SERIAL,
@@ -78,35 +70,74 @@ CREATE TABLE Inventory (
     FOREIGN KEY (itemid) REFERENCES fooditem
 );
 
+CREATE TABLE Staff (
+    Id SERIAL,
+    RestaurantId INTEGER not null,
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id, RestaurantId),
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant on delete cascade
+);
+
+CREATE TABLE Manager (
+    Id SERIAL,
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
 CREATE TABLE Promotion (
     PromotionID SERIAL,
-    startdate timestamp not null,
-    enddate timestamp not null,
     MinSpending INTEGER default 0,
     PercentageOff INTEGER default 0,
     freedelivery boolean default false,
+    DateEntered TIMESTAMP DEFAULT now(),
+    StartDate TIMESTAMP NOT NULL,
+    EndDate TIMESTAMP NOT NULL,
     PRIMARY KEY (PromotionID)
 );
 
+CREATE OR REPLACE FUNCTION promotion_date_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.Startdate > NEW.endDate THEN
+        RAISE EXCEPTION 'Start date cannot be after end date!';
+    END IF;
+    IF NEW.Startdate < NEW.DateEntered THEN
+        RAISE EXCEPTION 'Start date cannot be before today!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER promotion_date_trigger
+    BEFORE INSERT OR UPDATE
+    ON Promotion
+    FOR EACH ROW
+    EXECUTE FUNCTION promotion_date_check()
+;
+
+INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+    DEFAULT, now(), '2020-09-28 01:00:00');
+
+
+
 create table restaurantpromotion (
     promotionid integer unique references promotion on delete cascade,
-    resid integer references restaurant on delete cascade, /* add trigger to delete promotion is deleted from promotion table when restaurant is deleted */
+    resid integer references restaurant on delete cascade,
     primary key (promotionid, resid)
-)
+);
 
 create table fdspromotion (
-    promotionid integer unique references promotion on delete cascade,
-    managerid integer references Manager on delete cascade, /* need to delete promotion is manager is deleted??? :O */
+    promotionid integer unique references promotion,
+    managerid integer references Manager,
     primary key (promotionid, managerid)
-)
+);
 
--- CREATE TABLE Discounts (
---     PromotionID INTEGER,
---     MinSpending INTEGER default 0,
---     PercentageOff INTEGER default 0,
---     freedeli boolean default false,
---     PRIMARY KEY (PromotionID)
--- );
 
 CREATE TABLE Rider (
     Id SERIAL,
@@ -129,21 +160,14 @@ CREATE TABLE FullTime (
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
-CREATE TABLE Works (
+CREATE TABLE Shifts (
     Id INTEGER,
+    ShiftID SERIAL,
     StartTime TIMESTAMP NOT NULL,
     EndTime TIMESTAMP NOT NULL,
-    TotalHours INTEGER NOT NULL,
-    PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
+    PRIMARY KEY (ShiftID, Id),
+    FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
 );
-
--- CREATE TABLE CreditCard (
---     CCID SERIAL,
---     SecurityCode INTEGER NOT NULL,
---     Bank VARCHAR(20) NOT NULL,
---     PRIMARY KEY (CCID)
--- );
 
 CREATE TABLE Customer (
     Id SERIAL,
@@ -155,22 +179,13 @@ CREATE TABLE Customer (
     CCID INTEGER,
     joined_at timestamp default now(),
     PRIMARY KEY (Id)
-    -- FOREIGN KEY (CCID) REFERENCES CreditCard
 );
-
--- CREATE TABLE PaysWith (
---     Id INTEGER,
---     CCID INTEGER,
---     PRIMARY KEY (Id, CCID),
---     FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
---     FOREIGN KEY (CCID) REFERENCES CreditCard
--- );
 
 CREATE TABLE Orders (
     OrderID SERIAL,
     ordered_on timestamp default now(),
     Id INTEGER REFERENCES Customer on delete set null, 
-    ccpayment boolean, /* add this boolean here so no need paywith table ah */
+    ccpayment boolean, 
     PRIMARY KEY (OrderID)
 );
 
@@ -193,7 +208,6 @@ CREATE TABLE Contains (
 
 CREATE TABLE Journey (
     orderid integer,
-    -- JourneyID SERIAL,
     OrderedOn TIMESTAMP NOT NULL,
     RiderStartsJourney TIMESTAMP NOT NULL,
     RiderArrivesAtRes TIMESTAMP NOT NULL,
@@ -206,17 +220,15 @@ CREATE TABLE Journey (
 CREATE TABLE Delivers (
     OrderID INTEGER,
     Id INTEGER,
-    -- JourneyID INTEGER REFERENCES Journey,
     DeliveryFee INTEGER,
-    PRIMARY KEY (OrderID), /* only orderid for pri key to ensure each order appear one time oni */
+    PRIMARY KEY (OrderID), 
     FOREIGN KEY (OrderID) REFERENCES OrderDetails,
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Receipt (
     orderid integer,
-    -- ReceiptID SERIAL,
-    GainedPoints INTEGER, /* omo need to update customer.points when order */
+    GainedPoints INTEGER, 
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
@@ -226,42 +238,27 @@ CREATE TABLE Receipt (
 );
 
 CREATE TABLE Rates (
-    -- Id INTEGER,
     OrderID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     PRIMARY KEY (OrderID),
-    -- FOREIGN KEY (Id) REFERENCES Customer on delete cascade, /* i dont think need customerid here cos can just check from orders for customer */
-    FOREIGN KEY (OrderID) REFERENCES Delivers /* reference delivers cos they rating the delivery ah */
+    FOREIGN KEY (OrderID) REFERENCES Delivers 
 );
 
 CREATE TABLE Reviews (
-    -- Id INTEGER,
     orderid integer,
     ItemID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     Review VARCHAR(200),
     PRIMARY KEY (orderid, ItemID),
-    foreign key (orderid) references orders, /* dont need customer cos can get customer detail from orders? */
-    -- FOREIGN KEY (Id) REFERENCES Customer on delete cascade, 
+    foreign key (orderid) references orders, 
     FOREIGN KEY (ItemID) REFERENCES FoodItem 
 );
 
-CREATE TABLE Staff (
-    Id SERIAL,
-    RestaurantId INTEGER not null,
-    email VARCHAR(100) unique NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    password VARCHAR(100) NOT NULL,
-    PRIMARY KEY (Id, RestaurantId),
-    FOREIGN KEY (RestaurantID) REFERENCES Restaurant on delete cascade
-);
-
-CREATE TABLE Manager (
-    Id SERIAL,
-    email VARCHAR(100) unique NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    password VARCHAR(100) NOT NULL,
-    PRIMARY KEY (Id)
+---salary stores numbers only, only computed in query
+CREATE TABLE Salary (
+    Id INTEGER,
+    Comission INTEGER,
+    BaseSalary INTEGER,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Id) REFERENCES Rider --ON DELETE CASCADE
 );
