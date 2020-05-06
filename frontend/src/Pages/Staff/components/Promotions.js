@@ -59,11 +59,11 @@ const tableIcons = {
 function MaterialTableDemo() {
   const [state, setState] = React.useState({
     columns: [
-      { title: "Food Item", field: "food item" },
-      { title: "Duration", field: "duration" },
-      { title: "Discount", field: "Discount" },
-      { title: "Free Delivery", field: "Yes/No", type: "boolean" },
-      { title: "Condition", field: "Conditions" },
+      { title: "Start Date", field: "startdate", type: "date" },
+      { title: "End Date", field: "enddate", type: "date" },
+      { title: "Discount %", field: "discount", type: "numeric" },
+      { title: "Free Delivery", field: "freedelivery", type: "boolean" },
+      { title: "Min. Spending Required $", field: "minspending", type: "numeric" },
     ],
     data: [],
   });
