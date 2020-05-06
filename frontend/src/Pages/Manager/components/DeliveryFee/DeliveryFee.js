@@ -36,7 +36,7 @@ const ManagerPromo = () => {
             onClick={handleOpenDiv}
             style={{ width: "130px" }}
           >
-            Add DeliveryFee
+            Add Delivery Fee
           </Button>
           {openDiv && <AddDeliveryFee onClick={handleOpenDiv} />}
         </Grid>
