@@ -156,7 +156,7 @@ const RestaurantDetails = (props) => {
           <Divider />
           <CardActions>
             <Button
-              color="primary"
+              color="secondary"
               variant="contained"
               onClick={handleSaveDetails}
             >

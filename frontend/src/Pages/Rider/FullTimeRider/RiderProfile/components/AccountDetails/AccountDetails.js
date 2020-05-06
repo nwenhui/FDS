@@ -165,7 +165,7 @@ const AccountDetails = (props) => {
           <Divider />
           <CardActions>
             <Button
-              color="primary"
+              color="prsecondaryimary"
               variant="contained"
               onClick={handleSaveDetails}
             >

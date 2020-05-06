@@ -27,10 +27,9 @@ class AccountInfo extends Component {
 
   fetchTotalOrders() {
     customerService.customerOrderCount(this.state.id).then((response) => {
-      response.json()
-      .then((data) => {
-        this.setState({ orders: data.count })
-      })
+      response.json().then((data) => {
+        this.setState({ orders: data.count });
+      });
     });
   }
 

@@ -172,7 +172,7 @@ class Login extends Component {
               </Form.Control>
             </Form.Group>
             <Button
-              variant="outline-primary"
+              variant="outline-secondary"
               block
               bssize="large"
               type="submit"
