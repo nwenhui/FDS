@@ -29,8 +29,8 @@ import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/Rider
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
-import StaffPromotions from "./Pages/Staff/components/Promotions";
-import AddPromos from "./Pages/Customer/CustomerHistory/components/AddPromo";
+import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu";
+import StaffPromotions from "./Pages/Staff/components/Promotion/Promotion";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -136,13 +136,17 @@ export default class Routes extends Component {
           )}
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
-          <Route path="/AddPromos" exact component={AddPromos} />
+          <Route path="/RestaurantMenu" exact component={RestaurantMenu} />
 
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
-          {this.state.isCustomer && <Route path="/restaurant/menu" component={CustomerMenu} />}
-          {!this.state.isCustomer && <Route path="/restaurant/menu" component={OtherMenu} />}
+          {this.state.isCustomer && (
+            <Route path="/restaurant/menu" component={CustomerMenu} />
+          )}
+          {!this.state.isCustomer && (
+            <Route path="/restaurant/menu" component={OtherMenu} />
+          )}
         </Switch>
       </Router>
     );

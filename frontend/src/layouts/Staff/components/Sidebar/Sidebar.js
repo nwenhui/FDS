@@ -66,20 +66,16 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      <a className="menu-item" href="/Dashboard">
+      <a className="menu-item" href="/RestaurantMenu">
         <RestaurantMenu /> Restaurant Menu
       </a>
       <a className="menu-item" href="/staffPromotions">
         <Promotion /> Promotions
       </a>
 
-      <a className="menu-item" href="/EditDRating">
+      <a className="menu-item" href="/staffPromotions">
         <SummaryIcon />
         Monthly Summary
-      </a>
-
-      <a className="menu-item">
-        <PromoSummary /> Promotions Summary
       </a>
     </Menu>
   );
