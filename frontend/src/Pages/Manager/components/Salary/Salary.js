@@ -28,18 +28,7 @@ const ManagerPromo = () => {
   return (
     <div className={classes.root}>
       <Grid container item spacing={4}>
-        <Grid item lg={2} sm={2} xl={2} xs={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={handleOpenDiv}
-            style={{ width: "130px" }}
-          >
-            Add Promotion
-          </Button>
-          {openDiv && <AddPromotion onClick={handleOpenDiv} />}
-        </Grid>
+        <Grid item lg={2} sm={2} xl={2} xs={2}></Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
           <CurrentPromotion data={data} />
         </Grid>
