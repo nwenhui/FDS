@@ -7,6 +7,8 @@ import {
   validatePassword,
   isEmpty,
   isNum,
+  startDateError,
+  durationError,
 } from '../helpers/validations';
 
 import {
@@ -327,6 +329,52 @@ const getRestaurant = async (req, res) => {
     }
   }
 
+  /**
+   * create new promotion
+   */
+  const createRestaurantPromotion = async (req, res) => {
+    const { start, end, min, disc, freedeli, resid } = req.body;
+    const createPromotionQuery = 'insert into promotion(startdate, enddate, minspending, percentageoff, freedelivery) values($1,$2,$3,$4,$5) returning *';
+    const values = [
+      start,
+      end,
+      min,
+      disc,
+      freedeli
+    ];
+    const addRestaurantPromoQuuery = 'insert into restaurantpromotion(promotionid,resid) values($1,$2)';
+    if (isEmpty(start) || isEmpty(end)) {
+      errorMessage.error = 'Start Date and End Date fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (startDateError(start)) {
+      errorMessage.error = 'Start Date must not have passed.';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (durationError(start,end)) {
+      errorMessage.error = 'Start Date must before End Date';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    try {
+      await dbQuery.query('begin')
+      const { rows } = await dbQuery.query(createPromotionQuery, values);
+      const promotionid = rows[0].promotionid;
+      const newvalues = [
+        promotionid,
+        resid
+      ]
+      await dbQuery.query(addRestaurantPromoQuuery, newvalues)
+      await dbQuery.query('commit');
+      successMessage.data = promotionid;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      await dbQuery.query('rollback');
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.success).send(errorMessage.error);
+    }
+  }
+
 
   
 export {
@@ -342,4 +390,5 @@ export {
     getPromotionInformation,
     getOngoingPromotions,
     getPastPromotions,
+    createRestaurantPromotion
 };

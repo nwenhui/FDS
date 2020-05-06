@@ -187,6 +187,21 @@ function getPastPromotions(resid) {
       .then(handleErrors)
 }
 
+function newPromotion(start, end, min, disc, freedeli, resid) {
+  const data = { start: start, end: end, min: min, disc: disc, freedeli: freedeli, resid: resid };
+  console.log('dataaa', data);
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/new';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -202,4 +217,5 @@ export const restaurantService = {
     getPromotionInformation,
     getOngoingPromotions,
     getPastPromotions,
+    newPromotion,
 }

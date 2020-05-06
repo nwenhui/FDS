@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Staff/components";
-import { AddPromotion, CurrentPromotion, data, PastPromotion } from "./components";
+import { AddPromotion, CurrentPromotion, data, PastPromotion, NewPromotion } from "./components";
 import { authenticationService, restaurantService } from "../../../../services";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +18,16 @@ const useStyles = makeStyles((theme) => ({
 const StaffPromo = (props) => {
   const classes = useStyles();
   const [openDiv, setOpenDiv] = useState(false);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    if (open === true) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  }
 
   const [promotions] = useState(props.promotions)
   console.log('does this work?', props.promotions)
@@ -42,12 +52,16 @@ const StaffPromo = (props) => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={handleOpenDiv}
+            onClick={handleClick}
             style={{ width: "200px", height: "50px" }}
           >
             Add New Promotion
           </Button>
-          {openDiv && <AddPromotion onClick={handleOpenDiv} />}
+          {/* {open && <NewPromotion />} */}
+          {/* {openDiv && <AddPromotion onClick={handleOpenDiv} />} */}
+        </Grid>
+        <Grid item lg={12} sm={12} xl={12} xs={12}>
+          {open && <NewPromotion resid={props.resid} />}
         </Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
           <CurrentPromotion data={data} promotions={props.ongoing}/>
@@ -111,7 +125,7 @@ class Promotionsss extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <StaffPromo ongoing={this.state.ongoing} past={this.state.past} />
+              <StaffPromo ongoing={this.state.ongoing} past={this.state.past} resid={this.state.resid} />
             </Grid>
           </Grid>
         </Grid>
