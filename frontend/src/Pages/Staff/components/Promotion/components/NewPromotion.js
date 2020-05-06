@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import EditPromo from "./EditPromotion";
 import { makeStyles } from "@material-ui/core/styles";
-import CurrentPromotionInfo from './CurrentPromotionInfo';
+import NewPromotionForm from './NewPromotionForm';
 import {
   Card,
   CardHeader,
@@ -82,30 +82,12 @@ const Cpromo = (props) => {
   };
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Ongoing Promotions" />
+      <CardHeader title="Add New Promotion" align="center" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Promotion ID</TableCell>
-                  <TableCell>Start Date</TableCell>
-                  <TableCell>End Date</TableCell>
-                  <TableCell>Minimum Spending Required $</TableCell>
-                  <TableCell>Discount %</TableCell>
-                  <TableCell>Free Delivery</TableCell>
-                  <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {props.promotions.map((promotion, index) => (
-                  <CurrentPromotionInfo key={index} promotionid={promotion} />
-                ))}
-              </TableBody>
-            </Table>
+              <NewPromotionForm resid={props.resid} />
           </div>
           {openEdit && <EditPromo data={editData} onClick={handleEdit} />}
         </PerfectScrollbar>
