@@ -147,7 +147,7 @@ class Promotions extends Component {
     return (
       <div>
         <NavBar history={this.props.history} />
-        <MaterialTableDemo></MaterialTableDemo>
+
         <Grid container spacing={6}>
           <Grid item lg={6} sm={6} xl={6} xs={12}>
             <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
@@ -156,6 +156,7 @@ class Promotions extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
+              <MaterialTableDemo></MaterialTableDemo>
               {/* <Button
                 color="primary"
                 size="small"
