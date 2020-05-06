@@ -79,6 +79,7 @@ const Cpromo = (props) => {
                   <TableCell>Minimum Amount</TableCell>
                   <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
+                  <TableCell>Conditions</TableCell>
                   <TableCell>Edit</TableCell>
                   <TableCell>Delete</TableCell>
                 </TableRow>
@@ -92,6 +93,7 @@ const Cpromo = (props) => {
                     <TableCell>{order.minAmount}</TableCell>
                     <TableCell>{order.startDate}</TableCell>
                     <TableCell>{order.endDate}</TableCell>
+                    <TableCell>{order.conditions}</TableCell>
                     <TableCell>
                       <IconButton
                         //color="primary"
