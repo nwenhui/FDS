@@ -34,6 +34,7 @@ import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
 
 import CustomerMenu from "./Pages/Restaurant/CustomerMenu/CustomerMenu";
+import OtherMenu from "./Pages/Restaurant/OtherMenu/OtherMenu";
 
 import { authenticationService } from "./services";
 import { userType } from "./helpers";
@@ -57,7 +58,8 @@ export default class Routes extends Component {
       this.setState({
         isCustomer: x && x === userType.Customer,
         isStaff: x && x === userType.Staff,
-        isRider: x && x === userType.Rider,
+        isPTRider: x && x === userType.PTRider,
+        isFTRider: x && x === userType.FTRider,
         isManager: x && x === userType.Manager,
       })
     );
@@ -80,7 +82,7 @@ export default class Routes extends Component {
           <Route path="/customerProfile" exact component={CustomerProfile} />
           <Route path="/EditRReview" exact component={EditRReview} />
           <Route path="/EditDRating" exact component={EditDRating} />
-          {this.state.isRider && (
+          {this.state.isPTRider && (
             <Route path="/dashboard" exact component={PartTimeRiderDashboard} />
           )}
           <Route
@@ -99,7 +101,7 @@ export default class Routes extends Component {
             exact
             component={PartTimeRiderSummary}
           />
-          {this.state.isRider && (
+          {this.state.isFTRider && (
             <Route path="/dashboard" exact component={FullTimeRiderDashboard} />
           )}
           <Route
@@ -136,6 +138,7 @@ export default class Routes extends Component {
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
           {this.state.isCustomer && <Route path="/restaurant/menu" component={CustomerMenu} />}
+          {!this.state.isCustomer && <Route path="/restaurant/menu" component={OtherMenu} />}
         </Switch>
       </Router>
     );

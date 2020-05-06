@@ -1,6 +1,7 @@
 export const userType = {
     Customer: 'customer',
     Staff: 'staff',
-    Rider: 'rider',
+    PTRider: 'ptrider',
+    FTRider: 'ftrider',
     Manager: 'manager'
 }
