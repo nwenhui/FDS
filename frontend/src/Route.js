@@ -16,6 +16,7 @@ import RestaurantSignup from "./Pages/Signup/RestaurantSignup/RestaurantSignup";
 
 import EditRReview from "./Pages/Customer/EditRReview/EditRReview";
 import EditDRating from "./Pages/Customer/EditDRating/EditDRating";
+import CustomerSearch from "./Pages/Customer/CustomerSearch/CustomerSearch";
 
 import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
@@ -84,6 +85,8 @@ export default class Routes extends Component {
           )}
           <Route path="/customerHistory" exact component={CustomerHistory} />
           <Route path="/customerProfile" exact component={CustomerProfile} />
+          <Route path="/customerSearch" exact component={CustomerSearch} />
+
           <Route path="/EditRReview" exact component={EditRReview} />
           <Route path="/EditDRating" exact component={EditDRating} />
           {this.state.isPTRider && (

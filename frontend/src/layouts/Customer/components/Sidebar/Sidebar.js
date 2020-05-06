@@ -6,6 +6,7 @@ import RateReviewIcon from "@material-ui/icons/RateReview";
 import GradeIcon from "@material-ui/icons/Grade";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import HistoryIcon from "@material-ui/icons/History";
+import SearchIcon from "@material-ui/icons/Search";
 
 var styles = {
   bmBurgerButton: {
@@ -57,6 +58,9 @@ export default (props) => {
     <Menu {...props} styles={styles}>
       <a className="menu-item" href="/dashboard">
         <DashboardIcon /> Dashboard
+      </a>
+      <a className="menu-item" href="/customerSearch">
+        <SearchIcon /> Search
       </a>
 
       <a className="menu-item" href="/customerProfile">
