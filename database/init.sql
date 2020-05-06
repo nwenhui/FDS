@@ -32,6 +32,12 @@ CREATE TABLE FoodItem (
     PRIMARY KEY (ItemID)
 );
 
+INSERT INTO FoodItem VALUES (DEFAULT, 'Spaghetti', 5, 100);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Coke', 2, 130);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Rice', 1, 100);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Nasi Briyani', 5, 70);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Prata', 8, 200); 
+
 CREATE TABLE Restaurant (
     ResID SERIAL,
     ResName VARCHAR(100) unique,
@@ -69,6 +75,32 @@ CREATE TABLE Inventory (
     PRIMARY KEY (itemid),
     FOREIGN KEY (itemid) REFERENCES fooditem
 );
+
+CREATE OR REPLACE FUNCTION inventory_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.amt_available > 0 THEN
+        NEW.available = TRUE;
+    END IF;
+    IF NEW.amt_available = 0 THEN
+        NEW.available = FALSE;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER inventory_check_trigger
+    BEFORE INSERT OR UPDATE
+    ON Inventory
+    FOR EACH ROW
+    EXECUTE FUNCTION inventory_check()
+;
+
+INSERT INTO Inventory VALUES (1, 0, DEFAULT);
+INSERT INTO Inventory VALUES (2, 123, DEFAULT);
+INSERT INTO Inventory VALUES (3, 90, DEFAULT);
+INSERT INTO Inventory VALUES (4, 33, DEFAULT);
+INSERT INTO Inventory VALUES (5, 197, DEFAULT);
 
 CREATE TABLE Staff (
     Id SERIAL,
