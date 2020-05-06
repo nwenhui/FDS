@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS FoodItem CASCADE;
--- DROP TABLE IF EXISTS Menu CASCADE;
 DROP TABLE IF EXISTS Restaurant CASCADE;
 DROP TABLE IF EXISTS Listings CASCADE;
 DROP TABLE IF EXISTS Category CASCADE;
 DROP TABLE IF EXISTS Classifies CASCADE;
 DROP TABLE IF EXISTS Inventory CASCADE;
+DROP TABLE IF EXISTS Staff CASCADE;
+DROP TABLE IF EXISTS Manager CASCADE;
 DROP TABLE IF EXISTS Promotion CASCADE;
-DROP TABLE IF EXISTS Discounts CASCADE;
+DROP TABLE IF EXISTS restaurantpromotion CASCADE;
+DROP TABLE IF EXISTS fdspromotion CASCADE;
 DROP TABLE IF EXISTS Rider CASCADE;
 DROP TABLE IF EXISTS PartTime CASCADE;
 DROP TABLE IF EXISTS FullTime CASCADE;
-DROP TABLE IF EXISTS Works CASCADE;
--- DROP TABLE IF EXISTS CreditCard CASCADE;
+DROP TABLE IF EXISTS Shifts CASCADE;
 DROP TABLE IF EXISTS Customer CASCADE;
--- DROP TABLE IF EXISTS PaysWith CASCADE;
 DROP TABLE IF EXISTS OrderDetails CASCADE;
 DROP TABLE IF EXISTS Contains CASCADE;
 DROP TABLE IF EXISTS Journey CASCADE;
@@ -22,10 +22,7 @@ DROP TABLE IF EXISTS Receipt CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Rates CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
-DROP TABLE IF EXISTS Staff CASCADE;
-DROP TABLE IF EXISTS Manager CASCADE;
-DROP TABLE IF EXISTS restaurantpromotion CASCADE;
-DROP TABLE IF EXISTS fdspromotion CASCADE;
+DROP TABLE IF EXISTS Salary CASCADE;
 
 CREATE TABLE FoodItem (
     ItemID SERIAL,
@@ -34,11 +31,6 @@ CREATE TABLE FoodItem (
     MaxLimit INTEGER,
     PRIMARY KEY (ItemID)
 );
-
--- CREATE TABLE Menu (
---     MenuID SERIAL,
---     PRIMARY KEY (MenuID)
--- );
 
 CREATE TABLE Restaurant (
     ResID SERIAL,
@@ -78,6 +70,26 @@ CREATE TABLE Inventory (
     FOREIGN KEY (itemid) REFERENCES fooditem
 );
 
+CREATE TABLE Staff (
+    Id SERIAL,
+    RestaurantId INTEGER not null,
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id, RestaurantId),
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant on delete cascade
+);
+
+CREATE TABLE Manager (
+    Id SERIAL,
+    email VARCHAR(100) unique NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
 CREATE TABLE Promotion (
     PromotionID SERIAL,
     MinSpending INTEGER default 0,
@@ -97,14 +109,6 @@ create table fdspromotion (
     managerid integer references Manager,
     primary key (promotionid, managerid)
 )
-
--- CREATE TABLE Discounts (
---     PromotionID INTEGER,
---     MinSpending INTEGER default 0,
---     PercentageOff INTEGER default 0,
---     freedeli boolean default false,
---     PRIMARY KEY (PromotionID)
--- );
 
 CREATE TABLE Rider (
     Id SERIAL,
@@ -127,21 +131,14 @@ CREATE TABLE FullTime (
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
-CREATE TABLE Works (
+CREATE TABLE Shifts (
     Id INTEGER,
+    ShiftID SERIAL,
     StartTime TIMESTAMP NOT NULL,
     EndTime TIMESTAMP NOT NULL,
-    TotalHours INTEGER NOT NULL,
-    PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
+    PRIMARY KEY (ShiftID, Id),
+    FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
 );
-
--- CREATE TABLE CreditCard (
---     CCID SERIAL,
---     SecurityCode INTEGER NOT NULL,
---     Bank VARCHAR(20) NOT NULL,
---     PRIMARY KEY (CCID)
--- );
 
 CREATE TABLE Customer (
     Id SERIAL,
@@ -153,113 +150,87 @@ CREATE TABLE Customer (
     CCID INTEGER,
     joined_at timestamp default now(),
     PRIMARY KEY (Id)
-    -- FOREIGN KEY (CCID) REFERENCES CreditCard
-);
-
--- CREATE TABLE PaysWith (
---     Id INTEGER,
---     CCID INTEGER,
---     PRIMARY KEY (Id, CCID),
---     FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
---     FOREIGN KEY (CCID) REFERENCES CreditCard
--- );
-
-CREATE TABLE Orders (
-    OrderID SERIAL,
-    ordered_on timestamp default now(),
-    Id INTEGER REFERENCES Customer on delete set null, 
-    ccpayment boolean, /* add this boolean here so no need paywith table ah */
-    PRIMARY KEY (OrderID)
 );
 
 CREATE TABLE OrderDetails (
-    OrderID integer,
+    OrderID INTEGER,
     AddressDetails VARCHAR(60) NOT NULL,
-    PRIMARY KEY (OrderID),
-    foreign key (orderid) references orders
+    PRIMARY KEY (OrderID)
 );
 
 CREATE TABLE Contains (
-    orderid integer,
+    OrderID INTEGER,
     ItemID INTEGER,
     Quantity INTEGER,
     FoodFee INTEGER,
-    PRIMARY KEY (orderid, ItemID),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem,
-    foreign key (orderid) references orders
+    PRIMARY KEY (OrderID, ItemID, Quantity),
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails,
+    FOREIGN KEY (ItemID) REFERENCES FoodItem
 );
 
 CREATE TABLE Journey (
-    orderid integer,
-    -- JourneyID SERIAL,
+    JourneyID SERIAL,
     OrderedOn TIMESTAMP NOT NULL,
     RiderStartsJourney TIMESTAMP NOT NULL,
     RiderArrivesAtRes TIMESTAMP NOT NULL,
     RiderDepartsToCust TIMESTAMP NOT NULL,
     DeliversFood TIMESTAMP NOT NULL,
-    PRIMARY KEY (orderid),
-    foreign key (orderid) references orders
+    PRIMARY KEY (JourneyID)
 );
 
 CREATE TABLE Delivers (
     OrderID INTEGER,
     Id INTEGER,
-    -- JourneyID INTEGER REFERENCES Journey,
+    JourneyID INTEGER REFERENCES Journey,
     DeliveryFee INTEGER,
-    PRIMARY KEY (OrderID), /* only orderid for pri key to ensure each order appear one time oni */
+    PRIMARY KEY (OrderID, Id),
     FOREIGN KEY (OrderID) REFERENCES OrderDetails,
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Receipt (
-    orderid integer,
-    -- ReceiptID SERIAL,
-    GainedPoints INTEGER, /* omo need to update customer.points when order */
+    ReceiptID SERIAL,
+    GainedPoints INTEGER,
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
     TotalFee INTEGER,
-    PRIMARY KEY (orderid),
-    foreign key (orderid) references orders
+    PRIMARY KEY (ReceiptID)
+);
+
+CREATE TABLE Orders (
+    OrderID SERIAL,
+    ReceiptID INTEGER REFERENCES Receipt,
+    ordered_on timestamp default now(),
+    Id INTEGER REFERENCES Customer on delete cascade,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
 
 CREATE TABLE Rates (
-    -- Id INTEGER,
+    Id INTEGER,
     OrderID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
-    PRIMARY KEY (OrderID),
-    -- FOREIGN KEY (Id) REFERENCES Customer on delete cascade, /* i dont think need customerid here cos can just check from orders for customer */
-    FOREIGN KEY (OrderID) REFERENCES Delivers /* reference delivers cos they rating the delivery ah */
+    PRIMARY KEY (Id, OrderID),
+    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails
 );
 
 CREATE TABLE Reviews (
-    -- Id INTEGER,
-    orderid integer,
+    Id INTEGER,
     ItemID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     Review VARCHAR(200),
-    PRIMARY KEY (orderid, ItemID),
-    foreign key (orderid) references orders, /* dont need customer cos can get customer detail from orders? */
-    -- FOREIGN KEY (Id) REFERENCES Customer on delete cascade, 
+    PRIMARY KEY (Id, ItemID),
+    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
     FOREIGN KEY (ItemID) REFERENCES FoodItem 
 );
 
-CREATE TABLE Staff (
-    Id SERIAL,
-    RestaurantId INTEGER not null,
-    email VARCHAR(100) unique NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    password VARCHAR(100) NOT NULL,
-    PRIMARY KEY (Id, RestaurantId),
-    FOREIGN KEY (RestaurantID) REFERENCES Restaurant on delete cascade
-);
-
-CREATE TABLE Manager (
-    Id SERIAL,
-    email VARCHAR(100) unique NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    password VARCHAR(100) NOT NULL,
-    PRIMARY KEY (Id)
+---salary stores numbers only, only computed in query
+CREATE TABLE Salary (
+    Id INTEGER,
+    Comission INTEGER,
+    BaseSalary INTEGER,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Id) REFERENCES Rider --ON DELETE CASCADE
 );
