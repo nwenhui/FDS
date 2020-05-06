@@ -74,7 +74,7 @@ export default (props) => {
         <GradeIcon /> Rider Ratings
       </a>
 
-      <a className="menu-item" >
+      <a className="menu-item">
         <ShoppingCartIcon /> Check Out
       </a>
     </Menu>

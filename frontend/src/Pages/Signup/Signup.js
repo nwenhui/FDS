@@ -113,8 +113,8 @@ class Signup extends Component {
     var value = event.target.value;
     this.setState({ resid: value }, () => {
       console.log(this.state.resid);
-    })
-  }
+    });
+  };
 
   setRider = (event) => {
     var value = event.target.value;
@@ -169,8 +169,7 @@ class Signup extends Component {
             });
           });
         });
-    }
-    else {
+    } else {
       authenticationService
         .signup(
           this.state.firstname,
@@ -243,7 +242,7 @@ class Signup extends Component {
           </div>
           <div className="signupForm">
             <Form onSubmit={(e) => this.handleSubmit(e)}>
-            <Form.Group controlId="selectType">
+              <Form.Group controlId="selectType">
                 <Form.Label>type</Form.Label>
                 <Form.Control
                   as="select"
@@ -289,27 +288,29 @@ class Signup extends Component {
                   onChange={this.setPassword.bind(this)}
                 />
               </Form.Group>
-              {Number(this.state.type) === option[1].value &&
-              <Form.Group controlId="resid" bssize="large">
-              <Form.Label>restaurant id</Form.Label>
-              <Form.Control
-                autoFocus
-                type="text"
-                placeholder="restaurant id"
-                onChange={this.setResid.bind(this)}
-              />
-            </Form.Group>}
-            {Number(this.state.type) === option[2].value &&
-            <Form.Group controlId="selectRider">
-            <Form.Label>FT/PT</Form.Label>
-            <Form.Control
-              as="select"
-              custom
-              onChange={this.setRider.bind(this)}
-            >
-              {riderdropdown}
-            </Form.Control>
-          </Form.Group>}
+              {Number(this.state.type) === option[1].value && (
+                <Form.Group controlId="resid" bssize="large">
+                  <Form.Label>restaurant id</Form.Label>
+                  <Form.Control
+                    autoFocus
+                    type="text"
+                    placeholder="restaurant id"
+                    onChange={this.setResid.bind(this)}
+                  />
+                </Form.Group>
+              )}
+              {Number(this.state.type) === option[2].value && (
+                <Form.Group controlId="selectRider">
+                  <Form.Label>FT/PT</Form.Label>
+                  <Form.Control
+                    as="select"
+                    custom
+                    onChange={this.setRider.bind(this)}
+                  >
+                    {riderdropdown}
+                  </Form.Control>
+                </Form.Group>
+              )}
               <Button
                 variant="outline-primary"
                 block

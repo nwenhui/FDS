@@ -2,22 +2,21 @@ import React, { Component } from "react";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import NavBar from "../../../components/Navigation/Navigation";
-import { Sidebar } from "../../../layouts/Staff/components";
+import { Sidebar } from "../../../layouts/Manager/components";
 import Typography from "@material-ui/core/Typography";
 import AccountInfo from "../components/AccountInfo";
 
-import { authenticationService, restaurantService } from "../../../services";
+import { authenticationService } from "../../../services";
 import history from "../../../history";
 
-class StaffDashboard extends Component {
+class Promo extends Component {
   state = {
     id: null,
     email: null,
     firstname: null,
     lastname: null,
-    resid: null,
-    resname: null,
-    min: null,
+    points: null,
+    creditcard: null,
   };
 
   componentDidMount() {
@@ -29,20 +28,8 @@ class StaffDashboard extends Component {
             email: x.email,
             firstname: x.first_name,
             lastname: x.last_name,
-            resid: x.restaurantid,
           },
           () => {
-            restaurantService
-              .getRestaurant(this.state.resid)
-              .then((response) => {
-                response.json().then((data) => {
-                  console.log("found resty stuff hehe", data.resid);
-                  this.setState({
-                    resname: data.resname,
-                    min: data.minspending,
-                  });
-                });
-              });
             console.log("stuff happened");
           }
         );
@@ -92,4 +79,4 @@ class StaffDashboard extends Component {
   }
 }
 
-export default StaffDashboard;
+export default Promo;
