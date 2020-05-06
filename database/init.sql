@@ -95,9 +95,36 @@ CREATE TABLE Promotion (
     MinSpending INTEGER default 0,
     PercentageOff INTEGER default 0,
     freedelivery boolean default false,
+    DateEntered TIMESTAMP DEFAULT now(),
+    StartDate TIMESTAMP NOT NULL,
+    EndDate TIMESTAMP NOT NULL,
     PRIMARY KEY (PromotionID)
 );
 
+CREATE OR REPLACE FUNCTION promotion_date_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.Startdate > NEW.endDate THEN
+        RAISE EXCEPTION 'Start date cannot be after end date!';
+    END IF;
+    IF NEW.Startdate < NEW.DateEntered THEN
+        RAISE EXCEPTION 'Start date cannot be before today!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER promotion_date_trigger
+    BEFORE INSERT OR UPDATE
+    ON Promotion
+    FOR EACH ROW
+    EXECUTE FUNCTION promotion_date_check()
+;
+
+INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+    DEFAULT, now(), '2020-09-28 01:00:00');
+
+/**
 create table restaurantpromotion (
     promotionid integer unique references promotion,
     staffid integer references Staff,
@@ -109,6 +136,7 @@ create table fdspromotion (
     managerid integer references Manager,
     primary key (promotionid, managerid)
 )
+*/
 
 CREATE TABLE Rider (
     Id SERIAL,
