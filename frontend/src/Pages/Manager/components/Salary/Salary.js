@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Manager/components";
-import { CurrentPromotion, AddPromotion, data } from "./components";
+import { CurrentSalary, data } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,13 +30,13 @@ const ManagerPromo = () => {
       <Grid container item spacing={4}>
         <Grid item lg={2} sm={2} xl={2} xs={2}></Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
-          <CurrentPromotion data={data} />
+          <CurrentSalary data={data} />
         </Grid>
       </Grid>
     </div>
   );
 };
-class Promo extends Component {
+class Salary extends Component {
   render() {
     return (
       <div>
@@ -58,4 +58,4 @@ class Promo extends Component {
   }
 }
 
-export default Promo;
+export default Salary;

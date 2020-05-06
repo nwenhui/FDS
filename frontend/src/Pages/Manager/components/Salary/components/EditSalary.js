@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditPromo = (props) => {
+const EditRider = (props) => {
   const { className, data, ...rest } = props;
   console.log(data);
 
@@ -138,8 +138,8 @@ const EditPromo = (props) => {
   );
 };
 
-EditPromo.propTypes = {
+EditRider.propTypes = {
   className: PropTypes.string,
 };
 
-export default EditPromo;
+export default EditRider;

@@ -70,7 +70,7 @@ export default (props) => {
       <a className="menu-item" href="/ManagerPromo">
         <Promotion /> Promotions
       </a>
-      <a className="menu-item" href="/customerHistory">
+      <a className="menu-item" href="/riderSalary">
         <Salary /> Salary
       </a>
       <a className="menu-item" href="/customerHistory">
