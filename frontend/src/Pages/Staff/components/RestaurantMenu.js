@@ -61,59 +61,57 @@ function MaterialTableDemo() {
   const [state, setState] = React.useState({
     columns: [
       { title: "Food Item", field: "food item" },
-      { title: "Price", field: "Price" },
+      { title: "Price", field: "Price", type: "decimal" },
       { title: "Description", field: "Description" },
-      { title: "Free Delivery", field: "Yes/No", type: "boolean" },
-      { title: "Condition", field: "Conditions" },
+      { title: "Maximum Order", field: "Maximum Order", type: "numeric" },
+      { title: "Minimum Spending", field: "Minimum Spending" },
     ],
     data: [],
   });
   return (
-    <Paper>
-      <MaterialTable
-        title="Menu"
-        columns={state.columns}
-        data={state.data}
-        icons={tableIcons}
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
+    <MaterialTable
+      title="Menu"
+      columns={state.columns}
+      data={state.data}
+      icons={tableIcons}
+      editable={{
+        onRowAdd: (newData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                data.push(newData);
+                return { ...prevState, data };
+              });
+            }, 600);
+          }),
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              if (oldData) {
                 setState((prevState) => {
                   const data = [...prevState.data];
-                  data.push(newData);
+                  data[data.indexOf(oldData)] = newData;
                   return { ...prevState, data };
                 });
-              }, 600);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  return { ...prevState, data };
-                });
-              }, 600);
-            }),
-        }}
-      />
-    </Paper>
+              }
+            }, 600);
+          }),
+        onRowDelete: (oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                data.splice(data.indexOf(oldData), 1);
+                return { ...prevState, data };
+              });
+            }, 600);
+          }),
+      }}
+    />
   );
 }
 

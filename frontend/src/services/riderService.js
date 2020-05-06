@@ -12,13 +12,20 @@ function riderOrderCount(id) {
 
     return fetch(request) 
         .then(handleErrors)
-        // .then((response) => {
-        //     response.json()
-        //     .then((data) => {
-        //         console.log('countdata: ', data.count);
-        //         return data
-        //     })
-        // })
+}
+
+function riderType(id) {
+    const data = {id: id};
+    const url = 'http://localhost:3000/api/v1/rider/type';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
 }
 
 export const riderService = {

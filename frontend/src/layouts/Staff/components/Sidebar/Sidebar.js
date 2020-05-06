@@ -73,7 +73,7 @@ export default (props) => {
         <Promotion /> Promotions
       </a>
 
-      <a className="menu-item" href="/EditDRating">
+      <a className="menu-item" href="/Promotion">
         <SummaryIcon />
         Monthly Summary
       </a>

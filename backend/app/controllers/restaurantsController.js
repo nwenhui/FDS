@@ -230,6 +230,26 @@ const getRestaurant = async (req, res) => {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get food's availability
+   */
+  const getFoodAvailability = async (req, res) => {
+    const { id } = req.body;
+    const getFoodQuery = 'select amt_available from inventory where itemid = $1';
+    try {
+      const { rows } = await dbQuery.query(getFoodQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
   
 export {
     searchRestaurant,
@@ -239,4 +259,5 @@ export {
     deleteRestaurant,
     getRestaurantMenu,
     getFood,
+    getFoodAvailability,
 };

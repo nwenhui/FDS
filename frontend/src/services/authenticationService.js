@@ -59,10 +59,13 @@ function login(email, password, type) {
     body: JSON.stringify(data),
   });
 
+  let id = 0;
+
   return fetch(request)
     .then(handleErrors)
     .then((response) => {
       response.json().then((data) => {
+        id = data.id;
         console.log("sign in donezo!!! :D");
         currentUserSubject.next(data);
         localStorage.setItem("currentUser", JSON.stringify(data));
@@ -76,8 +79,28 @@ function login(email, password, type) {
           currentUserTypeSubject.next(userType.Staff);
           localStorage.setItem("currentUserType", userType.Staff);
         } else if (type === option[2].value) {
-          currentUserTypeSubject.next(userType.Rider);
-          localStorage.setItem("currentUserType", userType.Rider);
+          const data = {id: id};
+          const url = 'http://localhost:3000/api/v1/rider/type';
+
+          var request = new Request(url, {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify(data)
+          });
+
+          fetch(request) 
+            .then(handleErrors)
+            .then((response) => {
+              response.json().then((data) => {
+                if (data.type == 'ft') {
+                  localStorage.setItem("currentUserType", userType.FTRider);
+                  currentUserTypeSubject.next(userType.FTRider);
+                } else {
+                  localStorage.setItem("currentUserType", userType.PTRider);
+                  currentUserTypeSubject.next(userType.PTRider);
+                }
+              })
+            })
         } else if (type === option[3].value) {
           currentUserTypeSubject.next(userType.Customer);
           localStorage.setItem("currentUserType", userType.Customer);
@@ -167,16 +190,40 @@ function riderSignup(firstname, lastname, email, password, type) {
     body: JSON.stringify(data),
   });
 
+  let id = 0;
+
   return fetch(request)
     .then(handleErrors)
     .then((response) => {
       console.log('response: ', response);
       response.json().then((data) => {
+        id = data.id;
         console.log("sign up donezo!!! :D");
         currentUserSubject.next(data);
         localStorage.setItem("currentUser", JSON.stringify(data));
-        currentUserTypeSubject.next(userType.Rider);
-        localStorage.setItem("currentUserType", userType.Rider);
+
+        const newdata = {id: id};
+        const url = 'http://localhost:3000/api/v1/rider/type';
+
+        var request = new Request(url, {
+          method: 'POST',
+          headers: new Headers({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify(newdata)
+        });
+
+        fetch(request) 
+          .then(handleErrors)
+          .then((response) => {
+            response.json().then((data) => {
+              if (data.type == 'ft') {
+                localStorage.setItem("currentUserType", userType.FTRider);
+                currentUserTypeSubject.next(userType.FTRider);
+              } else {
+                localStorage.setItem("currentUserType", userType.PTRider);
+                currentUserTypeSubject.next(userType.PTRider);
+              }
+            })
+          })
         return data;
       });
     });

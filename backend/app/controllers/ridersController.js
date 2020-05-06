@@ -242,6 +242,26 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get rider's type
+   */
+  const getRiderType = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const getRiderTypeQuery = "select distinct case when (select count(id) from parttime where id = $1) > 0 then 'pt' else 'ft' end as type from rider;";
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createRider,
@@ -249,5 +269,6 @@ import {
     searchRiderFirstnameOrLastname,
     editRider,
     deleteRider,
-    ordersByRider
+    ordersByRider,
+    getRiderType
   };

@@ -99,16 +99,30 @@ return fetch(request)
 
 function getFood(foodid) {
   const data = {id: foodid};
-    const url = 'http://localhost:3000/api/v1/restaurant/food';
+  const url = 'http://localhost:3000/api/v1/restaurant/food';
 
-    var request = new Request(url, {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(data)
-    });
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
 
-    return fetch(request)
-        .then(handleErrors)
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getFoodAvailability(itemid) {
+  const data = { id: itemid };
+  const url = 'http://localhost:3000/api/v1/restaurant/food/availability';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
 }
 
 export const restaurantService = {
@@ -119,5 +133,6 @@ export const restaurantService = {
     editRestaurant,
     getMenu,
     getFood,
-    restaurantMenuResults
+    restaurantMenuResults,
+    getFoodAvailability
 }
