@@ -50,8 +50,9 @@ class CustomerMenu extends Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Food</TableCell>
-                                <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">Quantity</TableCell>
+                                <TableCell align="center">Price</TableCell>
+                                <TableCell align="center">Qty left</TableCell>
+                                <TableCell align="center">Quantity to order</TableCell>
                                 <TableCell align="right"> </TableCell>
                             </TableRow>
                         </TableHead>

@@ -45,21 +45,18 @@ const TotalCustOrders = (props) => {
   const classes = useStyles();
   const totalCustOrders = 20;
   const id = props.id;
-  console.log('id: ', id);
+  console.log("id: ", id);
   const [total, setTotal] = useState();
 
   useEffect(() => {
     customerService.customerOrderCount(id).then((response) => {
-      response.json()
-      .then((data) => {
+      response.json().then((data) => {
         setTotal(data.count);
-      })
+      });
       // console.log('what value sia:', data);
       // setTotal(data.count);
     });
   });
-
-  
 
   /**** Fetch the total number of orders for the customer
 

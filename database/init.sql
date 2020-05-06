@@ -24,6 +24,8 @@ DROP TABLE IF EXISTS Rates CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 DROP TABLE IF EXISTS Staff CASCADE;
 DROP TABLE IF EXISTS Manager CASCADE;
+DROP TABLE IF EXISTS restaurantpromotion CASCADE;
+DROP TABLE IF EXISTS fdspromotion CASCADE;
 
 CREATE TABLE FoodItem (
     ItemID SERIAL,
@@ -78,15 +80,31 @@ CREATE TABLE Inventory (
 
 CREATE TABLE Promotion (
     PromotionID SERIAL,
+    MinSpending INTEGER default 0,
+    PercentageOff INTEGER default 0,
+    freedelivery boolean default false,
     PRIMARY KEY (PromotionID)
 );
 
-CREATE TABLE Discounts (
-    PromotionID INTEGER,
-    MinSpending INTEGER,
-    PercentageOff INTEGER,
-    PRIMARY KEY (PromotionID)
-);
+create table restaurantpromotion (
+    promotionid integer unique references promotion,
+    staffid integer references Staff,
+    primary key (promotionid, staffid)
+)
+
+create table fdspromotion (
+    promotionid integer unique references promotion,
+    managerid integer references Manager,
+    primary key (promotionid, managerid)
+)
+
+-- CREATE TABLE Discounts (
+--     PromotionID INTEGER,
+--     MinSpending INTEGER default 0,
+--     PercentageOff INTEGER default 0,
+--     freedeli boolean default false,
+--     PRIMARY KEY (PromotionID)
+-- );
 
 CREATE TABLE Rider (
     Id SERIAL,

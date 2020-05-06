@@ -9,7 +9,7 @@ import AccountInfo from "../components/AccountInfo";
 import { authenticationService, restaurantService } from "../../../services";
 import history from "../../../history";
 
-class RiderDashboard extends Component {
+class StaffDashboard extends Component {
   state = {
     id: null,
     email: null,
@@ -32,13 +32,17 @@ class RiderDashboard extends Component {
             resid: x.restaurantid,
           },
           () => {
-            restaurantService.getRestaurant(this.state.resid).then((response) => {
-              response.json()
-                  .then((data) => {
-                      console.log('found resty stuff hehe', data.resid);
-                      this.setState({ resname: data.resname, min: data.minspending });
-                  })
-          })
+            restaurantService
+              .getRestaurant(this.state.resid)
+              .then((response) => {
+                response.json().then((data) => {
+                  console.log("found resty stuff hehe", data.resid);
+                  this.setState({
+                    resname: data.resname,
+                    min: data.minspending,
+                  });
+                });
+              });
             console.log("stuff happened");
           }
         );
@@ -88,4 +92,4 @@ class RiderDashboard extends Component {
   }
 }
 
-export default RiderDashboard;
+export default StaffDashboard;

@@ -1,28 +1,32 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./Navigation.css";
-import Searchbar from './Searchbar/Searchbar';
+import Searchbar from "./Searchbar/Searchbar";
 
-import { authenticationService } from '../../services';
+import { authenticationService } from "../../services";
 
 class Navigation extends Component {
-  render() { 
+  render() {
     return (
       <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
         <ul class="navbar-nav">
           <li>
             <a class="navbar-brand">Delivermeow</a>
           </li>
-          {!authenticationService.currentUserValue && <li class="nav-item">
-            <a class="nav-link" href="/Home#">
-              Home
-            </a>
-          </li>}
-          {authenticationService.currentUserValue && <li class="nav-item">
-            <a class="nav-link" href="/dashboard">
-              Home
-            </a>
-          </li>}
+          {!authenticationService.currentUserValue && (
+            <li class="nav-item">
+              <a class="nav-link" href="/Home#">
+                Home
+              </a>
+            </li>
+          )}
+          {authenticationService.currentUserValue && (
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">
+                Home
+              </a>
+            </li>
+          )}
           <li></li>
           <li class="nav-item dropdown">
             <a
@@ -47,12 +51,14 @@ class Navigation extends Component {
               <div class="dropdown-divider"></div>
               <button class="dropdown-item">Thai</button> */}
             </div>
-          </li> 
-          {authenticationService.currentUserValue && <li class="nav-item">
-            <a class="nav-link" href="/logout">
-              Logout
-            </a>
-          </li> }
+          </li>
+          {authenticationService.currentUserValue && (
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">
+                Logout
+              </a>
+            </li>
+          )}
           {/* <li class="nav-item">
             <a class="nav-link" href="#">
               Customers
@@ -64,10 +70,10 @@ class Navigation extends Component {
             </a>
           </li> */}
         </ul>
-        <Searchbar history={this.props.history}/>
+        <Searchbar history={this.props.history} />
       </nav>
     );
   }
 }
- 
+
 export default Navigation;

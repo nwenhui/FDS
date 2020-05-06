@@ -46,7 +46,7 @@ const AccountDetails = (props) => {
     error: false,
     success: false,
     errorMessage: "",
-  })
+  });
 
   const handleChange = (event) => {
     setValues({
@@ -60,16 +60,22 @@ const AccountDetails = (props) => {
   };
 
   const handleSaveDetails = (event) => {
-    console.log('values: ', values);
+    console.log("values: ", values);
     event.preventDefault();
     authenticationService
-      .editManagerProfile(values.firstname, values.lastname, values.email, values.password, props.id)
+      .editManagerProfile(
+        values.firstname,
+        values.lastname,
+        values.email,
+        values.password,
+        props.id
+      )
       .then((data) => {
         setStatus({
           ...status,
           success: true,
           error: false,
-        })
+        });
       })
       .catch((error) => {
         error.text().then((errorMessage) => {
@@ -77,11 +83,11 @@ const AccountDetails = (props) => {
             ...status,
             success: false,
             error: true,
-            errorMessage: errorMessage
-          })
-        })
-      })
-  }
+            errorMessage: errorMessage,
+          });
+        });
+      });
+  };
 
   const handleDeleteAccount = (event) => {
     event.preventDefault();
@@ -91,21 +97,21 @@ const AccountDetails = (props) => {
         setStatus({
           ...status,
           error: false,
-          success: true
+          success: true,
         });
-        const to = '/Home';
+        const to = "/Home";
         props.history.push(to);
       })
       .catch((error) => {
-        console.log('error???: ', error);
+        console.log("error???: ", error);
         setStatus({
           ...status,
           error: true,
           success: false,
-          errorMessage: "Oops something went wrong..."
+          errorMessage: "Oops something went wrong...",
         });
-      })
-  }
+      });
+  };
 
   return (
     <div>

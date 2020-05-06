@@ -8,13 +8,15 @@ import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessA
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert"
 
 import { restaurantService } from '../../../../../services';
+import { orderService } from '../../../../../services';
 
 class MenuRow extends Component {
     state = {  
         itemid: this.props.itemid,
         name: "",
         price: 0,
-        qty: 0
+        qty: 0,
+        availabile: 0,
     }
 
     fetchData() {
@@ -23,6 +25,13 @@ class MenuRow extends Component {
                 .then((data) => {
                     console.log(' stuff hehe', data.itemid);
                     this.setState({ name: data.itemname, price: data.cost });
+                })
+        })
+        restaurantService.getFoodAvailability(this.state.itemid).then((response) => {
+            response.json()
+                .then((data) => {
+                    console.log(' stuff hehe', data.itemid);
+                    this.setState({ availabile: data.amt_available });
                 })
         })
     }
@@ -35,15 +44,20 @@ class MenuRow extends Component {
         const qty = this.state.qty;
         if (qty > 0) {
             this.setState({ qty: qty-1 });
-        }
+        } 
     }
 
     handleAdd() {
         const qty = this.state.qty;
-        this.setState({ qty: qty+1 });
+        if (qty < this.state.availabile) {
+            this.setState({ qty: qty+1 });
+        } 
     }
 
-    handleAddtoCart() {}
+    handleAddtoCart() {
+        console.log('helloooo')
+        orderService.addToCheckOut(this.state.itemid, this.state.qty);
+    }
 
     render() { 
         return (
@@ -51,14 +65,15 @@ class MenuRow extends Component {
                 <TableCell component="th" scope="row">
                     {this.state.name}
                 </TableCell>
-                <TableCell align="right">${this.state.price}</TableCell>
-                <TableCell align="right">
-                    <Button onClick={() => this.handleRemove()}><RemoveCircleIcon/></Button>
+                <TableCell align="center">${this.state.price}</TableCell>
+                <TableCell align="center">{this.state.availabile}</TableCell>            
+                <TableCell align="center">
+                    <Button onClick={() => this.handleRemove()}><RemoveCircleIcon/></Button> 
                     {this.state.qty}
                     <Button onClick={() => this.handleAdd()}><AddCircleIcon/></Button>
                 </TableCell>
                 <TableCell align="right">
-                    <Button variant="contained" onClick={this.handleAddtoCart()}>Add to Cart</Button>
+                    <Button variant="contained" onClick={() => this.handleAddtoCart()}>Add to Cart</Button>
                 </TableCell>
             </TableRow>
         );

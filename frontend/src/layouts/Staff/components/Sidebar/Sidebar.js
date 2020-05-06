@@ -2,10 +2,13 @@ import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
+import RestaurantMenu from "@material-ui/icons/RestaurantMenuRounded";
+import Promotion from "@material-ui/icons/MoneyOffRounded";
 import RateReviewIcon from "@material-ui/icons/RateReview";
-import GradeIcon from "@material-ui/icons/Grade";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import HistoryIcon from "@material-ui/icons/History";
+import SummaryIcon from "@material-ui/icons/AssessmentRounded";
+import PromoSummary from "@material-ui/icons/AssignmentRounded";
+// import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+// import HistoryIcon from "@material-ui/icons/History";
 
 var styles = {
   bmBurgerButton: {
@@ -63,20 +66,21 @@ export default (props) => {
         <SettingsIcon /> Edit Profile
       </a>
 
-      {/* <a className="menu-item" href="/customerHistory">
-        <HistoryIcon /> Past Orders
+      <a className="menu-item" href="/Dashboard">
+        <RestaurantMenu /> Restaurant Menu
       </a>
-      <a className="menu-item" href="/EditRReview">
-        <RateReviewIcon /> Restaurant Reviews
+      <a className="menu-item" href="/staffPromotions">
+        <Promotion /> Promotions
       </a>
 
       <a className="menu-item" href="/EditDRating">
-        <GradeIcon /> Rider Ratings
+        <SummaryIcon />
+        Monthly Summary
       </a>
 
-      <a className="menu-item" >
-        <ShoppingCartIcon /> Check Out
-      </a> */}
+      <a className="menu-item">
+        <PromoSummary /> Promotions Summary
+      </a>
     </Menu>
   );
 };
