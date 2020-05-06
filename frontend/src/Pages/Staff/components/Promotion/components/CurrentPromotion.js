@@ -16,8 +16,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Button,
+  IconButton,
 } from "@material-ui/core";
 
+import mockData from "./data";
 const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
@@ -71,6 +74,7 @@ const Cpromo = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Promotion ID</TableCell>
+                  <TableCell>Food Item</TableCell>
                   <TableCell>Discount</TableCell>
                   <TableCell>Minimum Amount</TableCell>
                   <TableCell>Start Date</TableCell>
@@ -83,17 +87,29 @@ const Cpromo = (props) => {
                 {orders.map((order) => (
                   <TableRow hover key={order.id}>
                     <TableCell>{order.promo_id}</TableCell>
+                    <TableCell>{order.food_item}</TableCell>
                     <TableCell>{order.discount}</TableCell>
                     <TableCell>{order.minAmount}</TableCell>
                     <TableCell>{order.startDate}</TableCell>
                     <TableCell>{order.endDate}</TableCell>
                     <TableCell>
-                      <EditIcon onClick={() => handleClick(order)} />
+                      <IconButton
+                        //color="primary"
+                        size="small"
+                        onClick={() => handleClick(order)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      {/* <EditIcon onClick={() => handleClick(order)} /> */}
                     </TableCell>
                     <TableCell>
-                      <DeleteIcon
+                      <IconButton
+                        //color="primary"
+                        size="small"
                         onClick={() => handleDelete(order.promo_id)}
-                      />
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
