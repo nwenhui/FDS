@@ -28,7 +28,13 @@ const RiderSubmitSched = (props) => {
         <Grid container item spacing={4} id="page-wrap">
           <Grid container direction="row" justify="center" alignItems="center">
             <Typography color="textSecondary" variant="h5">
-              Submit your weekly schedule!
+              Submit your monthly schedule!
+            </Typography>
+          </Grid>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Typography color="textSecondary" variant="h7">
+              Just fill in schedule for one week as it will be replicated for
+              the next 3 weeks of the month :)
             </Typography>
           </Grid>
           <Grid container direction="row" justify="center" alignItems="center">

@@ -57,19 +57,16 @@ export default (props) => {
       <a className="menu-item" href="/dashboard">
         <DashboardIcon /> Dashboard
       </a>
-
       <a className="menu-item" href="/fullTimeProfile">
         <SettingsIcon /> Edit Profile
       </a>
-
-      {/* <a className="menu-item" href="/fullTimeSched">
+      <a className="menu-item" href="/fullTimeSched">
         <ScheduleIcon /> Submit Schedule
-      </a> */}
+      </a>
 
       <a className="menu-item" href="/fullTimeHistory">
         <HistoryIcon /> Past Work
       </a>
-
       <a className="menu-item" href="/fullTimeSummary">
         <InsertChartIcon /> Summary
       </a>
