@@ -4,9 +4,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
 import RestaurantMenu from "@material-ui/icons/RestaurantMenuRounded";
 import Promotion from "@material-ui/icons/MoneyOffRounded";
-import RateReviewIcon from "@material-ui/icons/RateReview";
-import SummaryIcon from "@material-ui/icons/AssessmentRounded";
-import PromoSummary from "@material-ui/icons/AssignmentRounded";
+import SummaryIcon from "@material-ui/icons/AssignmentRounded";
+
 // import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 // import HistoryIcon from "@material-ui/icons/History";
 
