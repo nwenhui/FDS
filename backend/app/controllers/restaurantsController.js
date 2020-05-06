@@ -250,6 +250,84 @@ const getRestaurant = async (req, res) => {
     }
   }
 
+  /**
+   * get all restaurant's promotions (dont care end date)
+   */
+  const getPromotions = async (req, res) => {
+    const { id } = req.body;
+    const getPromotionsQuery = 'select * from promotion where promotionid = any(select promotionid from restaurantpromotion where resid = $1)';
+    try {
+      const { rows } = await dbQuery.query(getPromotionsQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get all restaurant's ongoing promotions (end date > now)
+   */
+  const getOngoingPromotions = async (req, res) => {
+    const { id } = req.body;
+    const getPromotionsQuery = 'select * from promotion where promotionid = any(select promotionid from restaurantpromotion where resid = $1) and enddate > now()';
+    try {
+      const { rows } = await dbQuery.query(getPromotionsQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get all restaurant's past promotions (end date < now)
+   */
+  const getPastPromotions = async (req, res) => {
+    const { id } = req.body;
+    const getPromotionsQuery = 'select * from promotion where promotionid = any(select promotionid from restaurantpromotion where resid = $1) and enddate < now()';
+    try {
+      const { rows } = await dbQuery.query(getPromotionsQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get details of promotion
+   */
+  const getPromotionInformation = async (req, res) => {
+    const { id } = req.body;
+    const getPromotionInfoQuery = 'select * from promotion where promotionid = $1';
+    try {
+      const { rows } = await dbQuery.query(getPromotionInfoQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log(id);
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+
   
 export {
     searchRestaurant,
@@ -260,4 +338,8 @@ export {
     getRestaurantMenu,
     getFood,
     getFoodAvailability,
+    getPromotions,
+    getPromotionInformation,
+    getOngoingPromotions,
+    getPastPromotions,
 };

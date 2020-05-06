@@ -34,6 +34,12 @@ function restaurantMenuResults(data) {
   return results;
 }
 
+function restaurantPromotionsResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.promotionid));
+  return results;
+}
+
 function searchRestaurant(searchQuery) {
     const url = 'http://localhost:3000/api/v1/restaurant/search?keywords=' + searchQuery;
     console.log('url ', url);
@@ -125,6 +131,62 @@ function getFoodAvailability(itemid) {
       .then(handleErrors)
 }
 
+function getPromotions(resid) {
+  const data = { id: resid };
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/all';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getPromotionInformation(id) {
+  const data = { id: id };
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/info';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getOngoingPromotions(resid) {
+  const data = { id: resid };
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/ongoing';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getPastPromotions(resid) {
+  const data = { id: resid };
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/past';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -134,5 +196,10 @@ export const restaurantService = {
     getMenu,
     getFood,
     restaurantMenuResults,
-    getFoodAvailability
+    getFoodAvailability,
+    getPromotions,
+    restaurantPromotionsResults,
+    getPromotionInformation,
+    getOngoingPromotions,
+    getPastPromotions,
 }
