@@ -60,11 +60,18 @@ class MenuRow extends Component {
 
     handleAddtoCart() {
         console.log('helloooo');
-        const cart = orderService.addToCheckOut(this.state.itemid, this.state.qty);
-        if (this.state.qty > 0) {
-            this.setState({ error: false, success: true, successMessage: "You have added " + this.state.name + " to cart. There are now " + cart + " item(s) in your cart." });
-        } else {
-            this.setState({ success: false, error: true, errorMessage: "Nothing to add... You have selected 0 qty" })
+        let cart = 0;
+        try {
+            cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.props.resid);
+            if (this.state.qty > 0) {
+                this.setState({ error: false, success: true, successMessage: "You have added " + this.state.name + " to cart. There are now " + cart + " item(s) in your cart." });
+            } else {
+                this.setState({ success: false, error: true, errorMessage: "Nothing to add... You have selected 0 qty" })
+            }
+        } catch (error) {
+            // error.text().then((errorMessage) => {
+                this.setState({ error: true, success: false, errorMessage: error });
+            // })
         }
     }
 
