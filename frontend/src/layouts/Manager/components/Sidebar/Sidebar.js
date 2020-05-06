@@ -73,7 +73,7 @@ export default (props) => {
       <a className="menu-item" href="/riderSalary">
         <Salary /> Salary
       </a>
-      <a className="menu-item" href="/customerHistory">
+      <a className="menu-item" href="/deliveryFee">
         <DeliveryFee /> Delivery Fee
       </a>
 
