@@ -45,7 +45,7 @@ CREATE TABLE Listings (
     ItemID INTEGER,
     PRIMARY KEY (ResID, ItemID),
     FOREIGN KEY (ResID) REFERENCES Restaurant on delete cascade,
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete cascade
 );
 
 CREATE TABLE Category (
@@ -59,7 +59,7 @@ CREATE TABLE Classifies (
     ItemID INTEGER,
     PRIMARY KEY (catid, ItemID),
     FOREIGN KEY (catid) REFERENCES Category,
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete cascade
 );
 
 CREATE TABLE Inventory (
@@ -67,7 +67,7 @@ CREATE TABLE Inventory (
     amt_available integer,
     available boolean default TRUE, /* add trigger to update this boolean whenever amt available change */
     PRIMARY KEY (itemid),
-    FOREIGN KEY (itemid) REFERENCES fooditem
+    FOREIGN KEY (itemid) REFERENCES fooditem on delete cascade
 );
 
 CREATE TABLE Staff (
@@ -202,7 +202,7 @@ CREATE TABLE Contains (
     Quantity INTEGER,
     FoodFee INTEGER,
     PRIMARY KEY (orderid, ItemID),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem,
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null, 
     foreign key (orderid) references orders
 );
 
@@ -251,7 +251,7 @@ CREATE TABLE Reviews (
     Review VARCHAR(200),
     PRIMARY KEY (orderid, ItemID),
     foreign key (orderid) references orders, 
-    FOREIGN KEY (ItemID) REFERENCES FoodItem 
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null
 );
 
 ---salary stores numbers only, only computed in query

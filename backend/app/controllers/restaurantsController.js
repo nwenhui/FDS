@@ -238,7 +238,7 @@ const getRestaurant = async (req, res) => {
    */
   const getFoodAvailability = async (req, res) => {
     const { id } = req.body;
-    const getFoodQuery = 'select amt_available from inventory where itemid = $1';
+    const getFoodQuery = 'select * from inventory where itemid = $1';
     try {
       const { rows } = await dbQuery.query(getFoodQuery, [id]);
       const dbResponse = rows[0];
@@ -343,6 +343,10 @@ const getRestaurant = async (req, res) => {
       freedeli
     ];
     const addRestaurantPromoQuuery = 'insert into restaurantpromotion(promotionid,resid) values($1,$2)';
+    if (disc > 100) {
+      errorMessage.error = 'Discount percentage cannnot be over 100.';
+      return res.status(status.bad).send(errorMessage.error);
+    }
     if (isEmpty(start) || isEmpty(end)) {
       errorMessage.error = 'Start Date and End Date fields cannot be empty';
       return res.status(status.bad).send(errorMessage.error);
@@ -371,7 +375,7 @@ const getRestaurant = async (req, res) => {
       console.log(error);
       await dbQuery.query('rollback');
       errorMessage.error = 'Operation was not successful';
-      return res.status(status.success).send(errorMessage.error);
+      return res.sendStatus(status.success).send(errorMessage.error);
     }
   }
 
@@ -393,8 +397,88 @@ const getRestaurant = async (req, res) => {
     }
   };
 
+  /**
+   * get category of food item
+   */
+  const getCategory = async (req, res) => {
+    const { id } = req.body;
+    const getCategoryQuery = 'select distinct categoryname from category where catid = any(select catid from classifies where itemid = $1)';
+    try {
+      const { rows } = await dbQuery.query(getCategoryQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(id);
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
 
+  /**
+   * add new food to restaurant menu
+   */
+  const newFoodItem = async (req, res) => {
+    const { name, price,  limit, resid } = req.body;
+    const newFoodQuery = 'insert into fooditem(itemname,cost,maxlimit) values($1, $2, $3) returning *';
+    const setInventoryQuery = 'insert into inventory(itemid, amt_available) values($1,$2)';
+    const insertListingQuery = 'insert into listings (resid, itemid) values($1,$2)';
+    const values = [
+      name,
+      price,
+      limit,
+    ];
+    if (isEmpty(name) || isEmpty(price.toString()) ||  isEmpty(limit.toString())) {
+      errorMessage.error = 'Item name, price, and max. limit fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
 
+    try {
+      await dbQuery.query('begin')
+      const { rows } = await dbQuery.query(newFoodQuery, values);
+      const id = rows[0].itemid;
+      const values2 = [
+        id,
+        limit
+      ]
+      const values3 = [
+        resid,
+        id
+      ]
+      await dbQuery.query(setInventoryQuery, values2);
+      await dbQuery.query(insertListingQuery, values3);
+      await dbQuery.query('commit');
+      successMessage.data = id;
+      console.log(id);
+      console.log(successMessage.data);
+      return res.sendStatus(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      await dbQuery.query('rollback');
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * delete food item from restaurant
+   */
+  const deleteFood = async (req, res) => {
+    const { id } = req.body;
+    const deleteFoodQuery = 'delete from fooditem where itemid = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deleteFoodQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
   
 export {
     searchRestaurant,
@@ -410,5 +494,8 @@ export {
     getOngoingPromotions,
     getPastPromotions,
     createRestaurantPromotion,
-    deletePromotion
+    deletePromotion,
+    getCategory,
+    newFoodItem,
+    deleteFood,
 };

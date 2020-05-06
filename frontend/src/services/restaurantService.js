@@ -34,6 +34,12 @@ function restaurantMenuResults(data) {
   return results;
 }
 
+function foodCategoryResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.categoryname));
+  return results;
+}
+
 function restaurantPromotionsResults(data) {
   var results = [];
   data.forEach(result => results.push(result.promotionid));
@@ -216,6 +222,48 @@ function deletePromotion(id) {
       .then(handleErrors)
 }
 
+function getFoodCategory(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/category';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function newFoodItem(name, price, limit, resid) {
+  const data = {name: name, price: price, limit: limit, resid: resid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/new';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function deleteFood(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -232,5 +280,9 @@ export const restaurantService = {
     getOngoingPromotions,
     getPastPromotions,
     newPromotion,
-    deletePromotion
+    deletePromotion,
+    getFoodCategory,
+    foodCategoryResults,
+    newFoodItem,
+    deleteFood,
 }
