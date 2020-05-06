@@ -98,7 +98,7 @@ const FoodItem = (props) => {
                     </TableCell>
                     <TableCell>
                       <IconButton
-                        color="primary"
+                        //color="primary"
                         size="small"
                         onClick={() => handleClick(order)}
                       >

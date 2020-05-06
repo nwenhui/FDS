@@ -34,6 +34,7 @@ import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
 import StaffPromotions from "./Pages/Staff/components/Promotion/Promotion";
 import StaffSummary from "./Pages/Staff/components/Summary/Summary";
+import StaffReview from "./Pages/Staff/components/Review/Review";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -139,6 +140,7 @@ export default class Routes extends Component {
           <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/RestaurantMenu" exact component={RestaurantMenu} />
           <Route path="/monthlyReview" exact component={StaffSummary} />
+          <Route path="/restaurantReview" exact component={StaffReview} />
 
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
