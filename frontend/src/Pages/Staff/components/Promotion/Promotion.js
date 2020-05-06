@@ -52,7 +52,7 @@ const StaffPromo = (props) => {
       <Grid item lg={2} sm={2} xl={2} xs={2}>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             size="small"
             onClick={handleClick}
             style={{ width: "200px", height: "50px" }}

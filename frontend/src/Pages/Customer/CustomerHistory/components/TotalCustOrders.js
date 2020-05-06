@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 const TotalCustOrders = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const totalCustOrders = 20;
   const id = props.id;
   console.log("id: ", id);
   const [total, setTotal] = useState();
@@ -89,11 +88,7 @@ const TotalCustOrders = (props) => {
             </Typography>
             <Typography variant="h3">{total}</Typography>
           </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <ShoppingCartIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
+          <Grid item></Grid>
         </Grid>
       </CardContent>
     </Card>

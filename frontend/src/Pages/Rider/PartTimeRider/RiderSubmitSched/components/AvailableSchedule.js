@@ -399,7 +399,7 @@ const AvailableSchedule = (props) => {
         <Button
           button
           type="submit"
-          color="primary"
+          color="secondary"
           variant="contained"
           onClick={() => this.submit()}
         >
