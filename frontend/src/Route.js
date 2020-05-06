@@ -21,6 +21,8 @@ import CustomerDashboard from "./Pages/Customer/Dashboard/Dashboard";
 import PartTimeRiderProfile from "./Pages/Rider/PartTimeRider/RiderProfile/RiderProfile";
 import PartTimeRiderHistory from "./Pages/Rider/PartTimeRider/RiderHistory/RiderHistory";
 import PartTimeRiderSched from "./Pages/Rider/PartTimeRider/RiderSubmitSched/RiderSubmitSched";
+import FullTimeRiderSched from "./Pages/Rider/FullTimeRider/RiderSubmitSched/RiderSubmitSched";
+
 import PartTimeRiderSummary from "./Pages/Rider/PartTimeRider/RiderSummary/RiderSummary";
 import FullTimeRiderSummary from "./Pages/Rider/FullTimeRider/RiderSummary/RiderSummary";
 import FullTimeRiderProfile from "./Pages/Rider/FullTimeRider/RiderProfile/RiderProfile";
@@ -117,9 +119,7 @@ export default class Routes extends Component {
             component={FullTimeRiderHistory}
           />
 
-          {/* <Route path="/partTimeSched" 
-          exact 
-          component={PartTimeRiderSched} /> */}
+          <Route path="/fullTimeSched" exact component={FullTimeRiderSched} />
 
           <Route
             path="/fullTimeSummary"
@@ -141,8 +141,12 @@ export default class Routes extends Component {
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/restaurant/signup" exact component={RestaurantSignup} />
-          {this.state.isCustomer && <Route path="/restaurant/menu" component={CustomerMenu} />}
-          {!this.state.isCustomer && <Route path="/restaurant/menu" component={OtherMenu} />}
+          {this.state.isCustomer && (
+            <Route path="/restaurant/menu" component={CustomerMenu} />
+          )}
+          {!this.state.isCustomer && (
+            <Route path="/restaurant/menu" component={OtherMenu} />
+          )}
         </Switch>
       </Router>
     );
