@@ -66,7 +66,7 @@ class MenuRow extends Component {
                     {this.state.name}
                 </TableCell>
                 <TableCell align="center">${this.state.price}</TableCell>
-                <TableCell align="center">{this.state.availabile}</TableCell>            
+                {/* <TableCell align="center">{this.state.availabile}</TableCell>            
                 <TableCell align="center">
                     <Button onClick={() => this.handleRemove()}><RemoveCircleIcon/></Button> 
                     {this.state.qty}
@@ -74,7 +74,7 @@ class MenuRow extends Component {
                 </TableCell>
                 <TableCell align="right">
                     <Button variant="contained" onClick={() => this.handleAddtoCart()}>Add to Cart</Button>
-                </TableCell>
+                </TableCell> */}
             </TableRow>
         );
     }

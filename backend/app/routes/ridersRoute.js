@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createRider, signinRider, searchRiderFirstnameOrLastname, editRider, deleteRider, ordersByRider } from '../controllers/ridersController';
+import { createRider, signinRider, searchRiderFirstnameOrLastname, editRider, deleteRider, ordersByRider, getRiderType } from '../controllers/ridersController';
 
 const router = express.Router();
 
@@ -12,5 +12,6 @@ router.get('/search', searchRiderFirstnameOrLastname);
 router.post('/edit', editRider);
 router.post('/delete', deleteRider);
 router.post('/orders', ordersByRider);
+router.post('/type', getRiderType);
 
 export default router;

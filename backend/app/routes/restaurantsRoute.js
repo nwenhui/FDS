@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchRestaurant, getRestaurant, createRestaurant, editRestaurant, deleteRestaurant, getRestaurantMenu, getFood } from '../controllers/restaurantsController';
+import { searchRestaurant, getRestaurant, createRestaurant, editRestaurant, deleteRestaurant, getRestaurantMenu, getFood, getFoodAvailability } from '../controllers/restaurantsController';
 
 const router = express.Router();
 
@@ -14,5 +14,6 @@ router.post('/edit', editRestaurant)
 router.post('/delete', deleteRestaurant)
 router.get('/menu', getRestaurantMenu)
 router.post('/food',getFood)
+router.post('/food/availability', getFoodAvailability)
 
 export default router;

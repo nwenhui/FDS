@@ -13,7 +13,7 @@ import history from '../../../history';
 import MenuRow from './components/MenuRow/MenuRow';
 
 
-class CustomerMenu extends Component {
+class OtherMenu extends Component {
     state = { 
         items: []
      }
@@ -51,9 +51,9 @@ class CustomerMenu extends Component {
                             <TableRow>
                                 <TableCell>Food</TableCell>
                                 <TableCell align="center">Price</TableCell>
-                                <TableCell align="center">Qty left</TableCell>
+                                {/* <TableCell align="center">Qty left</TableCell>
                                 <TableCell align="center">Quantity to order</TableCell>
-                                <TableCell align="right"> </TableCell>
+                                <TableCell align="right"> </TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -68,4 +68,4 @@ class CustomerMenu extends Component {
     }
 }
  
-export default CustomerMenu;
+export default OtherMenu;
