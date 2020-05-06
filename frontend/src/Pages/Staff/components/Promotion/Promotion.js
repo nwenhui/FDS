@@ -31,7 +31,7 @@ const StaffPromo = () => {
         <Grid item lg={2} sm={2} xl={2} xs={2}>
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             size="small"
             onClick={handleOpenDiv}
             style={{ width: "130px" }}

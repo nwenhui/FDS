@@ -62,7 +62,7 @@ const CustomerSearch = (props) => {
               placeholder="Search Item"
               onChange={handleSearchInput}
             />
-            <Button variant="contained" color="primary" onClick={handleEnter}>
+            <Button variant="contained" color="secondary" onClick={handleEnter}>
               Enter
             </Button>
           </div>

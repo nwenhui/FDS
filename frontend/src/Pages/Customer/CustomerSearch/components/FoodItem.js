@@ -175,7 +175,7 @@ const FoodItem = (props) => {
               </Table>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={handleAddtoCart}
               >
                 Add to Cart

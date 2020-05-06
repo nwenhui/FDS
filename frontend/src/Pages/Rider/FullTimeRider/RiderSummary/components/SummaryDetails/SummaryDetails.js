@@ -18,7 +18,7 @@ class SummaryDetails extends Component {
         <Card>
           <form autoComplete="off" noValidate>
             <CardHeader
-              title="Weekly Summary"
+              title="Monthly Summary"
               style={{ textAlign: "center" }}
             />
 

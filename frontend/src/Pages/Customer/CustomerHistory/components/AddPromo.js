@@ -140,7 +140,7 @@ const AddPromo = (props) => {
         </FormControl>
       )}
       <Button
-        color="primary"
+        color="secondary"
         size="small"
         variant="contained"
         onClick={handleEnterButton}
