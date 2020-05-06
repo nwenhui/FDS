@@ -1,8 +1,8 @@
 import React, { Component, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
-import NavBar from "../../../components/Navigation/Navigation";
-import { Sidebar } from "../../../layouts/Staff/components";
+import NavBar from "../../../../components/Navigation/Navigation";
+import { Sidebar } from "../../../../layouts/Staff/components";
 import { AddFood, data, FoodItem } from "./components";
 
 const useStyles = makeStyles((theme) => ({
