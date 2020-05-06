@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import EditPromo from "./EditPromotion";
 import { makeStyles } from "@material-ui/core/styles";
-import CurrentPromotionInfo from './CurrentPromotionInfo';
+import PastPromotionInfo from './PastPromotionInfo';
 import {
   Card,
   CardHeader,
@@ -82,7 +82,7 @@ const Cpromo = (props) => {
   };
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Ongoing Promotions" />
+      <CardHeader title="Past Promotions" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -96,13 +96,13 @@ const Cpromo = (props) => {
                   <TableCell>Minimum Spending Required $</TableCell>
                   <TableCell>Discount %</TableCell>
                   <TableCell>Free Delivery</TableCell>
-                  <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
+                  {/* <TableCell>Edit</TableCell>
+                  <TableCell>Delete</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {props.promotions.map((promotion, index) => (
-                  <CurrentPromotionInfo key={index} promotionid={promotion} />
+                  <PastPromotionInfo key={index} promotionid={promotion} />
                 ))}
               </TableBody>
             </Table>

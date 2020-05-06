@@ -124,19 +124,20 @@ CREATE TRIGGER promotion_date_trigger
 INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
     DEFAULT, now(), '2020-09-28 01:00:00');
 
-/**
+
+
 create table restaurantpromotion (
-    promotionid integer unique references promotion,
-    staffid integer references Staff,
-    primary key (promotionid, staffid)
-)
+    promotionid integer unique references promotion on delete cascade,
+    resid integer references restaurant on delete cascade,
+    primary key (promotionid, resid)
+);
 
 create table fdspromotion (
     promotionid integer unique references promotion,
     managerid integer references Manager,
     primary key (promotionid, managerid)
-)
-*/
+);
+
 
 CREATE TABLE Rider (
     Id SERIAL,
@@ -180,77 +181,76 @@ CREATE TABLE Customer (
     PRIMARY KEY (Id)
 );
 
-CREATE TABLE OrderDetails (
-    OrderID INTEGER,
-    AddressDetails VARCHAR(60) NOT NULL,
+CREATE TABLE Orders (
+    OrderID SERIAL,
+    ordered_on timestamp default now(),
+    Id INTEGER REFERENCES Customer on delete set null, 
+    ccpayment boolean, 
     PRIMARY KEY (OrderID)
 );
 
+CREATE TABLE OrderDetails (
+    OrderID integer,
+    AddressDetails VARCHAR(60) NOT NULL,
+    PRIMARY KEY (OrderID),
+    foreign key (orderid) references orders
+);
+
 CREATE TABLE Contains (
-    OrderID INTEGER,
+    orderid integer,
     ItemID INTEGER,
     Quantity INTEGER,
     FoodFee INTEGER,
-    PRIMARY KEY (OrderID, ItemID, Quantity),
-    FOREIGN KEY (OrderID) REFERENCES OrderDetails,
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    PRIMARY KEY (orderid, ItemID),
+    FOREIGN KEY (ItemID) REFERENCES FoodItem,
+    foreign key (orderid) references orders
 );
 
 CREATE TABLE Journey (
-    JourneyID SERIAL,
+    orderid integer,
     OrderedOn TIMESTAMP NOT NULL,
     RiderStartsJourney TIMESTAMP NOT NULL,
     RiderArrivesAtRes TIMESTAMP NOT NULL,
     RiderDepartsToCust TIMESTAMP NOT NULL,
     DeliversFood TIMESTAMP NOT NULL,
-    PRIMARY KEY (JourneyID)
+    PRIMARY KEY (orderid),
+    foreign key (orderid) references orders
 );
 
 CREATE TABLE Delivers (
     OrderID INTEGER,
     Id INTEGER,
-    JourneyID INTEGER REFERENCES Journey,
     DeliveryFee INTEGER,
-    PRIMARY KEY (OrderID, Id),
+    PRIMARY KEY (OrderID), 
     FOREIGN KEY (OrderID) REFERENCES OrderDetails,
     FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Receipt (
-    ReceiptID SERIAL,
-    GainedPoints INTEGER,
+    orderid integer,
+    GainedPoints INTEGER, 
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
     TotalFee INTEGER,
-    PRIMARY KEY (ReceiptID)
-);
-
-CREATE TABLE Orders (
-    OrderID SERIAL,
-    ReceiptID INTEGER REFERENCES Receipt,
-    ordered_on timestamp default now(),
-    Id INTEGER REFERENCES Customer on delete cascade,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (OrderID) REFERENCES OrderDetails
+    PRIMARY KEY (orderid),
+    foreign key (orderid) references orders
 );
 
 CREATE TABLE Rates (
-    Id INTEGER,
     OrderID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
-    PRIMARY KEY (Id, OrderID),
-    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
-    FOREIGN KEY (OrderID) REFERENCES OrderDetails
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Delivers 
 );
 
 CREATE TABLE Reviews (
-    Id INTEGER,
+    orderid integer,
     ItemID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
     Review VARCHAR(200),
-    PRIMARY KEY (Id, ItemID),
-    FOREIGN KEY (Id) REFERENCES Customer on delete cascade,
+    PRIMARY KEY (orderid, ItemID),
+    foreign key (orderid) references orders, 
     FOREIGN KEY (ItemID) REFERENCES FoodItem 
 );
 
