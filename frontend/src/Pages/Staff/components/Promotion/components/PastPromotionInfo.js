@@ -45,12 +45,6 @@ class PastPromotionInfo extends Component {
         this.fetchData();
     }
 
-    handleEdit() {
-
-    }
-
-    handleDelete() {}
-
     render() { 
         return (  
             <TableRow>

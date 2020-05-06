@@ -202,6 +202,20 @@ function newPromotion(start, end, min, disc, freedeli, resid) {
       .then(handleErrors)
 }
 
+function deletePromotion(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -218,4 +232,5 @@ export const restaurantService = {
     getOngoingPromotions,
     getPastPromotions,
     newPromotion,
+    deletePromotion
 }

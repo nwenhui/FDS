@@ -375,6 +375,25 @@ const getRestaurant = async (req, res) => {
     }
   }
 
+  /**
+   * delete restaurant promotion
+   */
+  const deletePromotion = async (req, res) => {
+    const { id } = req.body;
+    const deletePromotionQuery = 'delete from promotion where promotionid = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deletePromotionQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+
 
   
 export {
@@ -390,5 +409,6 @@ export {
     getPromotionInformation,
     getOngoingPromotions,
     getPastPromotions,
-    createRestaurantPromotion
+    createRestaurantPromotion,
+    deletePromotion
 };
