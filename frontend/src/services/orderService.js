@@ -5,7 +5,7 @@ import {restaurantService } from "./restaurantService";
 const deliveryfee = 4;
 const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
 const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
-const currentTotalSubject = new BehaviorSubject(JSON.parse(sessionStorage.getItem("currentTotal") || deliveryfee));
+const currentTotalSubject = new BehaviorSubject(JSON.parse(sessionStorage.getItem("currentTotal") || 0));
 const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("orderPayment") || "null"));
 const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
 const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"))
@@ -16,14 +16,15 @@ function promotionResults(data) {
     return results;
 }
 
-const addToCheckOut = ((itemid, qty, resid) => {
+const addToCheckOut = ((itemid, qty, resid, price) => {
     sessionStorage.removeItem("currentTotal");
     console.log('resid: ', resid);
     // localStorage.removeItem("currentRestaurant");
     console.log("currentRestaurant: ", currentRestaurantSubject.value)
     const item = {
         itemid: itemid,
-        qty: qty
+        qty: qty,
+        price: price
     };
     if (currentRestaurantSubject.value === null) {
         console.log('nullsies')
@@ -74,11 +75,12 @@ const removeFromCart = ((itemid) => {
     return currentCheckOutSubject.value.length;
 })
 
-const updateCart = ((itemid, qty) => {
+const updateCart = ((itemid, qty, price) => {
     sessionStorage.removeItem("currentTotal");
     const item = {
         itemid: itemid,
-        qty: qty
+        qty: qty,
+        price: price
     };
     let items = currentCheckOutSubject.value;
     console.log('item.itemid: ',item.itemid);
