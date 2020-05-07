@@ -363,6 +363,20 @@ function editPromotion(start, end, min, disc, freedeli, id) {
       .then(handleErrors)
 }
 
+function getMin(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/min';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -390,5 +404,6 @@ export const restaurantService = {
     searchAllFood,
     getRestaurantName,
     editFood,
-    editPromotion
+    editPromotion,
+    getMin
 }
