@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import data from "./components/data";
@@ -19,6 +19,11 @@ const CustomerCheckout = (props) => {
 
   const [checkout, setCheckout] = useState([]);
   const [resid, setResid] = useState()
+
+  useLayoutEffect(() => {
+    console.log('removeee')
+    sessionStorage.removeItem("currentTotal");
+  })
 
   return (
     <div className={classes.root}>

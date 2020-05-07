@@ -242,8 +242,10 @@ function logout() {
   localStorage.removeItem("currentUser");
   localStorage.removeItem("currentCheckOut");
   localStorage.removeItem("currentRestaurant");
-  localStorage.removeItem("currentTotal");
+  sessionStorage.removeItem("currentTotal");
   localStorage.removeItem("orderPayment");
+  localStorage.removeItem("promotionApplied");
+  localStorage.removeItem("deliveryFee");
   currentUserSubject.next(null);
 }
 

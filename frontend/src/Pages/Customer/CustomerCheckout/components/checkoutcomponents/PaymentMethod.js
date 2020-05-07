@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
-import { authenticationService } from "../../../../../services"
+import { authenticationService, orderService } from "../../../../../services"
 
 class PaymentMethod extends Component {
     state = {  
         user: null,
         creditcard: false,
-        cashpayment: false,
-        ccpayment: false,
     }
 
     componentDidMount() {
@@ -31,12 +29,8 @@ class PaymentMethod extends Component {
     }
 
     handleChange = (event) => {
-        if (event.target.vaue === "cash") {
-            this.setState({ cashpayment: true, ccpayment: false });
-        } else {
-            this.setState({ cashpayment: false, ccpayment: true });
-        }
-
+        orderService.setOrderPayment(event.target.value);
+        console.log('payment method: ', orderService.orderPaymentValue);
     }
 
     render() { 

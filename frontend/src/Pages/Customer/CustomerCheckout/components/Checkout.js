@@ -9,6 +9,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 import Total from './checkoutcomponents/Total'
 import PaymentMethod from './checkoutcomponents/PaymentMethod'
+import Promotion from './checkoutcomponents/Promotion'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,6 +108,7 @@ const Checkout = (props) => {
             </FormControl>
           </Grid> */}
           <PaymentMethod />
+          <Promotion />
           <IconButton
             style={{ marginLeft: "200px" }}
             fullWidth={true}

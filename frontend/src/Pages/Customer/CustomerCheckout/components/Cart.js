@@ -19,6 +19,8 @@ class Cart extends Component {
      }
 
      componentDidMount() {
+        sessionStorage.removeItem("currentTotal");
+
          console.log('hello', this.props.keywords);
          orderService.currentCheckOut.subscribe((x) => {
             console.log('omo',x);
@@ -40,7 +42,6 @@ class Cart extends Component {
                 });
             }
           });
-        localStorage.removeItem("currentTotal");
      }
 
     render() { 

@@ -471,4 +471,4 @@ CREATE TABLE Salary (
     BaseSalary INTEGER,
     PRIMARY KEY (Id),
     FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
-);
+);    
