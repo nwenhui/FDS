@@ -536,7 +536,7 @@ CREATE OR REPLACE FUNCTION inventory_contains_update()
     RETURNS TRIGGER AS $$
 BEGIN
     IF ((SELECT amt_available FROM Inventory I WHERE I.ItemID 
-        = NEW.OrderID LIMIT 1) >= NEW.Quantity) THEN
+        = NEW.ItemID LIMIT 1) >= NEW.Quantity) THEN
         UPDATE Inventory I
         SET amt_available = I.amt_available - NEW.Quantity
         WHERE ItemID = NEW.ItemID;
