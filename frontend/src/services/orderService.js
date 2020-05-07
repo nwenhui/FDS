@@ -3,29 +3,18 @@ import { handleErrors } from "../helpers";
 import { restaurantService } from "./restaurantService";
 
 const deliveryfee = 4;
-const currentCheckOutSubject = new BehaviorSubject(
-  JSON.parse(localStorage.getItem("currentCheckOut") || "[]")
-);
-const currentRestaurantSubject = new BehaviorSubject(
-  JSON.parse(localStorage.getItem("currentRestaurant") || "null")
-);
-const currentTotalSubject = new BehaviorSubject(
-  JSON.parse(sessionStorage.getItem("currentTotal") || 0)
-);
-const orderPaymentSubject = new BehaviorSubject(
-  JSON.parse(localStorage.getItem("orderPayment") || "null")
-);
-const promotionAppliedSubject = new BehaviorSubject(
-  JSON.parse(localStorage.getItem("promotionApplied") || "null")
-);
-const deliveryFeeSubject = new BehaviorSubject(
-  JSON.parse(localStorage.getItem("deliveryFee") || "4")
-);
+const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
+const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
+const currentTotalSubject = new BehaviorSubject(0);
+const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("orderPayment") || "null"));
+const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
+const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"));
+const usedPointsSubject = new BehaviorSubject(false);
 
 function promotionResults(data) {
-  var results = [];
-  data.forEach((result) => results.push(result.promotionid));
-  return results;
+    var results = [];
+    data.forEach(result => results.push(result.promotionid));
+    return results;
 }
 
 const addToCheckOut = (itemid, qty, resid, price) => {
@@ -137,6 +126,12 @@ const setDeliveryFee = (fee) => {
   localStorage.setItem("deliveryFee", JSON.stringify(fee));
 };
 
+const setUsedPoints = ((value) => {
+    console.log("promotion????:" ,value)
+    usedPointsSubject.next(value)
+    localStorage.setItem("deliveryFee", JSON.stringify(value))
+})
+
 function applicableOrders(resid, total) {
   const data = { id: resid, total: total };
   const url = "http://localhost:3000/api/v1/customer/orders/promotions";
@@ -151,51 +146,43 @@ function applicableOrders(resid, total) {
 }
 
 function promotionDetails(id) {
-  const data = { id: id };
-  const url = "http://localhost:3000/api/v1/customer/orders/promotions/details";
+    const data = {id: id };
+    const url = 'http://localhost:3000/api/v1/customer/orders/promotions/details';
 
-  var request = new Request(url, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify(data),
-  });
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
 
-  return fetch(request).then(handleErrors);
+    return fetch(request)
+        .then(handleErrors)
 }
 
 export const orderService = {
-  addToCheckOut,
-  removeFromCart,
-  updateCart,
-  addToTotal,
-  setOrderPayment,
-  applicableOrders,
-  promotionResults,
-  promotionDetails,
-  setAppliedPromotion,
-  setDeliveryFee,
-  currentCheckOut: currentCheckOutSubject.asObservable(),
-  get currentCheckOutValue() {
-    return currentCheckOutSubject.value;
-  },
-  currentRestaurant: currentRestaurantSubject.asObservable(),
-  get currentRestaurantValue() {
-    return currentRestaurantSubject.value;
-  },
-  currentTotal: currentTotalSubject.asObservable(),
-  get currentTotalValue() {
-    return currentTotalSubject.value;
-  },
-  orderPayment: orderPaymentSubject.asObservable(),
-  get orderPaymentValue() {
-    return orderPaymentSubject.value;
-  },
-  promotionApplied: promotionAppliedSubject.asObservable(),
-  get promotionAppliedValue() {
-    return promotionAppliedSubject.value;
-  },
-  deliveryFeeSubject: deliveryFeeSubject.asObservable(),
-  get deliveryFeeValue() {
-    return deliveryFeeSubject.value;
-  },
-};
+    addToCheckOut,
+    removeFromCart,
+    updateCart,
+    addToTotal,
+    setOrderPayment,
+    applicableOrders,
+    promotionResults,
+    promotionDetails,
+    setAppliedPromotion,
+    setDeliveryFee,
+    setUsedPoints,
+    currentCheckOut: currentCheckOutSubject.asObservable(),
+    get currentCheckOutValue() { return currentCheckOutSubject.value },
+    currentRestaurant: currentRestaurantSubject.asObservable(),
+    get currentRestaurantValue() { return currentRestaurantSubject.value },
+    currentTotal: currentTotalSubject.asObservable(),
+    get currentTotalValue() { return currentTotalSubject.value },
+    orderPayment: orderPaymentSubject.asObservable(),
+    get orderPaymentValue() { return orderPaymentSubject.value },
+    promotionApplied: promotionAppliedSubject.asObservable(),
+    get promotionAppliedValue() { return promotionAppliedSubject.value },
+    deliveryFeeSubject: deliveryFeeSubject.asObservable(),
+    get deliveryFeeValue() { return deliveryFeeSubject.value },
+    usedPointsSubject: usedPointsSubject.asObservable(),
+    get usedPointsValue() { return usedPointsSubject.value },
+}

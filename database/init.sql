@@ -307,7 +307,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER promotion_date_trigger
-    BEFORE INSERT OR UPDATE
+    BEFORE INSERT
     ON Promotion
     FOR EACH ROW
     EXECUTE FUNCTION promotion_date_check()
@@ -689,7 +689,7 @@ CREATE TABLE Receipt (
     promotionid INTEGER,
     PercentageOff INTEGER DEFAULT 0,
     GainedPoints INTEGER, 
-    UsedPoints INTEGER,
+    UsedPoints INTEGER DEFAULT 0,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
     TotalFee NUMERIC,

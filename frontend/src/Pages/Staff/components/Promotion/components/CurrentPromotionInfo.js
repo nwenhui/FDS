@@ -17,6 +17,7 @@ import {
 import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
 import ClearTwoToneIcon from '@material-ui/icons/ClearTwoTone';
 import { restaurantService } from "../../../../../services";
+import EditPromotionDialog from "./EditPromotionDialog"
   
 
 class CurrentPromotionInfo extends Component {
@@ -27,6 +28,7 @@ class CurrentPromotionInfo extends Component {
         min: null,
         disc: null,
         freedeli: null,
+        edit: false,
     }
 
     fetchData() {
@@ -46,8 +48,12 @@ class CurrentPromotionInfo extends Component {
     }
 
     handleEdit() {
-
-    }
+      if (this.state.edit) {
+          this.setState({ edit: false });
+      } else {
+          this.setState({ edit: true });
+      }
+  }
 
     handleDelete() {
         restaurantService.deletePromotion(this.state.promotionid).then((response) => {
@@ -89,6 +95,7 @@ class CurrentPromotionInfo extends Component {
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
+                    {this.state.edit && <EditPromotionDialog edit={this.state.edit} promotionid={this.state.promotionid} />}
                   </TableRow>
         );
     }

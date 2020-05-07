@@ -305,6 +305,31 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * new order from customer
+   */
+  const createOrder = async (req, res) => {
+    const { id, ccpayment, items } = req.body;
+    console.log('id: ', id);
+    const createOrderQuery = 'insert into orders(id, ccpayment) valuse($1,$2) returning *';
+    const values = [
+      id,
+      ccpayment
+    ];
+
+    try {
+      const { rows } = await dbQuery.query(createOrderQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,

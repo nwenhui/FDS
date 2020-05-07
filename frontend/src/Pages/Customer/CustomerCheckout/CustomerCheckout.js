@@ -47,7 +47,8 @@ const CustomerCheckout = (props) => {
           <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
         </Grid>
 
-        <Grid container item spacing={4} id="page-wrap">
+      <Grid container container direction="column" justify="center" alignItems="center" spacing={6} xs={12}>
+        <Grid item lg={12} md={12} xl={12} xs={12}>
           <Grid container justify="center">
             <LocationInput
               placeholder="Enter your location"
@@ -66,12 +67,12 @@ const CustomerCheckout = (props) => {
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <Cart data={data.foodItem} resid={resid} checkout={checkout} />
-            {/*<FoodItem data={checkoutList.foodItem} />*/}
           </Grid>
           <Grid container justify="center">
             <Checkout />
           </Grid>
           <Grid></Grid>
+        </Grid>
         </Grid>
       </Grid>
     </div>

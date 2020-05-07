@@ -96,7 +96,7 @@ class NewItemForm extends Component {
                         <input type="number" class="form-control" onChange={this.setMaxLimit.bind(this)} />
                     </div>
                     <div class="col" align="left">
-                    <Button type="button" class="btn btn-dark" type="submit">
+                    <Button type="button" color="secondary" type="submit">
                             Add Item
                         </Button>
                     </div>

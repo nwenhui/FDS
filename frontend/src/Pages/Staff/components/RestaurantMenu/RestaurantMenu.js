@@ -40,7 +40,7 @@ const StaffFoodItem = (props) => {
       <Grid container item spacing={4} alignItems="center" justify="center">
         <Grid item lg={2} sm={2} xl={2} xs={2}>
           <Button
-            color="primary"
+            color="secondary"
             size="small"
             variant="contained"
             onClick={handleClick}

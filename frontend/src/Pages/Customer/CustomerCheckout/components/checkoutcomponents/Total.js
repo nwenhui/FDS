@@ -5,6 +5,7 @@ import { orderService } from "../../../../../services";
 class Total extends Component {
     state = {  
         total: 0,
+        delivery: 0,
     }
 
     componentDidMount() {
@@ -13,6 +14,11 @@ class Total extends Component {
             total: x,
         })
         );
+        orderService.deliveryFeeSubject.subscribe((x) => {
+          this.setState({
+            delivery: x
+          })
+        })
     }
 
     render() { 
@@ -25,9 +31,20 @@ class Total extends Component {
                 gutterBottom
                 variant="body2"
               >
-                Total Cost + $4 delivery fee
+                Subtotal
               </Typography>
               <Typography variant="h5">${this.state.total}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography
+                // className={classes.title}
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+              >
+                Delivery Fee
+              </Typography>
+              <Typography variant="h5">${this.state.delivery}</Typography>
             </Grid>
           </Grid>
         );
