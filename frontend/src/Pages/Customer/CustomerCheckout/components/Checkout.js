@@ -10,6 +10,9 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Total from './checkoutcomponents/Total'
 import PaymentMethod from './checkoutcomponents/PaymentMethod'
 import Promotion from './checkoutcomponents/Promotion'
+import UsePoints from './checkoutcomponents/UsePoints'
+
+import { authenticationService } from "../../../../services"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,6 +112,9 @@ const Checkout = (props) => {
           </Grid> */}
           <PaymentMethod />
           <Promotion />
+          {authenticationService.currentUserValue.points >= 10 && 
+          <UsePoints />
+          } 
           <IconButton
             style={{ marginLeft: "200px" }}
             fullWidth={true}

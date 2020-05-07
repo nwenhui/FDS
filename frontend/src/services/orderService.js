@@ -8,7 +8,8 @@ const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.get
 const currentTotalSubject = new BehaviorSubject(0);
 const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("orderPayment") || "null"));
 const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
-const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"))
+const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"));
+const usedPointsSubject = new BehaviorSubject(false);
 
 function promotionResults(data) {
     var results = [];
@@ -125,6 +126,12 @@ const setDeliveryFee = ((fee) => {
     localStorage.setItem("deliveryFee", JSON.stringify(fee))
 })
 
+const setUsedPoints = ((value) => {
+    console.log("promotion????:" ,value)
+    usedPointsSubject.next(value)
+    localStorage.setItem("deliveryFee", JSON.stringify(value))
+})
+
 function applicableOrders(resid, total) {
     const data = {id: resid, total: total };
     const url = 'http://localhost:3000/api/v1/customer/orders/promotions';
@@ -165,6 +172,7 @@ export const orderService = {
     promotionDetails,
     setAppliedPromotion,
     setDeliveryFee,
+    setUsedPoints,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
     currentRestaurant: currentRestaurantSubject.asObservable(),
@@ -177,4 +185,6 @@ export const orderService = {
     get promotionAppliedValue() { return promotionAppliedSubject.value },
     deliveryFeeSubject: deliveryFeeSubject.asObservable(),
     get deliveryFeeValue() { return deliveryFeeSubject.value },
+    usedPointsSubject: usedPointsSubject.asObservable(),
+    get usedPointsValue() { return usedPointsSubject.value },
 }
