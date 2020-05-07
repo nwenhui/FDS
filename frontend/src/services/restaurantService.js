@@ -34,6 +34,12 @@ function restaurantMenuResults(data) {
   return results;
 }
 
+function foodCategoryResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.categoryname));
+  return results;
+}
+
 function restaurantPromotionsResults(data) {
   var results = [];
   data.forEach(result => results.push(result.promotionid));
@@ -202,6 +208,133 @@ function newPromotion(start, end, min, disc, freedeli, resid) {
       .then(handleErrors)
 }
 
+function deletePromotion(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/promotions/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getFoodCategory(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/category';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function newFoodItem(name, price, limit, resid) {
+  const data = {name: name, price: price, limit: limit, resid: resid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/new';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function deleteFood(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/delete';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantFromFood(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/restaurant';
+  console.log('herehereher')
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantvailables(resid) {
+  const data = {id: resid};
+  const url = 'http://localhost:3000/api/v1/restaurant/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function searchAvailableFood(keywords) {
+  const data = {keywords: keywords};
+  const url = 'http://localhost:3000/api/v1/restaurant/search/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function searchAllFood(keywords) {
+  const data = {keywords: keywords};
+  const url = 'http://localhost:3000/api/v1/restaurant/search/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantName(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/name';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -218,4 +351,14 @@ export const restaurantService = {
     getOngoingPromotions,
     getPastPromotions,
     newPromotion,
+    deletePromotion,
+    getFoodCategory,
+    foodCategoryResults,
+    newFoodItem,
+    deleteFood,
+    getRestaurantFromFood,
+    getRestaurantvailables,
+    searchAvailableFood,
+    searchAllFood,
+    getRestaurantName
 }

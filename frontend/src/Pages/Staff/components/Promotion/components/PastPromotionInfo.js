@@ -54,24 +54,18 @@ class PastPromotionInfo extends Component {
     this.fetchData();
   }
 
-  handleEdit() {}
-
-  handleDelete() {}
-
-  render() {
-    return (
-      <TableRow>
-        <TableCell>{this.state.promotionid}</TableCell>
-        <TableCell>{this.state.start}</TableCell>
-        <TableCell>{this.state.end}</TableCell>
-        <TableCell>{this.state.min}</TableCell>
-        <TableCell>{this.state.disc}</TableCell>
-        <TableCell>
-          {this.state.freedeli ? <CheckTwoToneIcon /> : <ClearTwoToneIcon />}
-        </TableCell>
-      </TableRow>
-    );
-  }
+    render() { 
+        return (  
+            <TableRow>
+                    <TableCell>{this.state.promotionid}</TableCell>
+                    <TableCell>{this.state.start}</TableCell>
+                    <TableCell>{this.state.end}</TableCell>
+                    <TableCell>{this.state.min}</TableCell>
+                    <TableCell>{this.state.disc}</TableCell>
+                    <TableCell>{this.state.freedeli ? <CheckTwoToneIcon /> : <ClearTwoToneIcon />}</TableCell>
+                  </TableRow>
+        );
+    }
 }
 
 export default PastPromotionInfo;

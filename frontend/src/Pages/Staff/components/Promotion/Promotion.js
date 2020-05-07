@@ -42,6 +42,12 @@ const StaffPromo = (props) => {
   //   setPromotions(props.promotions)
   // })
 
+<<<<<<< HEAD
+=======
+  console.log('resididididid: ', props.resid);
+
+
+>>>>>>> 544f56aa0b89f25e4a45ae80eace4a7169a3cbe3
   const handleOpenDiv = () => {
     setOpenDiv(!openDiv);
   };
@@ -62,8 +68,6 @@ const StaffPromo = (props) => {
           >
             Add New Promotion
           </Button>
-          {/* {open && <NewPromotion />} */}
-          {/* {openDiv && <AddPromotion onClick={handleOpenDiv} />} */}
         </Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
           {open && <NewPromotion resid={props.resid} />}
@@ -121,6 +125,7 @@ class Promotionsss extends Component {
             resid: x.restaurantid,
           },
           () => {
+            console.log('res???????', this.state.resid)
             this.fetchPromotions(this.state.resid);
           }
         );

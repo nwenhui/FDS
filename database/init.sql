@@ -37,7 +37,7 @@ INSERT INTO FoodItem VALUES (DEFAULT, 'Spaghetti', 5, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Carbonara', 5, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Mushroom Soup', 3, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Seafood Chowder', 3, 200);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Chicken Teriyaki Pizza', 13, 90);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Chicken Teriyaki Pizza', 13, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Garlic Bread', 1, 300);
 
 --seed for drinks, 7-12
@@ -46,22 +46,22 @@ INSERT INTO FoodItem VALUES (DEFAULT, 'Sprite', 2, 100);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Milkshake', 3, 100);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Tea', 1, 300);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Coffee', 1, 300);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Milo Dinosaur', 4, 100);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Milo Dinosaur', 4, 200);
 
 --seed for chinese, 13-18
-INSERT INTO FoodItem VALUES (DEFAULT, 'Rice', 1, 100);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Stir Fry', 5, 70);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Rice', 1, 200);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Stir Fry', 5, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Orange Chicken', 5, 200);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Sliced Fish Soup', 7, 100);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Kway Teow', 5, 70);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Sliced Fish Soup', 7, 200);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Kway Teow', 5, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Kang Kong', 3, 200);
 
 --seed for malay, 19-24
 INSERT INTO FoodItem VALUES (DEFAULT, 'Nasi Briyani', 5, 230);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Mee Goreng', 5, 100);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Nasi Lemak', 5, 100);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Satay', 13, 170);
-INSERT INTO FoodItem VALUES (DEFAULT, 'Mee Siam', 5, 100);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Mee Goreng', 5, 200);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Nasi Lemak', 5, 200);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Satay', 13, 200);
+INSERT INTO FoodItem VALUES (DEFAULT, 'Mee Siam', 5, 200);
 INSERT INTO FoodItem VALUES (DEFAULT, 'Ayam Penyet Set', 9, 200);
 
 --seed for indian, 25-30
@@ -149,7 +149,7 @@ CREATE TABLE Classifies (
     ItemID INTEGER,
     PRIMARY KEY (catid, ItemID),
     FOREIGN KEY (catid) REFERENCES Category,
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete cascade
 );
 
 INSERT INTO Classifies VALUES (1, 6);
@@ -177,7 +177,7 @@ CREATE TABLE Inventory (
     amt_available integer,
     available boolean default TRUE,
     PRIMARY KEY (itemid),
-    FOREIGN KEY (itemid) REFERENCES fooditem
+    FOREIGN KEY (itemid) REFERENCES fooditem on delete cascade
 );
 
 CREATE OR REPLACE FUNCTION inventory_check() 
@@ -200,17 +200,17 @@ CREATE TRIGGER inventory_check_trigger
     EXECUTE FUNCTION inventory_check()
 ;
 
-INSERT INTO Inventory VALUES (1, 0, DEFAULT);
-INSERT INTO Inventory VALUES (2, 123, DEFAULT);
-INSERT INTO Inventory VALUES (3, 90, DEFAULT);
-INSERT INTO Inventory VALUES (4, 33, DEFAULT);
-INSERT INTO Inventory VALUES (5, 197, DEFAULT);
+INSERT INTO Inventory VALUES (1, 200, DEFAULT);
+INSERT INTO Inventory VALUES (2, 200, DEFAULT);
+INSERT INTO Inventory VALUES (3, 200, DEFAULT);
+INSERT INTO Inventory VALUES (4, 200, DEFAULT);
+INSERT INTO Inventory VALUES (5, 200, DEFAULT);
 INSERT INTO Inventory VALUES (6, 0, DEFAULT);
 INSERT INTO Inventory VALUES (7, 13, DEFAULT);
 INSERT INTO Inventory VALUES (8, 9, DEFAULT);
 INSERT INTO Inventory VALUES (9, 33, DEFAULT);
 INSERT INTO Inventory VALUES (10, 37, DEFAULT);
-INSERT INTO Inventory VALUES (11, 0, DEFAULT);
+INSERT INTO Inventory VALUES (11, 200, DEFAULT);
 INSERT INTO Inventory VALUES (12, 13, DEFAULT);
 INSERT INTO Inventory VALUES (13, 9, DEFAULT);
 INSERT INTO Inventory VALUES (14, 33, DEFAULT);
@@ -225,11 +225,11 @@ INSERT INTO Inventory VALUES (22, 13, DEFAULT);
 INSERT INTO Inventory VALUES (23, 9, DEFAULT);
 INSERT INTO Inventory VALUES (24, 33, DEFAULT);
 INSERT INTO Inventory VALUES (25, 37, DEFAULT);
-INSERT INTO Inventory VALUES (26, 0, DEFAULT);
+INSERT INTO Inventory VALUES (26, 200, DEFAULT);
 INSERT INTO Inventory VALUES (27, 13, DEFAULT);
 INSERT INTO Inventory VALUES (28, 9, DEFAULT);
 INSERT INTO Inventory VALUES (29, 33, DEFAULT);
-INSERT INTO Inventory VALUES (30, 37, DEFAULT);
+INSERT INTO Inventory VALUES (30, 200, DEFAULT);
 
 CREATE TABLE Staff (
     Id SERIAL,
@@ -381,7 +381,7 @@ CREATE TABLE Shifts (
 CREATE OR REPLACE FUNCTION shift_check() 
     RETURNS TRIGGER AS $$
 BEGIN
-   IF ((select count(*) FROM Shifts GROUP BY StartTime limit 1) < 5) THEN
+   IF ((select count(*) FROM Shifts GROUP BY StartTime LIMIT 1) < 5) THEN
         RAISE INFO 'There are less than five people working this shift';
     END IF;
     RETURN NEW;
@@ -514,11 +514,11 @@ CREATE TABLE Contains (
     Cost INTEGER REFERENCES FoodItem,
     FoodFee INTEGER,
     PRIMARY KEY (orderid, ItemID),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem,
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null, 
     foreign key (orderid) references orders
 );
 
-CREATE OR REPLACE FUNCTION contains_check() 
+CREATE OR REPLACE FUNCTION contains_calculate() 
     RETURNS TRIGGER AS $$
 BEGIN
     NEW.FoodFee = NEW.Quantity*NEW.Cost;
@@ -530,7 +530,32 @@ CREATE TRIGGER contains_check_trigger
     BEFORE INSERT OR UPDATE
     ON Contains 
     FOR EACH ROW
-    EXECUTE FUNCTION contains_check()
+    EXECUTE FUNCTION contains_calculate()
+;
+
+CREATE OR REPLACE FUNCTION inventory_contains_update() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF ((SELECT amt_available FROM Inventory I WHERE I.ItemID 
+        = NEW.OrderID LIMIT 1) < NEW.Quantity) THEN
+        NEW.Quantity = 0;
+        RAISE EXCEPTION 'Item quantity exceeds limit.';
+    END IF;
+    IF ((SELECT amt_available FROM Inventory I WHERE I.ItemID 
+        = NEW.OrderID LIMIT 1) >= NEW.Quantity) THEN
+        UPDATE Inventory I
+        SET amt_available = I.amt_available - NEW.Quantity
+        WHERE ItemID = NEW.ItemID;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER inventory_contains_update_trigger
+    BEFORE INSERT
+    ON Contains 
+    FOR EACH ROW
+    EXECUTE FUNCTION inventory_contains_update()
 ;
 
 INSERT INTO Contains VALUES (1, 2, 1, 5, DEFAULT);
@@ -734,7 +759,7 @@ CREATE TABLE Reviews (
     Review VARCHAR(200),
     PRIMARY KEY (orderid, ItemID),
     foreign key (orderid) references orders, 
-    FOREIGN KEY (ItemID) REFERENCES FoodItem 
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null
 );
 
 INSERT INTO Reviews VALUES (1, 2, 5, 'Amazing');
