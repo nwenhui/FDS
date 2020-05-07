@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
-import EditPromo from "./EditPromotion";
+import EditPromo from "./EditPromo";
 import { makeStyles } from "@material-ui/core/styles";
 import PastPromotionInfo from "./PastPromotionInfo";
 import {
