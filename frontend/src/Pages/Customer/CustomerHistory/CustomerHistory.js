@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import NavBar from "../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../layouts/Customer/components";
 import { PastOrders, TotalCustOrders, data, AddPromo } from "./components";
-import { authenticationService } from "../../../services"
+import { authenticationService, customerService } from "../../../services"
 
 
 class CustomerHistory extends Component {
@@ -15,13 +15,20 @@ class CustomerHistory extends Component {
     firstname: null,
     lastname: null,
     points: null,
-    creditcard: null
+    creditcard: null,
+    orders: []
   }
 
   componentDidMount() {
       authenticationService.currentUser.subscribe((x) => {
           if (x !== null) {
-              this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points }, () => {console.log('stuff happened')})
+              this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points }, () => {
+                customerService.customerOrders(this.state.id).then((response) => {
+                  response.json().then((data) => {
+                    this.setState({ orders: customerService.customerOrdersResults(data) });
+                  })
+                })
+              })
           }
       });
   }
@@ -40,7 +47,7 @@ class CustomerHistory extends Component {
               <TotalCustOrders id={this.state.id}/>
             </Grid>
             <Grid item lg={12} md={12} xl={12} xs={12}>
-              <PastOrders data={data.restaurantreview} />
+              <PastOrders data={data.restaurantreview} orders={this.state.orders} />
             </Grid>
           </Grid>
         </Grid>

@@ -7,8 +7,6 @@ import {
   validatePassword,
   isEmpty,
   isNum,
-  startDateError,
-  durationError,
 } from '../helpers/validations';
 
 import {

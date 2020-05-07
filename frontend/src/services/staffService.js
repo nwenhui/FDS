@@ -5,7 +5,7 @@ function fdsPromotionsResults(data) {
     var results = [];
     data.forEach(result => results.push(result.promotionid));
     return results;
-  }
+}
 
 function getPromotions() {
     const data = {  };

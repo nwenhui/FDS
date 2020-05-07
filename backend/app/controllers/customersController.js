@@ -330,6 +330,106 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get all orders by customer
+   */
+  const customerOrders = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select * from orders where id = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get customer order receipt
+   */
+  const orderReceipt = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select * from receipt where orderid = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get customer order information
+   */
+  const orderInformation = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select * from orders where orderid = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get customer food
+   */
+  const orderFood = async (req, res) => {
+    const { id } = req.body;
+    console.log('id: ', id);
+    const ordersByCustomerQuery = 'select * from contains where orderid = $1';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get order restaurant
+   */
+  const orderRestaurant = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select resname from restaurant where resid = (select distinct resid from listings where itemid = any(select itemid from contains where orderid = $1))';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,
@@ -340,4 +440,9 @@ import {
     ordersByCustomer,
     applicablePromotions,
     promotionDetails,
+    customerOrders,
+    orderReceipt,
+    orderInformation,
+    orderFood,
+    orderRestaurant
   };
