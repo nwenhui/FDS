@@ -32,10 +32,16 @@ import FullTimeRiderProfile from "./Pages/Rider/FullTimeRider/RiderProfile/Rider
 import FullTimeRiderHistory from "./Pages/Rider/FullTimeRider/RiderHistory/RiderHistory";
 
 import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
+import ManagerPromo from "./Pages/Manager/components/ManagerPromo/Promo";
+import RiderSalary from "./Pages/Manager/components/Salary/Salary";
+import DeliveryFee from "./Pages/Manager/components/DeliveryFee/DeliveryFee";
+import MonthlySummary from "./Pages/Manager/components/MonthlySummary/MonthSummary.js";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
-import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu";
+import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
 import StaffPromotions from "./Pages/Staff/components/Promotion/Promotion";
+import StaffSummary from "./Pages/Staff/components/Summary/Summary";
+import StaffReview from "./Pages/Staff/components/Review/Review";
 
 import history from "./history";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -149,9 +155,16 @@ export default class Routes extends Component {
           {this.state.isStaff && (
             <Route path="/dashboard" exact component={StaffDashboard} />
           )}
+          <Route path="/managerPromo" exact component={ManagerPromo} />
+          <Route path="/riderSalary" exact component={RiderSalary} />
+          <Route path="/deliveryFee" exact component={DeliveryFee} />
+          <Route path="/monthlySummary" exact component={MonthlySummary} />
+
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
           <Route path="/RestaurantMenu" exact component={RestaurantMenu} />
+          <Route path="/monthlyReview" exact component={StaffSummary} />
+          <Route path="/restaurantReview" exact component={StaffReview} />
 
           <Route path="/restaurant/search" component={RestaurantSearch} />
           <Route path="/logout" exact component={Logout} />

@@ -2,6 +2,14 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import env from '../../env';
+
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = yyyy + '-' + mm + '-' + dd;
+
 /**
    * Hash Password Method
    * @param {string} password
@@ -102,6 +110,25 @@ const generateUserToken = (email, id, is_admin, first_name, last_name) => {
   return token;
 };
 
+/**
+ * check if start date > now
+ */
+const startDateError = (startdate) => {
+  if (startdate < today) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * check if start date < end date
+ */
+const durationError = (startdate, enddate) => {
+  if (startdate > enddate) {
+    return true;
+  }
+  return false;
+}
 
 export {
   hashPassword,
@@ -112,4 +139,6 @@ export {
   empty,
   generateUserToken,
   isNum,
+  startDateError,
+  durationError,
 };

@@ -5,7 +5,12 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import GradeIcon from "@material-ui/icons/Grade";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import HistoryIcon from "@material-ui/icons/History";
+import Promotion from "@material-ui/icons/MoneyOffRounded";
+import Salary from "@material-ui/icons/LocalAtmRounded";
+import DeliveryFee from "@material-ui/icons/CreditCardRounded";
+import MonthlySummary from "@material-ui/icons/AssignmentRounded";
+import DeliverySummary from "@material-ui/icons/LocalMallRounded";
+import RiderSummary from "@material-ui/icons/DirectionsBikeRounded";
 
 var styles = {
   bmBurgerButton: {
@@ -62,21 +67,25 @@ export default (props) => {
       <a className="menu-item" href="/managerProfile">
         <SettingsIcon /> Edit Profile
       </a>
+      <a className="menu-item" href="/ManagerPromo">
+        <Promotion /> Promotions
+      </a>
+      <a className="menu-item" href="/riderSalary">
+        <Salary /> Salary
+      </a>
+      <a className="menu-item" href="/deliveryFee">
+        <DeliverySummary /> Delivery Fee
+      </a>
 
-      <a className="menu-item" href="/customerHistory">
-        <HistoryIcon /> Past Orders
+      <a className="menu-item" href="/monthlySummary">
+        <MonthlySummary /> Monthly Summary
+      </a>
+      {/* <a className="menu-item" href="/customerHistory">
+        <DeliverySummary /> Delivery Summary
       </a>
       <a className="menu-item" href="/EditRReview">
-        <RateReviewIcon /> Restaurant Reviews
-      </a>
-
-      <a className="menu-item" href="/EditDRating">
-        <GradeIcon /> Rider Ratings
-      </a>
-
-      <a className="menu-item">
-        <ShoppingCartIcon /> Check Out
-      </a>
+        <RiderSummary /> Rider Summary
+      </a> */}
     </Menu>
   );
 };

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import EditPromo from "./EditPromotion";
 import { makeStyles } from "@material-ui/core/styles";
+import CurrentPromotionInfo from './CurrentPromotionInfo';
 import {
   Card,
   CardHeader,
@@ -46,9 +45,27 @@ const Cpromo = (props) => {
 
   const classes = useStyles();
 
+  const [promotions] = useState(props.promotions);
+
+  // useEffect(() => {
+  //   setPromotions(props.promotions)
+  // })
+
+  // console.log('map???', promotions);
+  const [info, setInfo] = useState({
+    promotionid: null,
+    start: null,
+    end: null,
+    min: null,
+    discount: null,
+    freedelivery: null
+  })
+
   const [orders] = useState(props.data);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
+
+  console.log('what the flying fuck', props.promotions);
 
   const handleClick = (orders) => {
     setEditData(orders);
@@ -65,7 +82,7 @@ const Cpromo = (props) => {
   };
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Current Promotion" />
+      <CardHeader title="Ongoing Promotions" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -74,44 +91,18 @@ const Cpromo = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Promotion ID</TableCell>
-                  <TableCell>Food Item</TableCell>
-                  <TableCell>Discount</TableCell>
-                  <TableCell>Minimum Amount</TableCell>
                   <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
+                  <TableCell>Minimum Spending Required $</TableCell>
+                  <TableCell>Discount %</TableCell>
+                  <TableCell>Free Delivery</TableCell>
                   <TableCell>Edit</TableCell>
                   <TableCell>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map((order) => (
-                  <TableRow hover key={order.id}>
-                    <TableCell>{order.promo_id}</TableCell>
-                    <TableCell>{order.food_item}</TableCell>
-                    <TableCell>{order.discount}</TableCell>
-                    <TableCell>{order.minAmount}</TableCell>
-                    <TableCell>{order.startDate}</TableCell>
-                    <TableCell>{order.endDate}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        //color="primary"
-                        size="small"
-                        onClick={() => handleClick(order)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      {/* <EditIcon onClick={() => handleClick(order)} /> */}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        //color="primary"
-                        size="small"
-                        onClick={() => handleDelete(order.promo_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
+                {props.promotions.map((promotion, index) => (
+                  <CurrentPromotionInfo key={index} promotionid={promotion} />
                 ))}
               </TableBody>
             </Table>
