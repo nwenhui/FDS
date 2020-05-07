@@ -9,6 +9,8 @@ import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
 import ManagerDashboard from "./Pages/Manager/Dashboard/Dashboard";
 import PartTimeRiderDashboard from "./Pages/Rider/PartTimeRider/Dashboard/Dashboard";
 import FullTimeRiderDashboard from "./Pages/Rider/FullTimeRider/Dashboard/Dashboard";
+import PartTimeRiderRating from "./Pages/Rider/PartTimeRider/RiderRating/RiderRating";
+import FullTimeRiderRating from "./Pages/Rider/FullTimeRider/RiderRating/RiderRating";
 
 import StaffDashboard from "./Pages/Staff/Dashboard/Dashboard";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
@@ -33,6 +35,7 @@ import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 import ManagerPromo from "./Pages/Manager/components/ManagerPromo/Promo";
 import RiderSalary from "./Pages/Manager/components/Salary/Salary";
 import DeliveryFee from "./Pages/Manager/components/DeliveryFee/DeliveryFee";
+import MonthlySummary from "./Pages/Manager/components/MonthlySummary/MonthSummary.js";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
@@ -108,6 +111,11 @@ export default class Routes extends Component {
             exact
             component={PartTimeRiderHistory}
           />
+          <Route
+            path="/partTimeRiderRating"
+            exact
+            component={PartTimeRiderRating}
+          />
           <Route path="/partTimeSched" exact component={PartTimeRiderSched} />
           <Route
             path="/partTimeSummary"
@@ -127,7 +135,11 @@ export default class Routes extends Component {
             exact
             component={FullTimeRiderHistory}
           />
-
+          <Route
+            path="/fullTimeRiderRating"
+            exact
+            component={FullTimeRiderRating}
+          />
           <Route path="/fullTimeSched" exact component={FullTimeRiderSched} />
 
           <Route
@@ -146,6 +158,7 @@ export default class Routes extends Component {
           <Route path="/managerPromo" exact component={ManagerPromo} />
           <Route path="/riderSalary" exact component={RiderSalary} />
           <Route path="/deliveryFee" exact component={DeliveryFee} />
+          <Route path="/monthlySummary" exact component={MonthlySummary} />
 
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />

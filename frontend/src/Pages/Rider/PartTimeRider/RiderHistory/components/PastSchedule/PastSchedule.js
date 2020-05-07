@@ -54,7 +54,6 @@ const PastScheduleList = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Schedule Ref</TableCell>
                   <TableCell>Start Time</TableCell>
                   <TableCell>End Time</TableCell>
                   <TableCell sortDirection="desc">
@@ -69,7 +68,6 @@ const PastScheduleList = (props) => {
               <TableBody>
                 {schedules.map((schedule) => (
                   <TableRow hover key={schedule.id}>
-                    <TableCell>{schedule.ref}</TableCell>
                     <TableCell>{schedule.start}</TableCell>
                     <TableCell>{schedule.end}</TableCell>
                     <TableCell>{schedule.day}</TableCell>

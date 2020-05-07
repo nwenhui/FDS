@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardHeader,
@@ -12,8 +13,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
-  TableSortLabel,
 } from "@material-ui/core";
 
 import mockData from "./data";
@@ -24,29 +23,32 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   inner: {
-    minWidth: 100,
+    minWidth: 800,
   },
   statusContainer: {
     display: "flex",
     alignItems: "center",
+  },
+  status: {
+    marginRight: theme.spacing(1),
   },
   actions: {
     justifyContent: "flex-end",
   },
 }));
 
-const PastScheduleList = (props) => {
+const DeliveryData = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const [schedules] = useState(mockData);
+  const [deliveries] = useState(mockData); //useState(props.data);
 
-  /** REPLACE THE DATA COMING FROM BACKEND
-  const schedules = props.schedules;
-  **/
+  /*
+  const deliveries = props.data;
+  */
 
   return (
-    <Card {...rest}>
-      <CardHeader title="Past Work Schedule" />
+    <Card {...rest} className={clsx(classes.root, className)}>
+      <CardHeader title="Delivery Summary" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -54,23 +56,15 @@ const PastScheduleList = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Start Time</TableCell>
-                  <TableCell>End Time</TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip enterDelay={300} title="Sort">
-                      <TableSortLabel active direction="desc">
-                        Date
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
+                  <TableCell>Delivery Location</TableCell>
+                  <TableCell>Total Number of Orders</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {schedules.map((schedule) => (
-                  <TableRow hover key={schedule.id}>
-                    <TableCell>{schedule.start}</TableCell>
-                    <TableCell>{schedule.end}</TableCell>
-                    <TableCell>{schedule.day}</TableCell>
+                {deliveries.map((delivery) => (
+                  <TableRow hover key={delivery.id}>
+                    <TableCell>{delivery.location}</TableCell>
+                    <TableCell>{delivery.numOrders}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -83,8 +77,8 @@ const PastScheduleList = (props) => {
   );
 };
 
-PastScheduleList.propTypes = {
+DeliveryData.propTypes = {
   className: PropTypes.string,
 };
 
-export default PastScheduleList;
+export default DeliveryData;

@@ -74,18 +74,18 @@ export default (props) => {
         <Salary /> Salary
       </a>
       <a className="menu-item" href="/deliveryFee">
-        <DeliveryFee /> Delivery Fee
+        <DeliverySummary /> Delivery Fee
       </a>
 
-      <a className="menu-item" href="/customerHistory">
+      <a className="menu-item" href="/monthlySummary">
         <MonthlySummary /> Monthly Summary
       </a>
-      <a className="menu-item" href="/customerHistory">
+      {/* <a className="menu-item" href="/customerHistory">
         <DeliverySummary /> Delivery Summary
       </a>
       <a className="menu-item" href="/EditRReview">
         <RiderSummary /> Rider Summary
-      </a>
+      </a> */}
     </Menu>
   );
 };

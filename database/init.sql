@@ -378,6 +378,60 @@ CREATE TABLE Shifts (
     FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
 );
 
+CREATE OR REPLACE FUNCTION shift_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+   IF ((select count(*) FROM Shifts GROUP BY StartTime limit 1) < 5) THEN
+        RAISE INFO 'There are less than five people working this shift';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER shift_check_trigger
+    AFTER INSERT
+    ON Shifts
+    FOR EACH ROW
+    EXECUTE FUNCTION shift_check()
+;
+
+INSERT INTO Shifts VALUES (1, '2020-05-22 10:00:00', '2020-05-22 12:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-23 13:00:00', '2020-05-23 15:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-24 13:00:00', '2020-05-24 15:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-25 16:00:00', '2020-05-25 18:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-26 10:00:00', '2020-05-26 12:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-27 13:00:00', '2020-05-27 15:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-28 13:00:00', '2020-05-28 15:00:00');
+INSERT INTO Shifts VALUES (1, '2020-05-28 16:00:00', '2020-05-29 18:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-22 10:00:00', '2020-05-22 12:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-23 13:00:00', '2020-05-23 15:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-24 13:00:00', '2020-05-24 15:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-25 16:00:00', '2020-05-25 18:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-26 10:00:00', '2020-05-26 12:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-27 13:00:00', '2020-05-27 15:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-28 13:00:00', '2020-05-28 15:00:00');
+INSERT INTO Shifts VALUES (2, '2020-05-28 16:00:00', '2020-05-29 18:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-26 13:00:00', '2020-05-26 17:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-26 18:00:00', '2020-05-26 22:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-27 13:00:00', '2020-05-27 17:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-27 18:00:00', '2020-05-27 22:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-28 10:00:00', '2020-05-28 14:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-28 15:00:00', '2020-05-28 19:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-29 11:00:00', '2020-05-29 15:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-29 16:00:00', '2020-05-29 20:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-30 12:00:00', '2020-05-30 16:00:00');
+INSERT INTO Shifts VALUES (3, '2020-05-30 17:00:00', '2020-05-30 21:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-26 13:00:00', '2020-05-26 17:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-26 18:00:00', '2020-05-26 22:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-27 13:00:00', '2020-05-27 17:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-27 18:00:00', '2020-05-27 22:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-28 10:00:00', '2020-05-28 14:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-28 15:00:00', '2020-05-28 19:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-29 11:00:00', '2020-05-29 15:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-29 16:00:00', '2020-05-29 20:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-30 12:00:00', '2020-05-30 16:00:00');
+INSERT INTO Shifts VALUES (4, '2020-05-30 17:00:00', '2020-05-30 21:00:00');
+
 CREATE TABLE Customer (
     Id SERIAL,
     email varchar(100) unique not null,
@@ -390,6 +444,17 @@ CREATE TABLE Customer (
     PRIMARY KEY (Id)
 );
 
+INSERT INTO Customer VALUES (DEFAULT, 'seed34_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, NULL, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed35_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, 333, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed36_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, 157, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed37_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, 256, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed38_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, 887, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed39_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, 990, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed40_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, NULL, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed41_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, NULL, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed42_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, NULL, DEFAULT);
+INSERT INTO Customer VALUES (DEFAULT, 'seed43_email@gmail.com', 'seed_first_name', 'seed_second_name', 'thisisapassword', DEFAULT, NULL, DEFAULT);
+
 CREATE TABLE Orders (
     OrderID SERIAL,
     ordered_on timestamp default now(),
@@ -398,6 +463,24 @@ CREATE TABLE Orders (
     PRIMARY KEY (OrderID)
 );
 
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 1, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 1, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 2, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 3, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 4, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 5, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 6, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 6, TRUE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 7, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 8, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 9, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+INSERT INTO Orders VALUES (DEFAULT, DEFAULT, 10, FALSE);
+
 CREATE TABLE OrderDetails (
     OrderID integer,
     AddressDetails VARCHAR(60) NOT NULL,
@@ -405,14 +488,88 @@ CREATE TABLE OrderDetails (
     foreign key (orderid) references orders
 );
 
+INSERT INTO OrderDetails VALUES (1, 'address_1');
+INSERT INTO OrderDetails VALUES (2, 'address_2');
+INSERT INTO OrderDetails VALUES (3, 'address_3');
+INSERT INTO OrderDetails VALUES (4, 'address_4');
+INSERT INTO OrderDetails VALUES (5, 'address_5');
+INSERT INTO OrderDetails VALUES (6, 'address_6');
+INSERT INTO OrderDetails VALUES (7, 'address_7');
+INSERT INTO OrderDetails VALUES (8, 'address_8');
+INSERT INTO OrderDetails VALUES (9, 'address_9');
+INSERT INTO OrderDetails VALUES (10, 'address_10');
+INSERT INTO OrderDetails VALUES (11, 'address_10');
+INSERT INTO OrderDetails VALUES (12, 'address_12');
+INSERT INTO OrderDetails VALUES (13, 'address_12');
+INSERT INTO OrderDetails VALUES (14, 'address_12');
+INSERT INTO OrderDetails VALUES (15, 'address_12');
+INSERT INTO OrderDetails VALUES (16, 'address_12');
+INSERT INTO OrderDetails VALUES (17, 'address_13');
+--cust 10 has 6 address entries, entries should show top 5
+
 CREATE TABLE Contains (
     orderid integer,
     ItemID INTEGER,
     Quantity INTEGER,
+    Cost INTEGER REFERENCES FoodItem,
     FoodFee INTEGER,
     PRIMARY KEY (orderid, ItemID),
     FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null, 
     foreign key (orderid) references orders
+);
+
+CREATE OR REPLACE FUNCTION contains_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.FoodFee = NEW.Quantity*NEW.Cost;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER contains_check_trigger
+    BEFORE INSERT OR UPDATE
+    ON Contains 
+    FOR EACH ROW
+    EXECUTE FUNCTION contains_check()
+;
+
+INSERT INTO Contains VALUES (1, 2, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (1, 1, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (1, 3, 3, 5, DEFAULT);
+INSERT INTO Contains VALUES (2, 10, 7, 2, DEFAULT);
+INSERT INTO Contains VALUES (2, 11, 11, 1, DEFAULT);
+INSERT INTO Contains VALUES (3, 23, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (4, 25, 3, 8, DEFAULT);
+INSERT INTO Contains VALUES (4, 29, 3, 13, DEFAULT);
+INSERT INTO Contains VALUES (4, 26, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (5, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (6, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (7, 25, 3, 8, DEFAULT);
+INSERT INTO Contains VALUES (7, 29, 3, 13, DEFAULT);
+INSERT INTO Contains VALUES (7, 26, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (8, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (9, 10, 7, 2, DEFAULT);
+INSERT INTO Contains VALUES (9, 11, 11, 1, DEFAULT);
+INSERT INTO Contains VALUES (10, 23, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (11, 25, 3, 8, DEFAULT);
+INSERT INTO Contains VALUES (11, 29, 3, 13, DEFAULT);
+INSERT INTO Contains VALUES (11, 26, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (12, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (13, 25, 3, 8, DEFAULT);
+INSERT INTO Contains VALUES (13, 29, 3, 13, DEFAULT);
+INSERT INTO Contains VALUES (13, 26, 1, 5, DEFAULT);
+INSERT INTO Contains VALUES (14, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (15, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (16, 1, 2, 5, DEFAULT);
+INSERT INTO Contains VALUES (17, 1, 2, 5, DEFAULT);
+
+CREATE TABLE Delivers (
+    OrderID INTEGER,
+    Id INTEGER,
+    DeliveryFee INTEGER,
+    PRIMARY KEY (OrderID), 
+    FOREIGN KEY (OrderID) REFERENCES OrderDetails,
+    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
 );
 
 CREATE TABLE Journey (
@@ -426,27 +583,129 @@ CREATE TABLE Journey (
     foreign key (orderid) references orders
 );
 
-CREATE TABLE Delivers (
-    OrderID INTEGER,
+---salary stores numbers only, only computed in query
+CREATE TABLE Salary (
     Id INTEGER,
-    DeliveryFee INTEGER,
-    PRIMARY KEY (OrderID), 
-    FOREIGN KEY (OrderID) REFERENCES OrderDetails,
-    FOREIGN KEY (Id) REFERENCES Rider on delete cascade
+    TotalJourney INTEGER DEFAULT 0,
+    Comission INTEGER,
+    BaseSalary INTEGER,
+    StartDate TIMESTAMP,
+    EndDate TIMESTAMP,
+    TotalSalary INTEGER DEFAULT 0,
+    PRIMARY KEY (Id, StartDate, EndDate),
+    FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
 );
+
+CREATE OR REPLACE FUNCTION salary_update() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Salary S
+        SET TotalJourney = S.TotalJourney + 1, 
+            TotalSalary = S.BaseSalary + ((S.TotalJourney + 1)*S.Comission)
+        WHERE Id = NEW.Id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER salary_update_trigger
+    AFTER INSERT
+    ON Delivers
+    FOR EACH ROW
+    EXECUTE FUNCTION salary_update()
+;
+
+INSERT INTO Salary VALUES (1, DEFAULT, 5, 100, '2020-05-01 10:05:00', '2020-05-31 10:05:00', DEFAULT);
+INSERT INTO Salary VALUES (2, DEFAULT, 5, 100, '2020-05-01 10:05:00', '2020-05-31 10:05:00', DEFAULT);
+INSERT INTO Salary VALUES (3, DEFAULT, 6, 450, '2020-05-01 10:05:00', '2020-05-31 10:05:00', DEFAULT);
+INSERT INTO Salary VALUES (4, DEFAULT, 6, 450, '2020-05-01 10:05:00', '2020-05-31 10:05:00', DEFAULT);
+
+INSERT INTO Delivers VALUES (1, 1, 4);
+INSERT INTO Delivers VALUES (2, 1, 4);
+INSERT INTO Delivers VALUES (3, 1, 4);
+INSERT INTO Delivers VALUES (4, 1, 4);
+INSERT INTO Delivers VALUES (5, 1, 4);
+INSERT INTO Delivers VALUES (6, 2, 4);
+INSERT INTO Delivers VALUES (7, 2, 4);
+INSERT INTO Delivers VALUES (8, 2, 4);
+INSERT INTO Delivers VALUES (9, 2, 4);
+INSERT INTO Delivers VALUES (10, 3, 4);
+INSERT INTO Delivers VALUES (11, 3, 4);
+INSERT INTO Delivers VALUES (12, 3, 4);
+INSERT INTO Delivers VALUES (13, 3, 4);
+INSERT INTO Delivers VALUES (14, 4, 4);
+INSERT INTO Delivers VALUES (15, 4, 4);
+INSERT INTO Delivers VALUES (16, 4, 4);
+INSERT INTO Delivers VALUES (17, 4, 4);
+
+--rider 1 delivers
+INSERT INTO Journey VALUES (1, '2020-05-22 10:05:00', '2020-05-22 10:10:00', '2020-05-22 10:15:00', '2020-05-22 10:20:00', '2020-05-22 10:25:00');
+INSERT INTO Journey VALUES (2, '2020-05-22 10:27:00', '2020-05-22 10:30:00', '2020-05-22 10:35:00', '2020-05-22 10:40:00', '2020-05-22 10:45:00');
+INSERT INTO Journey VALUES (3, '2020-05-23 13:05:00', '2020-05-23 13:10:00', '2020-05-23 13:20:00', '2020-05-23 13:30:00', '2020-05-23 13:40:00');
+INSERT INTO Journey VALUES (4, '2020-05-23 14:05:00', '2020-05-23 14:10:00', '2020-05-23 14:20:00', '2020-05-23 14:30:00', '2020-05-23 14:40:00');
+INSERT INTO Journey VALUES (5, '2020-05-25 16:05:00', '2020-05-25 16:10:00', '2020-05-25 16:20:00', '2020-05-25 16:30:00', '2020-05-25 16:40:00');
+--rider 2 delivers
+INSERT INTO Journey VALUES (6, '2020-05-23 13:05:00', '2020-05-23 13:10:00', '2020-05-23 13:20:00', '2020-05-23 13:30:00', '2020-05-23 13:40:00');
+INSERT INTO Journey VALUES (7, '2020-05-23 13:45:00', '2020-05-23 13:50:00', '2020-05-23 14:10:00', '2020-05-23 14:20:00', '2020-05-23 14:30:00');
+INSERT INTO Journey VALUES (8, '2020-05-25 16:05:00', '2020-05-25 16:10:00', '2020-05-25 16:20:00', '2020-05-25 16:30:00', '2020-05-25 16:40:00');
+INSERT INTO Journey VALUES (9, '2020-05-25 17:05:00', '2020-05-25 17:10:00', '2020-05-25 17:20:00', '2020-05-25 17:30:00', '2020-05-25 17:40:00');
+--rider 3 delivers
+INSERT INTO Journey VALUES (10, '2020-05-26 13:05:00', '2020-05-26 13:10:00', '2020-05-26 13:20:00', '2020-05-26 13:30:00', '2020-05-26 13:40:00');
+INSERT INTO Journey VALUES (11, '2020-05-26 15:05:00', '2020-05-26 15:10:00', '2020-05-26 15:20:00', '2020-05-26 15:30:00', '2020-05-26 15:40:00');
+INSERT INTO Journey VALUES (12, '2020-05-27 13:05:00', '2020-05-27 13:10:00', '2020-05-27 13:20:00', '2020-05-27 13:30:00', '2020-05-27 13:40:00');
+INSERT INTO Journey VALUES (13, '2020-05-28 10:05:00', '2020-05-28 10:10:00', '2020-05-28 10:20:00', '2020-05-28 10:30:00', '2020-05-28 10:40:00');
+--rider 4 delivers
+INSERT INTO Journey VALUES (14, '2020-05-26 13:05:00', '2020-05-26 13:10:00', '2020-05-26 13:20:00', '2020-05-26 13:30:00', '2020-05-26 13:40:00');
+INSERT INTO Journey VALUES (15, '2020-05-27 18:05:00', '2020-05-27 18:10:00', '2020-05-27 18:20:00', '2020-05-27 18:30:00', '2020-05-27 18:40:00');
+INSERT INTO Journey VALUES (16, '2020-05-29 11:05:00', '2020-05-29 11:10:00', '2020-05-29 11:20:00', '2020-05-29 11:30:00', '2020-05-29 11:40:00');
+INSERT INTO Journey VALUES (17, '2020-05-30 12:05:00', '2020-05-30 12:10:00', '2020-05-30 12:20:00', '2020-05-30 12:30:00', '2020-05-30 12:40:00');
 
 CREATE TABLE Receipt (
     orderid integer,
     promotionid INTEGER,
+    PercentageOff INTEGER DEFAULT 0,
     GainedPoints INTEGER, 
     UsedPoints INTEGER,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
-    TotalFee INTEGER,
+    TotalFee NUMERIC,
     PRIMARY KEY (orderid),
     foreign key (orderid) references orders
 );
 
+CREATE OR REPLACE FUNCTION receipt_check() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.TotalFee = Round(((NEW.DeliveryFee + NEW.FoodFee) * ((100 - NEW.PercentageOff)/100.0)), 2);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER receipt_check_trigger
+    BEFORE INSERT OR UPDATE
+    ON Receipt 
+    FOR EACH ROW
+    EXECUTE FUNCTION receipt_check()
+;
+
+INSERT INTO Receipt VALUES (1, NULL, 10, 10, NULL, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (2, NULL, 30, 10, NULL, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (3, NULL, 20, 10, NULL, 4, 5, DEFAULT);
+INSERT INTO Receipt VALUES (4, NULL, 50, 10, NULL, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (5, NULL, 10, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (6, NULL, 30, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (7, NULL, 20, 10, NULL, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (8, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (9, NULL, 10, 10, NULL, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (10, NULL, 10, 10, NULL, 4, 5, DEFAULT);
+INSERT INTO Receipt VALUES (11, NULL, DEFAULT, 10, NULL, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (12, NULL, 10, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (13, NULL, DEFAULT, 10, NULL, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (14, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (15, NULL, 30, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (16, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (17, NULL, 50, 10, NULL, 4, 10, DEFAULT);
+
+--rating for RIDERS
 CREATE TABLE Rates (
     OrderID INTEGER,
     Rating INTEGER CHECK ((Rating >= 0) and (Rating <= 5)),
@@ -454,6 +713,20 @@ CREATE TABLE Rates (
     FOREIGN KEY (OrderID) REFERENCES Delivers 
 );
 
+INSERT INTO Rates VALUES (1, 2);
+INSERT INTO Rates VALUES (2, 5);
+INSERT INTO Rates VALUES (3, 5);
+INSERT INTO Rates VALUES (4, 4);
+INSERT INTO Rates VALUES (6, 3);
+INSERT INTO Rates VALUES (7, 2);
+INSERT INTO Rates VALUES (8, 1);
+INSERT INTO Rates VALUES (11, 5);
+INSERT INTO Rates VALUES (12, 4);
+INSERT INTO Rates VALUES (14, 2);
+INSERT INTO Rates VALUES (16, 5);
+INSERT INTO Rates VALUES (17, 4);
+
+--review FOOD
 CREATE TABLE Reviews (
     orderid integer,
     ItemID INTEGER,
@@ -464,11 +737,15 @@ CREATE TABLE Reviews (
     FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null
 );
 
----salary stores numbers only, only computed in query
-CREATE TABLE Salary (
-    Id INTEGER,
-    Comission INTEGER,
-    BaseSalary INTEGER,
-    PRIMARY KEY (Id),
-    FOREIGN KEY (Id) REFERENCES Rider ON DELETE CASCADE
-);    
+INSERT INTO Reviews VALUES (1, 2, 5, 'Amazing');
+INSERT INTO Reviews VALUES (2, 10, 4, 'Amazing');
+INSERT INTO Reviews VALUES (3, 23, 3, 'Amazing');
+INSERT INTO Reviews VALUES (4, 29, 2, 'Amazingly mediocre');
+INSERT INTO Reviews VALUES (6, 1, 3, 'Amazing');
+INSERT INTO Reviews VALUES (7, 25, 0, 'AmazingLY BAD');
+INSERT INTO Reviews VALUES (8, 1, 1, 'AmazingLY BAD');
+INSERT INTO Reviews VALUES (11, 25, 3, 'Amazing');
+INSERT INTO Reviews VALUES (12, 1, 3, 'Amazing');
+INSERT INTO Reviews VALUES (14, 1, 5, 'Amazing');
+INSERT INTO Reviews VALUES (16, 1, 4, 'Amazing');
+INSERT INTO Reviews VALUES (17, 1, 4, 'Amazing');
