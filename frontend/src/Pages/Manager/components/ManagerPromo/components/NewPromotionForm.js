@@ -20,14 +20,12 @@ import { restaurantService } from "../../../../../services";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 
-const now = new Date();
-const tomorrow = new Date(now)
-tomorrow.setDate(tomorrow.getDate() + 1)
-var dd = String(tomorrow.getDate()).padStart(2, '0');
-var mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
-var yyyy = tomorrow.getFullYear();
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
 
-const today = yyyy + '-' + mm + '-' + dd;
+today = yyyy + '-' + mm + '-' + dd;
   
 
 class NewPromotionForm extends Component {

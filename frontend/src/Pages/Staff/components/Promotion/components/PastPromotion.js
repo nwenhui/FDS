@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import EditPromo from "./EditPromotion";
 import { makeStyles } from "@material-ui/core/styles";
-import PastPromotionInfo from './PastPromotionInfo';
+import PastPromotionInfo from "./PastPromotionInfo";
 import {
   Card,
   CardHeader,
@@ -58,14 +58,14 @@ const Cpromo = (props) => {
     end: null,
     min: null,
     discount: null,
-    freedelivery: null
-  })
+    freedelivery: null,
+  });
 
   const [orders] = useState(props.data);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
 
-  console.log('what the flying fuck', props.promotions);
+  console.log("what the flying fuck", props.promotions);
 
   const handleClick = (orders) => {
     setEditData(orders);

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
+import EditPromo from "./EditPromo";
 import { makeStyles } from "@material-ui/core/styles";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import PastPromotionInfo from "./PastPromotionInfo";
 import {
   Card,
   CardHeader,
@@ -15,12 +15,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Button,
   IconButton,
 } from "@material-ui/core";
-import EditFood from "./EditFood";
-//import mockData from "./data";
-import FoodItemInfo from './FoodItemInfo';
 
+import mockData from "./data";
 const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
@@ -41,17 +40,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FoodItem = (props) => {
+const Cpromo = (props) => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
+
+  const [promotions] = useState(props.promotions);
+
+  // useEffect(() => {
+  //   setPromotions(props.promotions)
+  // })
+
+  // console.log('map???', promotions);
+  const [info, setInfo] = useState({
+    promotionid: null,
+    start: null,
+    end: null,
+    min: null,
+    discount: null,
+    freedelivery: null,
+  });
 
   const [orders] = useState(props.data);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
 
-  const [menu] = useState(props.menu);
-
+  console.log("what the flying fuck", props.promotions);
 
   const handleClick = (orders) => {
     setEditData(orders);
@@ -66,10 +80,9 @@ const FoodItem = (props) => {
   const handleDelete = (fid) => {
     console.log(fid);
   };
-
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Food Items" />
+      <CardHeader title="Past Promotions" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -77,25 +90,24 @@ const FoodItem = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell>Food Item ID</TableCell> */}
-                  <TableCell>Item Name</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Amt in Inventory</TableCell>
-                  <TableCell>Qty Limit</TableCell>
-                  <TableCell>Categories</TableCell>
-                  <TableCell>Availability</TableCell>
-                  <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
+                  <TableCell>Promotion ID</TableCell>
+                  <TableCell>Start Date</TableCell>
+                  <TableCell>End Date</TableCell>
+                  <TableCell>Minimum Spending Required $</TableCell>
+                  <TableCell>Discount %</TableCell>
+                  <TableCell>Free Delivery</TableCell>
+                  {/* <TableCell>Edit</TableCell>
+                  <TableCell>Delete</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.menu.map((item, index) => (
-                  <FoodItemInfo key={index} itemid={item} />
+                {props.promotions.map((promotion, index) => (
+                  <PastPromotionInfo key={index} promotionid={promotion} />
                 ))}
               </TableBody>
             </Table>
           </div>
-          {openEdit && <EditFood data={editData} onClick={handleEdit} />}
+          {openEdit && <EditPromo data={editData} onClick={handleEdit} />}
         </PerfectScrollbar>
       </CardContent>
       <Divider />
@@ -103,8 +115,8 @@ const FoodItem = (props) => {
   );
 };
 
-FoodItem.propTypes = {
+Cpromo.propTypes = {
   className: PropTypes.string,
 };
 
-export default FoodItem;
+export default Cpromo;

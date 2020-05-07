@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, Typography } from "@material-ui/core";
 import data from "./components/data";
 import { Sidebar } from "../../../layouts/Customer/components";
 import NavBar from "../../../components/Navigation/Navigation";
+import { orderService } from "../../../services";
+import {
+  LocationInput,
+  RecentLocations,
+  FoodItem,
+  Checkout,
+} from "./components";
+import Cart from "./components/Cart";
 import { Button } from "@material-ui/core";
-
-import { FoodItem, Total, LocationInput, RecentLocations } from "./components";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     // padding: theme.spacing(4)
@@ -26,6 +31,13 @@ const CustomerCheckout = (props) => {
   const handleLocationInput = (event) => {
     setSearchValue(event.target.value);
   };
+  const [checkout, setCheckout] = useState([]);
+  const [resid, setResid] = useState();
+
+  useLayoutEffect(() => {
+    console.log("removeee");
+    sessionStorage.removeItem("currentTotal");
+  });
 
   return (
     <div className={classes.root}>
@@ -53,11 +65,11 @@ const CustomerCheckout = (props) => {
             <RecentLocations />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <FoodItem data={data.foodItem} />
+            <Cart data={data.foodItem} resid={resid} checkout={checkout} />
             {/*<FoodItem data={checkoutList.foodItem} />*/}
           </Grid>
           <Grid container justify="center">
-            <Total />
+            <Checkout />
           </Grid>
           <Grid></Grid>
         </Grid>
