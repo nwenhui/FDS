@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import PastOrderInfo from "./PastOrderInfo"
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -64,38 +65,40 @@ const PastOrders = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Restaurant</TableCell>
-                  <TableCell>Food Item</TableCell>
-                  <TableCell>Total Price</TableCell>
+                  <TableCell>Items</TableCell>
+                  <TableCell>Subtotal</TableCell>
                   <TableCell>Payment Method</TableCell>
-                  <TableCell>Order Date</TableCell>
-                  <TableCell>Add a Review</TableCell>
+                  <TableCell>Promotion Applied</TableCell>
+                  <TableCell>Used Points</TableCell>
+                  <TableCell>Date Ordered</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map((order) => (
-                  <TableRow>
-                    <TableCell>{order.restaurant}</TableCell>
-                    <TableCell>
-                      <ol>
-                        {order.food.map((item) => {
-                          return <li>{item}</li>;
-                        })}
-                      </ol>
-                    </TableCell>
-                    <TableCell>{order.price}</TableCell>
-                    <TableCell>{order.payment}</TableCell>
-                    <TableCell>{order.date}</TableCell>
-                    <TableCell>
-                      <Button
-                        color="secondary"
-                        size="small"
-                        variant="contained"
-                        onClick={handleOpenDiv}
-                      >
-                        Add Review
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                {props.orders.map((order) => (
+                  <PastOrderInfo orderid={order}/>
+                  // <TableRow>
+                  //   <TableCell>{order.restaurant}</TableCell>
+                  //   <TableCell>
+                  //     <ol>
+                  //       {order.food.map((item) => {
+                  //         return <li>{item}</li>;
+                  //       })}
+                  //     </ol>
+                  //   </TableCell>
+                  //   <TableCell>{order.price}</TableCell>
+                  //   <TableCell>{order.payment}</TableCell>
+                  //   <TableCell>{order.date}</TableCell>
+                  //   <TableCell>
+                  //     <Button
+                  //       color="secondary"
+                  //       size="small"
+                  //       variant="contained"
+                  //       onClick={handleOpenDiv}
+                  //     >
+                  //       Add Review
+                  //     </Button>
+                  //   </TableCell>
+                  // </TableRow>
                 ))}
               </TableBody>
             </Table>
