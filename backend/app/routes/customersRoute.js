@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createCustomer, signinCustomer, searchCustomerFirstnameOrLastname, editCustomer, deleteCustomer, ordersByCustomer, applicablePromotions, promotionDetails, customerOrders, orderReceipt, orderInformation, orderFood, orderRestaurant } from '../controllers/customersController';
+import { createCustomer, signinCustomer, searchCustomerFirstnameOrLastname, editCustomer, deleteCustomer, ordersByCustomer, applicablePromotions, promotionDetails, customerOrders, orderReceipt, orderInformation, orderFood, orderRestaurant, rateDelivery, deleteRating, getRating, editRating, getRatingCount } from '../controllers/customersController';
 
 const router = express.Router();
 
@@ -19,5 +19,11 @@ router.post('/orders/receipt', orderReceipt)
 router.post('/orders/information', orderInformation)
 router.post('/orders/food', orderFood)
 router.post('/orders/restaurant', orderRestaurant)
+router.post('/order/rating', getRating);
+router.post('/order/rating/new', rateDelivery)
+router.post('/order/rating/remove', deleteRating)
+router.post('/order/rating/edit', editRating)
+router.post('/order/rating/count', getRatingCount)
+
 
 export default router;

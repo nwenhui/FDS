@@ -13,6 +13,7 @@ import {
 import {
     errorMessage, successMessage, status,
 } from '../helpers/status';
+import { json } from 'body-parser';
 
 /**
    * Create A Customer
@@ -430,6 +431,119 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * rate a delivery
+   */
+  const rateDelivery = async (req, res) => {
+    const { id, value } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'insert into rates(orderid, rating) values($1, $2) returning *';
+    const values = [
+      id, 
+      value
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get delivery rating
+   */
+  const getRating = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select * from rates where orderid = $1';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * delete rating
+   */
+  const deleteRating = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'delete from rates where orderid = $1 returning *';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+  
+  /**
+   * edit rating
+   */
+  const editRating = async (req, res) => {
+    const { id, value } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'update rates set rating = $2 where orderid = $1 returning *';
+    const values = [
+      id, 
+      value
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * ratig count
+   */
+  const getRatingCount = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select count(orderid) from rates where orderid = $1';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,
@@ -444,5 +558,10 @@ import {
     orderReceipt,
     orderInformation,
     orderFood,
-    orderRestaurant
+    orderRestaurant,
+    rateDelivery,
+    getRating,
+    deleteRating,
+    editRating,
+    getRatingCount,
   };

@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
 import {
-    Button,
-    Card,
-    CardActions,
-    CardHeader,
-    CardContent,
-    Divider,
-    Grid,
-    Table,
-    TableBody,
     TableCell,
-    TableHead,
     TableRow,
+    IconButton
 } from "@material-ui/core";
 import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
 import ClearTwoToneIcon from '@material-ui/icons/ClearTwoTone';
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { customerService } from "../../../../services"
 import PastOrderPromotion from "./PastOrderPromotion";
 import PastOrderItems from "./PastOrderItems"
+import RateDeliveryDialog from "./RateDeliveryDialog"
 
 class PastOrderInfo extends Component {
     state = {  
@@ -29,6 +23,8 @@ class PastOrderInfo extends Component {
         promotion: null,
         usedpoints: null,
         date: null,
+        rate: false,
+        review: false,
     }
 
     componentDidMount() {
@@ -61,6 +57,22 @@ class PastOrderInfo extends Component {
         })
     }
 
+    handleRate = (event) => {
+        if (this.state.rate) {
+            this.setState({ rate: false });
+        } else {
+            this.setState({ rate: true });
+        }
+    }
+
+    handleReview = (event) => {
+        if (this.state.review) {
+            this.setState({ review: false });
+        } else {
+            this.setState({ review: true });
+        }
+    }
+    
     render() { 
         return (  
             <TableRow>
@@ -77,16 +89,23 @@ class PastOrderInfo extends Component {
                     { this.state.promotion ? <PastOrderPromotion promotionid={this.state.promotion} /> : <TableCell>no promotion applied</TableCell> }
                     { this.state.usedpoints ? <TableCell><CheckTwoToneIcon /></TableCell> : <TableCell><ClearTwoToneIcon /></TableCell> }
                     <TableCell>{this.state.date}</TableCell>
-                    {/* <TableCell>
-                      <Button
-                        color="secondary"
-                        size="small"
-                        variant="contained"
-                        onClick={handleOpenDiv}
-                      >
-                        Add Review
-                      </Button>
-                    </TableCell> */}
+                    <TableCell>
+                        <IconButton
+                            size="small"
+                            onClick={this.handleRate.bind(this)}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell>
+                        <IconButton
+                            size="small"
+                            onClick={() => this.handleReview.bind(this)}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </TableCell>
+                    {this.state.rate && <RateDeliveryDialog open={this.state.rate} orderid={this.state.orderid} />}
                   </TableRow>
         );
     }

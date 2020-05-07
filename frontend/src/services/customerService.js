@@ -108,6 +108,77 @@ function orderRestaurant(id) {
         .then(handleErrors)
 }
 
+function getRating(id) {
+    const data = {id: id};
+    const url = 'http://localhost:3000/api/v1/customer/order/rating';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function rateDelivery(id, value) {
+    const data = {id: id, value: value};
+    const url = 'http://localhost:3000/api/v1/customer/order/rating/new';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function deleteRating(id) {
+    const data = {id: id};
+    const url = 'http://localhost:3000/api/v1/customer/order/rating/remove';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function editRating(id, value) {
+    const data = {id: id, value: value};
+    const url = 'http://localhost:3000/api/v1/customer/order/rating/edit';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function getRatingCount(id) {
+    const data = {id: id };
+    const url = 'http://localhost:3000/api/v1/customer/order/rating/count';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+
 export const customerService = {
     customerOrderCount,
     customerOrders,
@@ -117,4 +188,9 @@ export const customerService = {
     customerOrderItems,
     orderInformation,
     orderRestaurant,
+    getRating,
+    rateDelivery,
+    deleteRating,
+    editRating,
+    getRatingCount
 }
