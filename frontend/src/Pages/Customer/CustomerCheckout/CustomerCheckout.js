@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import data from "./components/data";
 import { Sidebar } from "../../../layouts/Customer/components";
 import NavBar from "../../../components/Navigation/Navigation";
 import { Button } from "@material-ui/core";
 
-import { FoodItem, Total, LocationInput } from "./components";
+import { FoodItem, Total, LocationInput, RecentLocations } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +44,13 @@ const CustomerCheckout = (props) => {
             <Button variant="contained" color="secondary" onClick={handleEnter}>
               Enter
             </Button>
-            //search laksjd
+            <Grid container justify="center">
+              <Typography color="black" gutterBottom variant="h5">
+                OR
+              </Typography>
+            </Grid>
+
+            <RecentLocations />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <FoodItem data={data.foodItem} />
