@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/RiderPT/components";
 import Typography from "@material-ui/core/Typography";
@@ -57,7 +56,7 @@ class RiderDashboard extends Component {
               >
                 {" "}
                 <Typography variant="h4" component="h2">
-                  Welcome back, part time {this.state.firstname} ! :){" "}
+                  Welcome back, Part Timer: {this.state.firstname} ! :){" "}
                 </Typography>{" "}
               </Grid>
               <Grid
