@@ -626,6 +626,43 @@ const getRestaurant = async (req, res) => {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * edit promotion
+   */
+  const editPromotion = async (req, res) => {
+    const { start, end, min, disc, freedeli, id } = req.body;
+    const editPromotionQuery = 'update promotion set startdate = $1, enddate = $2, minspending = $3, percentageoff = $4, freedelivery = $5 where promotionid = $6 returning *';
+    const values = [
+      start,
+      end,
+      min,
+      disc,
+      freedeli,
+      id
+    ];
+    if (disc > 100) {
+      errorMessage.error = 'Discount percentage cannnot be over 100.';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (isEmpty(end)) {
+      errorMessage.error = 'End Date fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    if (durationError(start,end)) {
+      errorMessage.error = 'Start Date must before End Date';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+    try {
+      const { rows } = await dbQuery.query(editPromotionQuery, values);
+      successMessage.data = rows[0];
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.sendStatus(status.error).send(errorMessage.error);
+    }
+  }
   
 export {
     searchRestaurant,
@@ -651,4 +688,5 @@ export {
     searchAllFood,
     getRestaurantName,
     editFood,
+    editPromotion
 };

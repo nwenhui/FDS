@@ -307,7 +307,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER promotion_date_trigger
-    BEFORE INSERT OR UPDATE
+    BEFORE INSERT
     ON Promotion
     FOR EACH ROW
     EXECUTE FUNCTION promotion_date_check()
