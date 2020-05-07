@@ -5,13 +5,11 @@ import { makeStyles } from "@material-ui/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
 import data from "./data";
 import IconButton from "@material-ui/core/IconButton";
-import Radio from "@material-ui/core/Radio";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import Total from './checkoutcomponents/Total'
+import PaymentMethod from './checkoutcomponents/PaymentMethod'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -73,7 +71,7 @@ const Checkout = (props) => {
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardContent>
         <Grid container justify="space-between">
-          <Grid item lg={6} sm={6} xl={6} xs={12}>
+          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
             <Grid item>
               <Typography
                 className={classes.title}
@@ -85,8 +83,9 @@ const Checkout = (props) => {
               </Typography>
               <Typography variant="h5">{data.totalValue}</Typography>
             </Grid>
-          </Grid>
-          <Grid item lg={6} sm={6} xl={6} xs={12}>
+          </Grid> */}
+          <Total />
+          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Pay by:</FormLabel>
               <RadioGroup
@@ -106,28 +105,8 @@ const Checkout = (props) => {
                 />
               </RadioGroup>
             </FormControl>
-          </Grid>
-          <Grid item lg={6} sm={6} xl={6} xs={12}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Pay by:</FormLabel>
-              <RadioGroup
-                aria-label="paymentMode"
-                value={value}
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  value="cash"
-                  control={<Radio />}
-                  label="Cash on delivery"
-                />
-                <FormControlLabel
-                  value="creditCard"
-                  control={<Radio />}
-                  label="Credit Card"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
+          </Grid> */}
+          <PaymentMethod />
           <IconButton
             style={{ marginLeft: "200px" }}
             fullWidth={true}

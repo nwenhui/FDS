@@ -23,6 +23,7 @@ class CartInfo extends Component {
         succes: false,
         errorMessage: "",
         successMessage: "",
+        subtotal: 0
     }
 
     fetchData() {
@@ -30,14 +31,20 @@ class CartInfo extends Component {
             response.json()
                 .then((data) => {
                     console.log(' stuff hehe', data.itemid);
-                    this.setState({ name: data.itemname, price: data.cost });
-                })
-        })
-        restaurantService.getFoodAvailability(this.state.itemid).then((response) => {
-            response.json()
-                .then((data) => {
-                    console.log(' stuff hehe', data.itemid);
-                    this.setState({ availabile: data.amt_available });
+                    this.setState({ name: data.itemname, price: data.cost }, () => {
+                        restaurantService.getFoodAvailability(this.state.itemid).then((response) => {
+                            response.json()
+                                .then((data) => {
+                                    console.log(' stuff hehe', data.itemid);
+                                    this.setState({ availabile: data.amt_available }, () => {
+                                        this.setState({ subtotal: this.state.price * this.state.qty }, () => {
+                                            console.log('subtotal:', this.state.subtotal)
+                                            orderService.addToTotal(this.state.subtotal);
+                                        })
+                                    });
+                                })
+                        })
+                    });
                 })
         })
         restaurantService.getRestaurantFromFood(this.state.itemid).then((response) => {
@@ -107,6 +114,7 @@ class CartInfo extends Component {
                     {this.state.qty}
                     <Button onClick={() => this.handleAdd()}><AddCircleIcon/></Button>
                 </TableCell>
+                <TableCell align="center">${this.state.subtotal}</TableCell>
                 {this.state.qty > 0 && 
                 <TableCell align="right">
                     <Button variant="contained" color="secondary" onClick={() => this.handleUpdateCart()}>Update Cart</Button>

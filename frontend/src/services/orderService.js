@@ -1,10 +1,16 @@
 import { BehaviorSubject } from "rxjs";
 import { handleErrors } from "../helpers";
+import {restaurantService } from "./restaurantService";
 
+const deliveryfee = 4;
 const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
 const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
+const currentTotalSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentTotal") || deliveryfee));
+const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("orderPayment") || "null"));
+
 
 const addToCheckOut = ((itemid, qty, resid) => {
+    localStorage.removeItem("currentTotal");
     console.log('resid: ', resid);
     // localStorage.removeItem("currentRestaurant");
     console.log("currentRestaurant: ", currentRestaurantSubject.value)
@@ -40,6 +46,7 @@ const addToCheckOut = ((itemid, qty, resid) => {
 })
 
 const removeFromCart = ((itemid) => {
+    localStorage.removeItem("currentTotal");
     if (currentCheckOutSubject.value.length === 1) {
         localStorage.removeItem("currentCheckOut");
         currentCheckOutSubject.next([]);
@@ -61,6 +68,7 @@ const removeFromCart = ((itemid) => {
 })
 
 const updateCart = ((itemid, qty) => {
+    localStorage.removeItem("currentTotal");
     const item = {
         itemid: itemid,
         qty: qty
@@ -78,12 +86,34 @@ const updateCart = ((itemid, qty) => {
     localStorage.setItem("currentCheckOut", JSON.stringify(items));
 })
 
+const addToTotal = ((subtotal) => {
+    const newTotal = currentTotalSubject.value + subtotal;
+    currentTotalSubject.next(newTotal);
+    localStorage.setItem("currentTotal", JSON.stringify(newTotal));
+})
+
+const removeFromTotal = ((subtotal) => {
+    const newTotal = currentTotalSubject.value - subtotal;
+    currentTotalSubject.next(newTotal);
+    localStorage.setItem("currentTotal", JSON.stringify(newTotal));
+})
+
+const setOrderPayment = ((method) => {
+    orderPaymentSubject.next(method);
+    localStorage.setItem("orderPayment", JSON.stringify(method))
+})
+
+
 export const orderService = {
     addToCheckOut,
     removeFromCart,
     updateCart,
+    addToTotal,
+    setOrderPayment,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
     currentRestaurant: currentRestaurantSubject.asObservable(),
     get currentRestaurantValue() { return currentRestaurantSubject.value },
+    currentTotal: currentTotalSubject.asObservable(),
+    get currentTotalValue() { return currentTotalSubject.value },
 }

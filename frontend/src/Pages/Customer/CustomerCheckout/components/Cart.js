@@ -40,7 +40,7 @@ class Cart extends Component {
                 });
             }
           });
-
+        localStorage.removeItem("currentTotal");
      }
 
     render() { 
@@ -58,6 +58,7 @@ class Cart extends Component {
                                 <TableCell>Item name</TableCell>
                                 <TableCell align="center">Price</TableCell>
                                 <TableCell align="center">Qty</TableCell>
+                                <TableCell align="center">Subtotal</TableCell>
                                 <TableCell align="center"> </TableCell>
                             </TableRow>
                         </TableHead>

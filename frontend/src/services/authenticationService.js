@@ -240,6 +240,10 @@ function riderSignup(firstname, lastname, email, password, type) {
 
 function logout() {
   localStorage.removeItem("currentUser");
+  localStorage.removeItem("currentCheckOut");
+  localStorage.removeItem("currentRestaurant");
+  localStorage.removeItem("currentTotal");
+  localStorage.removeItem("orderPayment");
   currentUserSubject.next(null);
 }
 
