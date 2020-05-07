@@ -13,7 +13,7 @@ import Select from '@material-ui/core/Select';
 import { Button, Form, Alert } from "react-bootstrap";
 import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
 import ClearTwoToneIcon from '@material-ui/icons/ClearTwoTone';
-import { restaurantService } from "../../../../../services";
+import { staffService } from "../../../../../services";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 import TextField from '@material-ui/core/TextField';
@@ -44,13 +44,13 @@ class EditPromotionDialog extends Component {
     }
 
     fetchData() {
-        restaurantService.getPromotionInformation(this.state.promotionid).then((response) => {
+        staffService.getPromotionInformation(this.state.promotionid).then((response) => {
             response.json()
             .then((data) => {
+                console.log("wtffff????" ,data)
                 this.setState({ start: data.startdate.substring(0,10), end: data.enddate.substring(0,10), min: data.minspending, disc: data.percentageoff, freedeli: data.freedelivery },() => {
-                    console.log("start????", data.enddate);
-                    console.log("set????", this.state.end);
-                    console.log("today????", today);
+                    
+                    console.log("today????" ,today)
                 });
             })
         })
@@ -87,7 +87,7 @@ class EditPromotionDialog extends Component {
     handleSubmit(event) {
         event.preventDefault();
         console.log('clickyyyy')
-        restaurantService.editPromotion(this.state.start, this.state.end, this.state.min, this.state.disc, this.state.freedeli, this.state.promotionid)
+        staffService.editPromotion(this.state.start, this.state.end, this.state.min, this.state.disc, this.state.freedeli, this.state.promotionid)
             .then((data) => {
                 this.setState({ error: false, success: true });
                 this.setState({ edit: false });

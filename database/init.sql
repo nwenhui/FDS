@@ -331,7 +331,7 @@ INSERT INTO restaurantpromotion VALUES (1, 2);
 INSERT INTO restaurantpromotion VALUES (2, 4);
 
 create table fdspromotion (
-    promotionid integer unique references promotion,
+    promotionid integer unique references promotion on delete cascade,
     managerid integer references Manager,
     primary key (promotionid, managerid)
 );

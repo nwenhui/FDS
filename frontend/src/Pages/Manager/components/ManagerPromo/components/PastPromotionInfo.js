@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import CheckTwoToneIcon from "@material-ui/icons/CheckTwoTone";
 import ClearTwoToneIcon from "@material-ui/icons/ClearTwoTone";
-import { restaurantService } from "../../../../../services";
+import { staffService } from "../../../../../services";
 
 class PastPromotionInfo extends Component {
   state = {
@@ -29,7 +29,7 @@ class PastPromotionInfo extends Component {
   };
 
   fetchData() {
-    restaurantService
+    staffService
       .getPromotionInformation(this.state.promotionid)
       .then((response) => {
         response.json().then((data) => {

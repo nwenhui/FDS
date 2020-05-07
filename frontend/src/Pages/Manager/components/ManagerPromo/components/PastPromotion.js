@@ -90,7 +90,7 @@ const Cpromo = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Promotion ID</TableCell>
+                <TableCell>Promotion ID</TableCell>
                   <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
                   <TableCell>Minimum Spending Required $</TableCell>

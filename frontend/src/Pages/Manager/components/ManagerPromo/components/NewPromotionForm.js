@@ -16,16 +16,18 @@ import {
 import { Button, Form, Alert } from "react-bootstrap";
 import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
 import ClearTwoToneIcon from '@material-ui/icons/ClearTwoTone';
-import { restaurantService } from "../../../../../services";
+import { staffService, authenticationService } from "../../../../../services";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert";
 
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
+const now = new Date();
+const tomorrow = new Date(now)
+tomorrow.setDate(tomorrow.getDate() + 1)
+var dd = String(tomorrow.getDate()).padStart(2, '0');
+var mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+var yyyy = tomorrow.getFullYear();
 
-today = yyyy + '-' + mm + '-' + dd;
+const today = yyyy + '-' + mm + '-' + dd;
   
 
 class NewPromotionForm extends Component {
@@ -43,7 +45,7 @@ class NewPromotionForm extends Component {
     }
 
     fetchData() {
-        restaurantService.getPromotionInformation(this.state.promotionid).then((response) => {
+        staffService.getPromotionInformation(this.state.promotionid).then((response) => {
             response.json()
             .then((data) => {
                 this.setState({ start: data.startdate, end: data.enddate, min: data.minspending, disc: data.percentageoff, freedeli: data.freedelivery }, () => {
@@ -82,8 +84,9 @@ class NewPromotionForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         console.log('clickyyyy')
-        restaurantService.newPromotion(this.state.start, this.state.end, this.state.min, this.state.disc, this.state.freedeli, this.state.resid)
+        staffService.newPromotion(this.state.start, this.state.end, this.state.min, this.state.disc, this.state.freedeli, authenticationService.currentUserValue.id)
             .then((data) => {
+                console.log('hello?????')
                 this.setState({ error: false, success: true });
                 window.location.reload(false);
             })
