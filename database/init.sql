@@ -689,7 +689,7 @@ CREATE TABLE Receipt (
     promotionid INTEGER,
     PercentageOff INTEGER DEFAULT 0,
     GainedPoints INTEGER, 
-    UsedPoints INTEGER,
+    UsedPoints INTEGER DEFAULT 0,
     DeliveryFee INTEGER,
     FoodFee INTEGER,
     TotalFee NUMERIC,

@@ -17,6 +17,7 @@ import {
     TableRow,
     IconButton,
 } from "@material-ui/core";
+import EditFoodDialog from "./EditFoodDialog"
 
 class FoodItemInfo extends Component {
     state = {  
@@ -110,6 +111,7 @@ class FoodItemInfo extends Component {
                 <DeleteIcon />
               </IconButton>
             </TableCell>
+            {this.state.edit && <EditFoodDialog edit={this.state.edit} itemid={this.state.itemid} />}
           </TableRow>
           );
     }

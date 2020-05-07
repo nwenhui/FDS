@@ -577,6 +577,55 @@ const getRestaurant = async (req, res) => {
     }
   }
 
+  /**
+   * edit food item
+   * update restaurant set
+      resname = $1,
+      minspending = $2
+      where resid = $3
+      returning *`;
+   */
+  const editFood = async (req, res) => {
+    const { name, price,  limit, itemid, avail } = req.body;
+    console.log('name: ', name);
+    console.log('price: ', price);
+    console.log('limit: ', limit);
+    console.log('itemid: ', itemid);
+    console.log('avail: ', avail);
+    const editFoodQuery = 'update fooditem set itemname = $1, cost = $2, maxlimit = $3 where itemid = $4 returning *';
+    const editInventoryQuery = 'update inventory set available = $1 where itemid = $2';
+    const foodvalues = [
+      name,
+      price,
+      limit,
+      itemid, 
+    ];
+    const inventoryvalues = [
+      avail,
+      itemid, 
+    ];
+    if (isEmpty(name) || isEmpty(price.toString()) ||  isEmpty(limit.toString())) {
+      errorMessage.error = 'Item name, price, and max. limit fields cannot be empty';
+      return res.status(status.bad).send(errorMessage.error);
+    }
+
+    try {
+      await dbQuery.query('begin')
+      const { rows } = await dbQuery.query(editFoodQuery, foodvalues);
+      const id = rows[0].itemid;
+      await dbQuery.query(editInventoryQuery, inventoryvalues);
+      await dbQuery.query('commit');
+      successMessage.data = id;
+      console.log(id);
+      console.log(successMessage.data);
+      return res.sendStatus(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      await dbQuery.query('rollback');
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
 export {
     searchRestaurant,
@@ -601,4 +650,5 @@ export {
     searchAvailableFood,
     searchAllFood,
     getRestaurantName,
+    editFood,
 };

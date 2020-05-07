@@ -335,6 +335,20 @@ function getRestaurantName(id) {
       .then(handleErrors)
 }
 
+    function editFood(name, price,  limit, itemid, avail) {
+      const data = {name: name, price: price, limit: limit, itemid: itemid, avail: avail};
+      const url = 'http://localhost:3000/api/v1/restaurant/food/edit';
+    
+      var request = new Request(url, {
+          method: 'POST',
+          headers: new Headers({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify(data)
+      });
+    
+      return fetch(request)
+          .then(handleErrors)
+    }
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -360,5 +374,6 @@ export const restaurantService = {
     getRestaurantvailables,
     searchAvailableFood,
     searchAllFood,
-    getRestaurantName
+    getRestaurantName,
+    editFood
 }
