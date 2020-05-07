@@ -3,7 +3,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Manager/components";
-import { CurrentPromotion, AddPromotion, data } from "./components";
+import {
+  CurrentPromotion,
+  AddPromotion,
+  data,
+  NewPromotion,
+  PastPromotion,
+} from "./components";
+import { authenticationService, restaurantService } from "../../../../services";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ManagerPromo = () => {
+const ManagerPromo = (props) => {
   const classes = useStyles();
   const [openDiv, setOpenDiv] = useState(false);
   const [open, setOpen] = useState(false);
@@ -49,13 +56,66 @@ const ManagerPromo = () => {
           {/* {openDiv && <AddPromotion onClick={handleOpenDiv} />} */}
         </Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
-          <CurrentPromotion data={data} />
+          {open && <NewPromotion resid={props.resid} />}
+        </Grid>
+        <Grid item lg={12} sm={12} xl={12} xs={12}>
+          <CurrentPromotion data={data} promotions={props.ongoing} />
+        </Grid>
+        <Grid item lg={12} sm={12} xl={12} xs={12}>
+          <PastPromotion data={data} promotions={props.past} />
         </Grid>
       </Grid>
     </div>
   );
 };
 class Promo extends Component {
+  state = {
+    resid: null,
+    ongoing: [],
+    past: [],
+  };
+  fetchPromotions() {
+    restaurantService
+      .getOngoingPromotions(this.state.resid)
+      .then((response) => {
+        response.json().then((data) => {
+          console.log("data: ", data);
+          this.setState(
+            { ongoing: restaurantService.restaurantPromotionsResults(data) },
+            () => {
+              console.log(this.state.promotions);
+            }
+          );
+        });
+      });
+    restaurantService.getPastPromotions(this.state.resid).then((response) => {
+      response.json().then((data) => {
+        console.log("data: ", data);
+        this.setState(
+          { past: restaurantService.restaurantPromotionsResults(data) },
+          () => {
+            console.log(this.state.promotions);
+          }
+        );
+      });
+    });
+  }
+
+  componentDidMount() {
+    console.log("helloo", authenticationService.currentUserValue);
+    authenticationService.currentUser.subscribe((x) => {
+      if (x !== null) {
+        this.setState(
+          {
+            resid: x.restaurantid,
+          },
+          () => {
+            this.fetchPromotions(this.state.resid);
+          }
+        );
+      }
+    });
+  }
   render() {
     return (
       <div>
@@ -68,7 +128,11 @@ class Promo extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <ManagerPromo></ManagerPromo>
+              <ManagerPromo
+                ongoing={this.state.ongoing}
+                past={this.state.past}
+                resid={this.state.resid}
+              />
             </Grid>
           </Grid>
         </Grid>
