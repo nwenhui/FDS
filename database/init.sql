@@ -149,7 +149,7 @@ CREATE TABLE Classifies (
     ItemID INTEGER,
     PRIMARY KEY (catid, ItemID),
     FOREIGN KEY (catid) REFERENCES Category,
-    FOREIGN KEY (ItemID) REFERENCES FoodItem
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete cascade
 );
 
 INSERT INTO Classifies VALUES (1, 6);
@@ -177,7 +177,7 @@ CREATE TABLE Inventory (
     amt_available integer,
     available boolean default TRUE,
     PRIMARY KEY (itemid),
-    FOREIGN KEY (itemid) REFERENCES fooditem
+    FOREIGN KEY (itemid) REFERENCES fooditem on delete cascade
 );
 
 CREATE OR REPLACE FUNCTION inventory_check() 
@@ -514,7 +514,7 @@ CREATE TABLE Contains (
     Cost INTEGER REFERENCES FoodItem,
     FoodFee INTEGER,
     PRIMARY KEY (orderid, ItemID),
-    FOREIGN KEY (ItemID) REFERENCES FoodItem,
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null, 
     foreign key (orderid) references orders
 );
 
@@ -759,7 +759,7 @@ CREATE TABLE Reviews (
     Review VARCHAR(200),
     PRIMARY KEY (orderid, ItemID),
     foreign key (orderid) references orders, 
-    FOREIGN KEY (ItemID) REFERENCES FoodItem 
+    FOREIGN KEY (ItemID) REFERENCES FoodItem on delete set null
 );
 
 INSERT INTO Reviews VALUES (1, 2, 5, 'Amazing');

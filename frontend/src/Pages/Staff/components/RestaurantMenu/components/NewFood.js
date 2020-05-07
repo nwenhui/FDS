@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import EditFood from "./EditFood";
 //import mockData from "./data";
-import FoodItemInfo from './FoodItemInfo';
+import NewItemForm from './NewFoodForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -69,31 +69,12 @@ const FoodItem = (props) => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Food Items" />
+      <CardHeader title="Add Food Item" align="center" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {/* <TableCell>Food Item ID</TableCell> */}
-                  <TableCell>Item Name</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Amt in Inventory</TableCell>
-                  <TableCell>Qty Limit</TableCell>
-                  <TableCell>Categories</TableCell>
-                  <TableCell>Availability</TableCell>
-                  <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {props.menu.map((item, index) => (
-                  <FoodItemInfo key={index} itemid={item} />
-                ))}
-              </TableBody>
-            </Table>
+            <NewItemForm resid={props.resid} />
           </div>
           {openEdit && <EditFood data={editData} onClick={handleEdit} />}
         </PerfectScrollbar>
