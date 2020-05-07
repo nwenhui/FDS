@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
@@ -15,6 +15,9 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import { Tab } from "react-bootstrap";
+// import FoodItemInfo from './FoodItemInfo'
+import { orderService,restaurantService } from "../../../../services"
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,14 +43,26 @@ const FoodItem = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [items] = useState(props.data);
+  const [resid] = useState(props.resid);
+  const [resname, setResname] = useState("");
 
   /*
   const items = props.data;
   */
 
+  useEffect(() => {
+    restaurantService.getRestaurantName(props.resid).then((response) => {
+      console.log('response?? : ', response)
+      response.json().then((data) => {
+        console.log('omo data: ', data.resname);
+        setResname(data.resname);
+      })
+    })
+  })
+
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader title="Order List" />
+      <CardHeader title="Your cart" />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
@@ -55,10 +70,16 @@ const FoodItem = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ valign: "top" }}>Order Ref</TableCell>
-                  <TableCell>Food Item</TableCell>
-                  <TableCell>Original Price</TableCell>
-                  <TableCell>Discounted Price</TableCell>
+                  <TableCell>Restuarant:</TableCell>
+                  <TableCell>{resname}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ valign: "top" }}>Item name</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Qty</TableCell>
+                  <TableCell> </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
