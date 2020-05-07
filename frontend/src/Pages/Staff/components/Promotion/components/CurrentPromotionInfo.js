@@ -49,10 +49,21 @@ class CurrentPromotionInfo extends Component {
 
     }
 
-    handleDelete() {}
+    handleDelete() {
+        restaurantService.deletePromotion(this.state.promotionid).then((response) => {
+            response.json()
+            .then((data) => {
+                console.log('deleto')
+                window.location.reload(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        })
+    }
 
     render() { 
-        return (  
+        return ( 
             <TableRow>
                     <TableCell>{this.state.promotionid}</TableCell>
                     <TableCell>{this.state.start}</TableCell>
@@ -68,7 +79,6 @@ class CurrentPromotionInfo extends Component {
                       >
                         <EditIcon />
                       </IconButton>
-                      {/* <EditIcon onClick={() => handleClick(order)} /> */}
                     </TableCell>
                     <TableCell>
                       <IconButton
