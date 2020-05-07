@@ -54,10 +54,10 @@ class MenuRow extends Component {
         } 
     }
 
-    handleAddtoCart() {
-        console.log('helloooo')
-        orderService.addToCheckOut(this.state.itemid, this.state.qty);
-    }
+    // handleAddtoCart() {
+    //     console.log('helloooo')
+    //     orderService.addToCheckOut(this.state.itemid, this.state.qty, this.state.price);
+    // }
 
     render() { 
         return (

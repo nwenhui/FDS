@@ -72,7 +72,7 @@ class SearchResultInfo extends Component {
         let cart = 0;
         try {
             if (this.state.qty > 0) {
-                cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.state.resid);
+                cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.state.resid, this.state.price);
                 this.setState({ error: false, success: true, successMessage: "You have added " + this.state.name + " to cart. There are now " + cart + " item(s) in your cart." });
             } else {
                 this.setState({ success: false, error: true, errorMessage: "Nothing to add... You have selected 0 qty" })
