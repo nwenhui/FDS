@@ -57,7 +57,7 @@ class RiderDashboard extends Component {
               >
                 {" "}
                 <Typography variant="h4" component="h2">
-                  Welcome back, full time {this.state.firstname} ! :){" "}
+                  Welcome back, Full Timer: {this.state.firstname} ! :){" "}
                 </Typography>{" "}
               </Grid>
               <Grid

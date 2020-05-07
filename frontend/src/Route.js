@@ -9,6 +9,8 @@ import CustomerProfile from "./Pages/Customer/CustomerProfile/CustomerProfile";
 import ManagerDashboard from "./Pages/Manager/Dashboard/Dashboard";
 import PartTimeRiderDashboard from "./Pages/Rider/PartTimeRider/Dashboard/Dashboard";
 import FullTimeRiderDashboard from "./Pages/Rider/FullTimeRider/Dashboard/Dashboard";
+import PartTimeRiderRating from "./Pages/Rider/PartTimeRider/RiderRating/RiderRating";
+import FullTimeRiderRating from "./Pages/Rider/FullTimeRider/RiderRating/RiderRating";
 
 import StaffDashboard from "./Pages/Staff/Dashboard/Dashboard";
 import RestaurantSearch from "./Pages/SearchResult/SearchResult";
@@ -109,6 +111,11 @@ export default class Routes extends Component {
             exact
             component={PartTimeRiderHistory}
           />
+          <Route
+            path="/partTimeRiderRating"
+            exact
+            component={PartTimeRiderRating}
+          />
           <Route path="/partTimeSched" exact component={PartTimeRiderSched} />
           <Route
             path="/partTimeSummary"
@@ -128,7 +135,11 @@ export default class Routes extends Component {
             exact
             component={FullTimeRiderHistory}
           />
-
+          <Route
+            path="/fullTimeRiderRating"
+            exact
+            component={FullTimeRiderRating}
+          />
           <Route path="/fullTimeSched" exact component={FullTimeRiderSched} />
 
           <Route
