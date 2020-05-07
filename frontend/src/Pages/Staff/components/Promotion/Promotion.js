@@ -42,12 +42,6 @@ const StaffPromo = (props) => {
   //   setPromotions(props.promotions)
   // })
 
-<<<<<<< HEAD
-=======
-  console.log('resididididid: ', props.resid);
-
-
->>>>>>> 544f56aa0b89f25e4a45ae80eace4a7169a3cbe3
   const handleOpenDiv = () => {
     setOpenDiv(!openDiv);
   };
@@ -125,7 +119,7 @@ class Promotionsss extends Component {
             resid: x.restaurantid,
           },
           () => {
-            console.log('res???????', this.state.resid)
+            console.log("res???????", this.state.resid);
             this.fetchPromotions(this.state.resid);
           }
         );
