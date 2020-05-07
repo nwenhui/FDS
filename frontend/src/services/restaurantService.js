@@ -264,6 +264,77 @@ function deleteFood(foodid) {
       .then(handleErrors)
 }
 
+function getRestaurantFromFood(foodid) {
+  const data = {id: foodid};
+  const url = 'http://localhost:3000/api/v1/restaurant/food/restaurant';
+  console.log('herehereher')
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantvailables(resid) {
+  const data = {id: resid};
+  const url = 'http://localhost:3000/api/v1/restaurant/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function searchAvailableFood(keywords) {
+  const data = {keywords: keywords};
+  const url = 'http://localhost:3000/api/v1/restaurant/search/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function searchAllFood(keywords) {
+  const data = {keywords: keywords};
+  const url = 'http://localhost:3000/api/v1/restaurant/search/available';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantName(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/name';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -285,4 +356,9 @@ export const restaurantService = {
     foodCategoryResults,
     newFoodItem,
     deleteFood,
+    getRestaurantFromFood,
+    getRestaurantvailables,
+    searchAvailableFood,
+    searchAllFood,
+    getRestaurantName
 }

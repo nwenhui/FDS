@@ -479,6 +479,104 @@ const getRestaurant = async (req, res) => {
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * get restaurant serving food
+   */
+  const getRestaurantFromFood = async (req, res) => {
+    const { id } = req.body;
+    const query = 'select distinct resid, resname from restaurant where resid = (select resid from listings where itemid = $1)';
+    try {
+      const { rows } = await dbQuery.query(query, [id]);
+      console.log('hello', dbResponse)
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+  /**
+   * get only available for sale food item
+   */
+  const getRestaurantAvailables = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantAvailablesQuery = 'select itemid from fooditem where itemid = any(select itemid from listings where resid = $1) and itemid = any(select itemid from inventory where available = true)';
+    try {
+      const { rows } = await dbQuery.query(getRestaurantAvailablesQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * search for available food
+   */
+  const searchAvailableFood = async (req, res) => {
+    const { keywords } = req.body;
+    console.log('keywords: ', keywords)
+    const searchAvailableFoodQuery = "SELECT * from fooditem WHERE lower(itemname) like '%' || lower($1) || '%' and itemid = any(select itemid from inventory where available = true)";
+    try {
+      const { rows } = await dbQuery.query(searchAvailableFoodQuery, [keywords]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * search for all food
+   */
+  const searchAllFood = async (req, res) => {
+    const { keywords } = req.body;
+    const searchAllFoodQuery = "SELECT * from fooditem WHERE lower(itemname) like '%' || lower($1) || '%'";
+    try {
+      const { rows } = await dbQuery.query(searchAllFoodQuery, [keywords]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get restaurant name from id
+   */
+  const getRestaurantName = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "SELECT resname from restaurant WHERE resid = $1";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('???: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
   
 export {
     searchRestaurant,
@@ -498,4 +596,9 @@ export {
     getCategory,
     newFoodItem,
     deleteFood,
+    getRestaurantFromFood,
+    getRestaurantAvailables,
+    searchAvailableFood,
+    searchAllFood,
+    getRestaurantName,
 };

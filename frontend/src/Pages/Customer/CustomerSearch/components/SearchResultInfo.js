@@ -4,19 +4,21 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { Button, TableCell } from '@material-ui/core';
 
-import SuccessAlert from "../../../../../components/Alerts/SuccessAlert/SuccessAlert"
-import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert"
+import SuccessAlert from "../../../../components/Alerts/SuccessAlert/SuccessAlert"
+import ErrorAlert from "../../../../components/Alerts/ErrorAlert/ErrorAlert"
 
-import { restaurantService } from '../../../../../services';
-import { orderService } from '../../../../../services';
+import { restaurantService } from '../../../../services';
+import { orderService } from '../../../../services';
 
-class MenuRow extends Component {
+class SearchResultInfo extends Component {
     state = {  
         itemid: this.props.itemid,
         name: "",
         price: 0,
         qty: 0,
         availabile: 0,
+        restaurant: "",
+        resid:0,
         error: false,
         succes: false,
         errorMessage: "",
@@ -37,6 +39,13 @@ class MenuRow extends Component {
                     console.log(' stuff hehe', data.itemid);
                     this.setState({ availabile: data.amt_available });
                 })
+        })
+        restaurantService.getRestaurantFromFood(this.state.itemid).then((response) => {
+            response.json()
+            .then((data) => {
+                console.log('hehehehehehe', data)
+                this.setState({ restaurant: data.resname, resid: data.resid }, () => {console.log('item res:', this.state.resid)})
+            })
         })
     }
 
@@ -62,8 +71,8 @@ class MenuRow extends Component {
         console.log('helloooo');
         let cart = 0;
         try {
-            cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.props.resid);
             if (this.state.qty > 0) {
+                cart = orderService.addToCheckOut(this.state.itemid, this.state.qty, this.state.resid);
                 this.setState({ error: false, success: true, successMessage: "You have added " + this.state.name + " to cart. There are now " + cart + " item(s) in your cart." });
             } else {
                 this.setState({ success: false, error: true, errorMessage: "Nothing to add... You have selected 0 qty" })
@@ -73,14 +82,15 @@ class MenuRow extends Component {
                 this.setState({ error: true, success: false, errorMessage: error });
             // })
         }
-    }
+    } 
 
     render() { 
         return (
             <TableRow>
                 <TableCell component="th" scope="row">
-                    {this.state.name}
+                    {this.state.restaurant}
                 </TableCell>
+                <TableCell align="center">{this.state.name}</TableCell>
                 <TableCell align="center">${this.state.price}</TableCell>
                 <TableCell align="center">{this.state.availabile}</TableCell>            
                 <TableCell align="center">
@@ -98,4 +108,4 @@ class MenuRow extends Component {
     }
 }
  
-export default MenuRow;
+export default SearchResultInfo;

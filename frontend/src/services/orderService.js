@@ -4,8 +4,8 @@ import { handleErrors } from "../helpers";
 const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
 const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
 
-function addToCheckOut(itemid, qty, resid) {
-    // console.log('resid: ', resid);
+const addToCheckOut = ((itemid, qty, resid) => {
+    console.log('resid: ', resid);
     // localStorage.removeItem("currentRestaurant");
     console.log("currentRestaurant: ", currentRestaurantSubject.value)
     const item = {
@@ -37,12 +37,53 @@ function addToCheckOut(itemid, qty, resid) {
     localStorage.setItem("currentCheckOut", JSON.stringify(items));
     console.log('length: ', currentCheckOutSubject.value.length)
     return currentCheckOutSubject.value.length;
-}
+})
+
+const removeFromCart = ((itemid) => {
+    if (currentCheckOutSubject.value.length === 1) {
+        localStorage.removeItem("currentCheckOut");
+        currentCheckOutSubject.next([]);
+        localStorage.removeItem("currentRestaurant");
+        currentRestaurantSubject.next("null");
+    } else {
+        let items = currentCheckOutSubject.value;
+        console.log('item.itemid: ', itemid);
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].itemid == itemid) {
+                console.log('items[i].itemid: ', items[i].itemid)
+                items.splice(i, 1);
+            }
+        }
+        currentCheckOutSubject.next(items);
+        localStorage.setItem("currentCheckOut", JSON.stringify(items));
+    }
+    return currentCheckOutSubject.value.length;
+})
+
+const updateCart = ((itemid, qty) => {
+    const item = {
+        itemid: itemid,
+        qty: qty
+    };
+    let items = currentCheckOutSubject.value;
+    console.log('item.itemid: ',item.itemid);
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].itemid == item.itemid) {
+            console.log('items[i].itemid: ', items[i].itemid)
+            items.splice(i, 1);
+        }
+    }
+    items.push(item);
+    currentCheckOutSubject.next(items);
+    localStorage.setItem("currentCheckOut", JSON.stringify(items));
+})
 
 export const orderService = {
     addToCheckOut,
+    removeFromCart,
+    updateCart,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
-    // currentRestaurant: currentRestaurantSubject.asObservable(),
-    // get currentRestaurantValue() { return currentRestaurantSubject.value },
+    currentRestaurant: currentRestaurantSubject.asObservable(),
+    get currentRestaurantValue() { return currentRestaurantSubject.value },
 }

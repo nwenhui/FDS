@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Total = (props) => {
+const Checkout = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState("cash");
@@ -97,7 +97,28 @@ const Total = (props) => {
                 <FormControlLabel
                   value="cash"
                   control={<Radio />}
-                  label="Cash"
+                  label="Cash on delivery"
+                />
+                <FormControlLabel
+                  value="creditCard"
+                  control={<Radio />}
+                  label="Credit Card"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item lg={6} sm={6} xl={6} xs={12}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Pay by:</FormLabel>
+              <RadioGroup
+                aria-label="paymentMode"
+                value={value}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="cash"
+                  control={<Radio />}
+                  label="Cash on delivery"
                 />
                 <FormControlLabel
                   value="creditCard"
@@ -124,8 +145,8 @@ const Total = (props) => {
   );
 };
 
-Total.propTypes = {
+Checkout.propTypes = {
   className: PropTypes.string,
 };
 
-export default Total;
+export default Checkout;

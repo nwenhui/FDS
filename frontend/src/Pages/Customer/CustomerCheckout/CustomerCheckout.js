@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import data from "./components/data";
 import { Sidebar } from "../../../layouts/Customer/components";
 import NavBar from "../../../components/Navigation/Navigation";
-
-import { FoodItem, Total } from "./components";
+import { orderService } from "../../../services"
+import { FoodItem, Checkout } from "./components";
+import Cart from './components/Cart'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
 const CustomerCheckout = (props) => {
   const classes = useStyles();
 
+  const [checkout, setCheckout] = useState([]);
+  const [resid, setResid] = useState()
+
   return (
     <div className={classes.root}>
       <NavBar history={props.history} />
@@ -25,11 +29,11 @@ const CustomerCheckout = (props) => {
         </Grid>
         <Grid container item spacing={4} id="page-wrap">
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <FoodItem data={data.foodItem} />
+            <Cart data={data.foodItem} resid={resid} checkout={checkout} />
             {/*<FoodItem data={checkoutList.foodItem} />*/}
           </Grid>
           <Grid container justify="center">
-            <Total />
+            <Checkout />
           </Grid>
           <Grid></Grid>
         </Grid>
