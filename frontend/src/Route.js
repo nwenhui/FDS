@@ -33,6 +33,7 @@ import ManagerProfile from "./Pages/Manager/ManagerProfile/ManagerProfile";
 import ManagerPromo from "./Pages/Manager/components/ManagerPromo/Promo";
 import RiderSalary from "./Pages/Manager/components/Salary/Salary";
 import DeliveryFee from "./Pages/Manager/components/DeliveryFee/DeliveryFee";
+import MonthlySummary from "./Pages/Manager/components/MonthlySummary/MonthSummary.js";
 
 import StaffProfile from "./Pages/Staff/StaffProfile/StaffProfile";
 import RestaurantMenu from "./Pages/Staff/components/RestaurantMenu/RestaurantMenu";
@@ -146,6 +147,7 @@ export default class Routes extends Component {
           <Route path="/managerPromo" exact component={ManagerPromo} />
           <Route path="/riderSalary" exact component={RiderSalary} />
           <Route path="/deliveryFee" exact component={DeliveryFee} />
+          <Route path="/monthlySummary" exact component={MonthlySummary} />
 
           <Route path="/staffProfile" exact component={StaffProfile} />
           <Route path="/staffPromotions" exact component={StaffPromotions} />
