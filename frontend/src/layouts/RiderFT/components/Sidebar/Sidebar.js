@@ -2,7 +2,7 @@ import React from "react";
 import { push as Menu } from "react-burger-menu";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import SettingsIcon from "@material-ui/icons/Settings";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import GradeIcon from "@material-ui/icons/Grade";
 import HistoryIcon from "@material-ui/icons/History";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
@@ -66,6 +66,10 @@ export default (props) => {
 
       <a className="menu-item" href="/fullTimeHistory">
         <HistoryIcon /> Past Work
+      </a>
+
+      <a className="menu-item" href="/fullTimeRiderRating">
+        <GradeIcon /> Rider Rating
       </a>
       <a className="menu-item" href="/fullTimeSummary">
         <InsertChartIcon /> Summary

@@ -39,6 +39,12 @@ class SummaryDetails extends Component {
 
                 <Grid item md={12} xs={12}>
                   <Typography variant="h6" component="h2">
+                    Total Number of Journeys: 26
+                  </Typography>
+                </Grid>
+
+                <Grid item md={12} xs={12}>
+                  <Typography variant="h6" component="h2">
                     Total Salary Earned: $600
                   </Typography>
                 </Grid>
