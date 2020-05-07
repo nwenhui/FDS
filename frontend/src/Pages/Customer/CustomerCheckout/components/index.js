@@ -1,2 +1,2 @@
-export { default as Checkout } from './Checkout';
+export { default as Total } from './Total';
 export { default as FoodItem } from './FoodItem';

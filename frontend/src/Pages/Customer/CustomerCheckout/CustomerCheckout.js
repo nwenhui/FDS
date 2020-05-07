@@ -1,12 +1,11 @@
-import React, { useState, useLayoutEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import data from "./components/data";
 import { Sidebar } from "../../../layouts/Customer/components";
 import NavBar from "../../../components/Navigation/Navigation";
-import { orderService } from "../../../services"
-import { FoodItem, Checkout } from "./components";
-import Cart from './components/Cart'
+
+import { FoodItem, Total } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,14 +16,6 @@ const useStyles = makeStyles((theme) => ({
 const CustomerCheckout = (props) => {
   const classes = useStyles();
 
-  const [checkout, setCheckout] = useState([]);
-  const [resid, setResid] = useState()
-
-  useLayoutEffect(() => {
-    console.log('removeee')
-    sessionStorage.removeItem("currentTotal");
-  })
-
   return (
     <div className={classes.root}>
       <NavBar history={props.history} />
@@ -34,11 +25,11 @@ const CustomerCheckout = (props) => {
         </Grid>
         <Grid container item spacing={4} id="page-wrap">
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <Cart data={data.foodItem} resid={resid} checkout={checkout} />
+            <FoodItem data={data.foodItem} />
             {/*<FoodItem data={checkoutList.foodItem} />*/}
           </Grid>
           <Grid container justify="center">
-            <Checkout />
+            <Total />
           </Grid>
           <Grid></Grid>
         </Grid>

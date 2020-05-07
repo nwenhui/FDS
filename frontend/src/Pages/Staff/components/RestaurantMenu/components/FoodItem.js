@@ -19,7 +19,6 @@ import {
 } from "@material-ui/core";
 import EditFood from "./EditFood";
 //import mockData from "./data";
-import FoodItemInfo from './FoodItemInfo';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,9 +49,6 @@ const FoodItem = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
 
-  const [menu] = useState(props.menu);
-
-
   const handleClick = (orders) => {
     setEditData(orders);
     setOpenEdit(true);
@@ -77,20 +73,48 @@ const FoodItem = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell>Food Item ID</TableCell> */}
-                  <TableCell>Item Name</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Amt in Inventory</TableCell>
-                  <TableCell>Qty Limit</TableCell>
+                  <TableCell>Food Item ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Original Price</TableCell>
+                  <TableCell>Discounted Price</TableCell>
+                  <TableCell>Daily Limit</TableCell>
                   <TableCell>Categories</TableCell>
-                  <TableCell>Availability</TableCell>
                   <TableCell>Edit</TableCell>
                   <TableCell>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.menu.map((item, index) => (
-                  <FoodItemInfo key={index} itemid={item} />
+                {orders.map((order) => (
+                  <TableRow hover key={order.id}>
+                    <TableCell>{order.fid}</TableCell>
+                    <TableCell>{order.name}</TableCell>
+                    <TableCell>{order.original}</TableCell>
+                    <TableCell>{order.discounted}</TableCell>
+                    <TableCell>{order.dailyLimit}</TableCell>
+                    <TableCell>
+                      {order.categories.map((category) => {
+                        return <li>{category}</li>;
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        //color="primary"
+                        size="small"
+                        onClick={() => handleClick(order)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        //color="primary"
+                        size="small"
+                        onClick={() => handleDelete(order.fid)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>

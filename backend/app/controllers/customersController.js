@@ -258,53 +258,6 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
-
-  /**
-   * get promotion that applies to customer's orders
-   */
-  const applicablePromotions = async (req, res) => {
-    const { id, total } = req.body;
-    console.log('id: ', id);
-    const applicablePromotionsQuery = 'select * from promotion where (enddate > now()) and (promotionid = any(select promotionid from fdspromotion) or promotionid = any(select promotionid from restaurantpromotion where resid = $1)) and (minspending < $2)';
-    
-    const values = [
-      id,
-      total
-    ];
-
-    try {
-      const { rows } = await dbQuery.query(applicablePromotionsQuery, values);
-      const dbResponse = rows;
-      successMessage.data = dbResponse;
-      console.log('res: ', dbResponse);
-      return res.status(status.success).send(successMessage.data);
-    } catch (error) {
-      console.log(error);
-      errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage.error);
-    }
-  }
-
-  /**
-   * get promotion details
-   */
-  const promotionDetails = async (req, res) => {
-    const { id } = req.body;
-    console.log('id: ', id);
-    const applicablePromotionsQuery = 'select * from promotion where promotionid = $1';
-
-    try {
-      const { rows } = await dbQuery.query(applicablePromotionsQuery, [id]);
-      const dbResponse = rows[0];
-      successMessage.data = dbResponse;
-      console.log('res: ', dbResponse);
-      return res.status(status.success).send(successMessage.data);
-    } catch (error) {
-      console.log(error);
-      errorMessage.error = 'Operation was not successful';
-      return res.status(status.error).send(errorMessage.error);
-    }
-  }
   
   export {
     createCustomer,
@@ -313,6 +266,4 @@ import {
     editCustomer,
     deleteCustomer,
     ordersByCustomer,
-    applicablePromotions,
-    promotionDetails,
   };
