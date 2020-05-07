@@ -5,7 +5,7 @@ import {restaurantService } from "./restaurantService";
 const deliveryfee = 4;
 const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
 const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
-const currentTotalSubject = new BehaviorSubject(JSON.parse(sessionStorage.getItem("currentTotal") || 0));
+const currentTotalSubject = new BehaviorSubject(0);
 const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("orderPayment") || "null"));
 const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
 const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"))
