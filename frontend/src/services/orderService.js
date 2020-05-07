@@ -1,8 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { handleErrors } from "../helpers";
-import {restaurantService } from "./restaurantService";
 
-const deliveryfee = 4;
 const currentCheckOutSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentCheckOut") || "[]"));
 const currentRestaurantSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("currentRestaurant") || "null"));
 const currentTotalSubject = new BehaviorSubject(JSON.parse(sessionStorage.getItem("currentTotal") || 0));
@@ -153,28 +151,10 @@ function promotionDetails(id) {
         .then(handleErrors)
 }
 
-
 export const orderService = {
     addToCheckOut,
-    removeFromCart,
-    updateCart,
-    addToTotal,
-    setOrderPayment,
-    applicableOrders,
-    promotionResults,
-    promotionDetails,
-    setAppliedPromotion,
-    setDeliveryFee,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
-    currentRestaurant: currentRestaurantSubject.asObservable(),
-    get currentRestaurantValue() { return currentRestaurantSubject.value },
-    currentTotal: currentTotalSubject.asObservable(),
-    get currentTotalValue() { return currentTotalSubject.value },
-    orderPayment: orderPaymentSubject.asObservable(),
-    get orderPaymentValue() { return orderPaymentSubject.value },
-    promotionApplied: promotionAppliedSubject.asObservable(),
-    get promotionAppliedValue() { return promotionAppliedSubject.value },
-    deliveryFeeSubject: deliveryFeeSubject.asObservable(),
-    get deliveryFeeValue() { return deliveryFeeSubject.value },
+    // currentRestaurant: currentRestaurantSubject.asObservable(),
+    // get currentRestaurantValue() { return currentRestaurantSubject.value },
 }

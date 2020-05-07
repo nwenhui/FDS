@@ -89,7 +89,7 @@ class MenuRow extends Component {
                     <Button onClick={() => this.handleAdd()}><AddCircleIcon/></Button>
                 </TableCell>
                 <TableCell align="right">
-                    <Button variant="contained" color="secondary" onClick={() => this.handleAddtoCart()}>Add to Cart</Button>
+                    <Button variant="contained" onClick={() => this.handleAddtoCart()}>Add to Cart</Button>
                 </TableCell>
                 {this.state.error && ErrorAlert(this.state.errorMessage)}
                 {this.state.success && SuccessAlert(this.state.successMessage)}

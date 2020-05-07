@@ -5,12 +5,13 @@ import { makeStyles } from "@material-ui/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
 import data from "./data";
 import IconButton from "@material-ui/core/IconButton";
+import Radio from "@material-ui/core/Radio";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
-import Total from './checkoutcomponents/Total'
-import PaymentMethod from './checkoutcomponents/PaymentMethod'
-import Promotion from './checkoutcomponents/Promotion'
-
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Checkout = (props) => {
+const Total = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState("cash");
@@ -72,7 +73,7 @@ const Checkout = (props) => {
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardContent>
         <Grid container justify="space-between">
-          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
+          <Grid item lg={6} sm={6} xl={6} xs={12}>
             <Grid item>
               <Typography
                 className={classes.title}
@@ -84,9 +85,8 @@ const Checkout = (props) => {
               </Typography>
               <Typography variant="h5">{data.totalValue}</Typography>
             </Grid>
-          </Grid> */}
-          <Total />
-          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
+          </Grid>
+          <Grid item lg={6} sm={6} xl={6} xs={12}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Pay by:</FormLabel>
               <RadioGroup
@@ -97,7 +97,7 @@ const Checkout = (props) => {
                 <FormControlLabel
                   value="cash"
                   control={<Radio />}
-                  label="Cash on delivery"
+                  label="Cash"
                 />
                 <FormControlLabel
                   value="creditCard"
@@ -106,9 +106,7 @@ const Checkout = (props) => {
                 />
               </RadioGroup>
             </FormControl>
-          </Grid> */}
-          <PaymentMethod />
-          <Promotion />
+          </Grid>
           <IconButton
             style={{ marginLeft: "200px" }}
             fullWidth={true}
@@ -126,8 +124,8 @@ const Checkout = (props) => {
   );
 };
 
-Checkout.propTypes = {
+Total.propTypes = {
   className: PropTypes.string,
 };
 
-export default Checkout;
+export default Total;
