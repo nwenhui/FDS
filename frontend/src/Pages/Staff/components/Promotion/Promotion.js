@@ -119,7 +119,7 @@ class Promotionsss extends Component {
             resid: x.restaurantid,
           },
           () => {
-            console.log('res???????', this.state.resid)
+            console.log("res???????", this.state.resid);
             this.fetchPromotions(this.state.resid);
           }
         );
