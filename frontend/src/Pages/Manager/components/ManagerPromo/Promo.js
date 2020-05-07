@@ -17,7 +17,15 @@ const useStyles = makeStyles((theme) => ({
 const ManagerPromo = () => {
   const classes = useStyles();
   const [openDiv, setOpenDiv] = useState(false);
+  const [open, setOpen] = useState(false);
 
+  const handleClick = () => {
+    if (open === true) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  };
   const handleOpenDiv = () => {
     setOpenDiv(!openDiv);
   };
@@ -27,18 +35,18 @@ const ManagerPromo = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container item spacing={4}>
+      <Grid container item spacing={4} alignItems="center" justify="center">
         <Grid item lg={2} sm={2} xl={2} xs={2}>
           <Button
             variant="contained"
             color="primary"
             size="small"
-            onClick={handleOpenDiv}
-            style={{ width: "130px" }}
+            onClick={handleClick}
+            style={{ width: "200px", height: "50px" }}
           >
-            Add Promotion
+            Add New Promotion
           </Button>
-          {openDiv && <AddPromotion onClick={handleOpenDiv} />}
+          {/* {openDiv && <AddPromotion onClick={handleOpenDiv} />} */}
         </Grid>
         <Grid item lg={12} sm={12} xl={12} xs={12}>
           <CurrentPromotion data={data} />
