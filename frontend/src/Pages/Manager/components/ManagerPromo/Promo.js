@@ -10,7 +10,7 @@ import {
   NewPromotion,
   PastPromotion,
 } from "./components";
-import { authenticationService, restaurantService } from "../../../../services";
+import { authenticationService, staffService } from "../../../../services";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,51 +70,30 @@ const ManagerPromo = (props) => {
 };
 class Promo extends Component {
   state = {
-    resid: null,
     ongoing: [],
     past: [],
   };
   fetchPromotions() {
-    restaurantService
-      .getOngoingPromotions(this.state.resid)
+    staffService
+      .getOngoingPromotions()
       .then((response) => {
         response.json().then((data) => {
           console.log("data: ", data);
           this.setState(
-            { ongoing: restaurantService.restaurantPromotionsResults(data) },
-            () => {
-              console.log(this.state.promotions);
-            }
-          );
+            { ongoing: staffService.fdsPromotionsResults(data) });
         });
       });
-    restaurantService.getPastPromotions(this.state.resid).then((response) => {
+    staffService.getPastPromotions().then((response) => {
       response.json().then((data) => {
         console.log("data: ", data);
         this.setState(
-          { past: restaurantService.restaurantPromotionsResults(data) },
-          () => {
-            console.log(this.state.promotions);
-          }
-        );
+          { past: staffService.fdsPromotionsResults(data) });
       });
     });
   }
 
   componentDidMount() {
-    console.log("helloo", authenticationService.currentUserValue);
-    authenticationService.currentUser.subscribe((x) => {
-      if (x !== null) {
-        this.setState(
-          {
-            resid: x.restaurantid,
-          },
-          () => {
-            this.fetchPromotions(this.state.resid);
-          }
-        );
-      }
-    });
+    this.fetchPromotions();
   }
   render() {
     return (
@@ -131,7 +110,6 @@ class Promo extends Component {
               <ManagerPromo
                 ongoing={this.state.ongoing}
                 past={this.state.past}
-                resid={this.state.resid}
               />
             </Grid>
           </Grid>

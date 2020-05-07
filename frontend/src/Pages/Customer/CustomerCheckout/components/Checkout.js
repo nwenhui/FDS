@@ -3,7 +3,6 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
-import data from "./data";
 import IconButton from "@material-ui/core/IconButton";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
@@ -11,6 +10,7 @@ import Total from './checkoutcomponents/Total'
 import PaymentMethod from './checkoutcomponents/PaymentMethod'
 import Promotion from './checkoutcomponents/Promotion'
 import UsePoints from './checkoutcomponents/UsePoints'
+import SubmitButton from './checkoutcomponents/SubmitButton'
 
 import { authenticationService } from "../../../../services"
 
@@ -75,47 +75,12 @@ const Checkout = (props) => {
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardContent>
         <Grid container justify="space-between">
-          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
-            <Grid item>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-                variant="body2"
-              >
-                Total Cost
-              </Typography>
-              <Typography variant="h5">{data.totalValue}</Typography>
-            </Grid>
-          </Grid> */}
           <Total />
-          {/* <Grid item lg={6} sm={6} xl={6} xs={12}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Pay by:</FormLabel>
-              <RadioGroup
-                aria-label="paymentMode"
-                value={value}
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  value="cash"
-                  control={<Radio />}
-                  label="Cash on delivery"
-                />
-                <FormControlLabel
-                  value="creditCard"
-                  control={<Radio />}
-                  label="Credit Card"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid> */}
           <PaymentMethod />
           <Promotion />
-          {authenticationService.currentUserValue.points >= 10 && 
-          <UsePoints />
-          } 
-          <IconButton
+          {authenticationService.currentUserValue.points >= 10 && <UsePoints />} 
+          <SubmitButton />
+          {/* <IconButton
             style={{ marginLeft: "200px" }}
             fullWidth={true}
             color="secondary"
@@ -125,7 +90,7 @@ const Checkout = (props) => {
           >
             Confirm Order &nbsp;
             <AddShoppingCartIcon />
-          </IconButton>
+          </IconButton> */}
         </Grid>
       </CardContent>
     </Card>

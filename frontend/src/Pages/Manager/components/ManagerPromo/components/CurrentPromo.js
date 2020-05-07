@@ -19,6 +19,7 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
+import CurrentPromotionInfo from './CurrentPromotionInfo';
 
 import orders from "./data";
 const useStyles = makeStyles((theme) => ({
@@ -74,43 +75,18 @@ const Cpromo = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Promotion ID</TableCell>
-                  <TableCell>Discount</TableCell>
-                  <TableCell>Minimum Amount</TableCell>
                   <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
-                  <TableCell>Conditions</TableCell>
+                  <TableCell>Minimum Spending Required $</TableCell>
+                  <TableCell>Discount %</TableCell>
+                  <TableCell>Free Delivery</TableCell>
                   <TableCell>Edit</TableCell>
                   <TableCell>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map((order) => (
-                  <TableRow hover key={order.id}>
-                    <TableCell>{order.promo_id}</TableCell>
-                    <TableCell>{order.discount}</TableCell>
-                    <TableCell>{order.minAmount}</TableCell>
-                    <TableCell>{order.startDate}</TableCell>
-                    <TableCell>{order.endDate}</TableCell>
-                    <TableCell>{order.conditions}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        //color="primary"
-                        size="small"
-                        onClick={() => handleClick(order)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        //color="primary"
-                        size="small"
-                        onClick={() => handleDelete(order.promo_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
+                {props.promotions.map((promotion, index) => (
+                  <CurrentPromotionInfo key={index} promotionid={promotion} />
                 ))}
               </TableBody>
             </Table>

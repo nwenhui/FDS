@@ -313,11 +313,11 @@ CREATE TRIGGER promotion_date_trigger
     EXECUTE FUNCTION promotion_date_check()
 ;
 
-INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, 10, true, 
     DEFAULT, now(), '2020-09-28 01:00:00');
-INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, 15, DEFAULT, 
     DEFAULT, now(), '2020-05-18 01:00:00');
-    INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+    INSERT INTO Promotion VALUES (DEFAULT, DEFAULT, 25, DEFAULT, 
     DEFAULT, now(), '2021-05-08 01:00:00');
 
 
@@ -327,16 +327,15 @@ create table restaurantpromotion (
     primary key (promotionid, resid)
 );
 
-INSERT INTO restaurantpromotion VALUES (1, 2);
-INSERT INTO restaurantpromotion VALUES (2, 4);
-
 create table fdspromotion (
-    promotionid integer unique references promotion,
+    promotionid integer unique references promotion on delete cascade,
     managerid integer references Manager,
     primary key (promotionid, managerid)
 );
 
 INSERT INTO fdspromotion VALUES (3, 3);
+INSERT INTO restaurantpromotion VALUES (2, 4);
+INSERT INTO restaurantpromotion VALUES (1, 2);
 
 CREATE TABLE Rider (
     Id SERIAL,
@@ -700,7 +699,20 @@ CREATE TABLE Receipt (
 CREATE OR REPLACE FUNCTION receipt_check() 
     RETURNS TRIGGER AS $$
 BEGIN
+    NEW.percentageoff = case
+        when NEW.promotionid is not null then (SELECT p.percentageoff from promotion p where p.promotionid = new.promotionid)
+        else 0 
+        end;
+    NEW.deliveryfee = case 
+        when NEW.promotionid is not null then case 
+            when ((select p.freedelivery from promotion p where p.promotionid = new.promotionid) = true) or (NEW.usedpoints > 0) then 0
+            else NEW.deliveryfee
+            end
+        when NEW.usedpoints > 0 then 0
+        else NEW.deliveryfee
+        end;
     NEW.TotalFee = Round(((NEW.DeliveryFee + NEW.FoodFee) * ((100 - NEW.PercentageOff)/100.0)), 2);
+    NEW.gainedpoints = NEW.foodfee;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -712,23 +724,23 @@ CREATE TRIGGER receipt_check_trigger
     EXECUTE FUNCTION receipt_check()
 ;
 
-INSERT INTO Receipt VALUES (1, NULL, 10, 10, NULL, 4, 25, DEFAULT);
-INSERT INTO Receipt VALUES (2, NULL, 30, 10, NULL, 4, 25, DEFAULT);
-INSERT INTO Receipt VALUES (3, NULL, 20, 10, NULL, 4, 5, DEFAULT);
-INSERT INTO Receipt VALUES (4, NULL, 50, 10, NULL, 4, 68, DEFAULT);
-INSERT INTO Receipt VALUES (5, NULL, 10, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (6, NULL, 30, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (7, NULL, 20, 10, NULL, 4, 68, DEFAULT);
-INSERT INTO Receipt VALUES (8, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (9, NULL, 10, 10, NULL, 4, 25, DEFAULT);
-INSERT INTO Receipt VALUES (10, NULL, 10, 10, NULL, 4, 5, DEFAULT);
-INSERT INTO Receipt VALUES (11, NULL, DEFAULT, 10, NULL, 4, 68, DEFAULT);
-INSERT INTO Receipt VALUES (12, NULL, 10, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (13, NULL, DEFAULT, 10, NULL, 4, 68, DEFAULT);
-INSERT INTO Receipt VALUES (14, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (15, NULL, 30, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (16, NULL, DEFAULT, 10, NULL, 4, 10, DEFAULT);
-INSERT INTO Receipt VALUES (17, NULL, 50, 10, NULL, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (1, 1, DEFAULT, DEFAULT, 0, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (2, NULL, DEFAULT, DEFAULT, 0, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (3, 3, DEFAULT, DEFAULT, 10, 4, 5, DEFAULT);
+INSERT INTO Receipt VALUES (4, NULL, DEFAULT, DEFAULT, 10, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (5, 2, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (6, NULL, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (7, 2, DEFAULT, DEFAULT, 0, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (8, 3, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (9, NULL, DEFAULT, DEFAULT, 0, 4, 25, DEFAULT);
+INSERT INTO Receipt VALUES (10, 3, DEFAULT, DEFAULT, 0, 4, 5, DEFAULT);
+INSERT INTO Receipt VALUES (11, 3, DEFAULT, DEFAULT, 0, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (12, NULL, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (13, 1, DEFAULT, DEFAULT, 0, 4, 68, DEFAULT);
+INSERT INTO Receipt VALUES (14, NULL, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (15, 2, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (16, 2, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
+INSERT INTO Receipt VALUES (17, 3, DEFAULT, DEFAULT, 0, 4, 10, DEFAULT);
 
 --rating for RIDERS
 CREATE TABLE Rates (

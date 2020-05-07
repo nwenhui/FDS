@@ -663,6 +663,25 @@ const getRestaurant = async (req, res) => {
       return res.sendStatus(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get min spending of a restaurant
+   */
+  const getMinSpending = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "SELECT minspending from restaurant WHERE resid = $1";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('???: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
 export {
     searchRestaurant,
@@ -688,5 +707,6 @@ export {
     searchAllFood,
     getRestaurantName,
     editFood,
-    editPromotion
+    editPromotion,
+    getMinSpending
 };
