@@ -39,7 +39,21 @@ const AccountDetails = (props) => {
   });
 
   useEffect(() => {
-    setValues(props);
+    // setValues(props);
+    authenticationService.currentUser.subscribe((x) => {
+      console.log('omo',x);
+      if (x !== null) {
+        setValues({
+          ...values,
+          firstname: x.first_name,
+          lastname: x.last_name,
+          email: x.email,
+          password: x.password,
+          creditcard: x.ccid
+        })
+          // this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points, password: x.password, creditcard: x.ccid }, () => {console.log('weewoo', this.state.password)})
+      }
+  });
   }, [props]);
 
   const [changed, setChanged] = useState({
@@ -94,7 +108,7 @@ const AccountDetails = (props) => {
         [event.target.name]: event.target.value,
       },
       () => {
-        console.log("value: ", values.email);
+        console.log("value: ", values.ccid);
       }
     );
     setChanged(
@@ -108,16 +122,27 @@ const AccountDetails = (props) => {
     );
   };
 
+  const handleChangeCC = (event) => {
+    setValues(
+      {
+        ...values,
+        [event.target.name]: event.target.value || null,
+      }
+    );
+  };
+
   const handleSaveDetails = (event) => {
     console.log("values: ", values);
     event.preventDefault();
+    console.log(values);
     authenticationService
       .editCustomerProfile(
         values.firstname,
         values.lastname,
         values.email,
         values.password,
-        props.id
+        props.id,
+        values.creditcard
       )
       .then((data) => {
         setStatus({
@@ -159,6 +184,11 @@ const AccountDetails = (props) => {
         });
       });
   };
+  
+  const handleDeleteCreditCard = (event) => {
+    event.preventDefault();
+
+  }
 
   return (
     <div>
@@ -219,7 +249,7 @@ const AccountDetails = (props) => {
                   label="Credit Card No."
                   margin="dense"
                   name="creditcard"
-                  onChange={handleChange}
+                  onChange={handleChangeCC}
                   type="number"
                   value={values.creditcard}
                   variant="outlined"

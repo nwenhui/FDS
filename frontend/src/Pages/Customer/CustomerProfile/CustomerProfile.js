@@ -28,7 +28,7 @@ class Account extends Component {
     authenticationService.currentUser.subscribe((x) => {
         console.log('omo',x);
         if (x !== null) {
-            this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points, password: x.password }, () => {console.log('weewoo', this.state.password)})
+            this.setState({ id: x.id, email: x.email, firstname: x.first_name, lastname: x.last_name, points: x.points, password: x.password, creditcard: x.ccid }, () => {console.log('weewoo', this.state.password)})
         }
     });
   }

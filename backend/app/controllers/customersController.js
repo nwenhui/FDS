@@ -159,7 +159,7 @@ import { json } from 'body-parser';
    */
   const editCustomer = async (req, res) => {
     const {
-      email, first_name, last_name, password, id
+      email, first_name, last_name, password, id, creditcard
     } = req.body;
 
     console.log('body: ', req.body)
@@ -168,7 +168,6 @@ import { json } from 'body-parser';
     console.log('last_name: ', last_name)
     console.log('password: ', password)
     console.log('id: ', id)
-
 
     // const created_on = moment(new Date());
     // if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
@@ -192,7 +191,8 @@ import { json } from 'body-parser';
         email = $1,
         first_name = $2,
         last_name = $3,
-        password = $4
+        password = $4,
+        ccid = $6
         where id = $5
         returning *`;
     const values = [
@@ -200,7 +200,8 @@ import { json } from 'body-parser';
       first_name,
       last_name,
       password,
-      id
+      id,
+      creditcard
       // creditcard
       // created_on,
     ];
@@ -222,6 +223,24 @@ import { json } from 'body-parser';
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * remove cc details in customer
+   */
+  const deleteCreditCard = async (req, res) => {
+    const { id } = req.body;
+    const deleteCustomerQuery = 'update customer set ccid = null where id = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deleteCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+  
 
   /**
    * delete a customer
@@ -722,4 +741,5 @@ import { json } from 'body-parser';
     deleteReview,
     editReview,
     getReviewCount,
+    deleteCreditCard
   };
