@@ -246,6 +246,7 @@ function logout() {
   localStorage.removeItem("orderPayment");
   localStorage.removeItem("promotionApplied");
   localStorage.removeItem("deliveryFee");
+  localStorage.removeItem("address");
   currentUserSubject.next(null);
 }
 

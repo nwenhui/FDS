@@ -79,7 +79,6 @@ const Checkout = (props) => {
           <Total />
           <PaymentMethod />
           <Promotion />
-          <AddressInput />
           {authenticationService.currentUserValue.points >= 10 && <UsePoints />} 
           <SubmitButton />
           {/* <IconButton

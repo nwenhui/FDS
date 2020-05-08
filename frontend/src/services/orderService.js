@@ -10,7 +10,7 @@ const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(
 const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
 const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"));
 const usedPointsSubject = new BehaviorSubject(false);
-const locationSubject = new BehaviorSubject("null");
+const locationSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("address") || "null"));
 
 function promotionResults(data) {
     var results = [];
@@ -31,6 +31,7 @@ const addToCheckOut = (itemid, qty, resid, price) => {
     itemid: itemid,
     qty: qty,
     price: price,
+    subtotal: qty * price,
   };
   if (currentRestaurantSubject.value === null) {
     console.log("nullsies");
@@ -87,6 +88,7 @@ const updateCart = (itemid, qty, price) => {
     itemid: itemid,
     qty: qty,
     price: price,
+    subtotal: qty * price,
   };
   let items = currentCheckOutSubject.value;
   console.log("item.itemid: ", item.itemid);
@@ -134,7 +136,7 @@ const setDeliveryFee = (fee) => {
 const setUsedPoints = ((value) => {
     console.log("promotion????:" ,value)
     usedPointsSubject.next(value)
-    localStorage.setItem("deliveryFee", JSON.stringify(value))
+    // localStorage.setItem("usedPoints", JSON.stringify(value))
 })
 
 function applicableOrders(resid, total) {
@@ -164,6 +166,29 @@ function promotionDetails(id) {
         .then(handleErrors)
 }
 
+function newOrder(id, cc, address, delivery, usedpoints, subtotal, promo, cart, current) {
+  const data = {id: id, cc: cc, address: address, delivery: delivery, usedpoints: usedpoints, subtotal: subtotal, promo: promo, cart: cart, current: current}
+  const url = 'http://localhost:3000/api/v1/customer/order/new'
+
+  var request = new Request(url, {
+    method: 'POST',
+    headers: new Headers({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+    .then(handleErrors)
+}
+
+const clearOrderMem = () => {
+  localStorage.removeItem("currentCheckOut")
+  localStorage.removeItem("currentRestaurant")
+  locationSubject.removeItem("orderPayment")
+  locationSubject.removeItem("promotionApplied")
+  locationSubject.removeItem("deliveryFee")
+  locationSubject.removeItem("address")
+}
+
 export const orderService = {
     addToCheckOut,
     removeFromCart,
@@ -177,6 +202,8 @@ export const orderService = {
     setDeliveryFee,
     setUsedPoints,
     setLocation,
+    newOrder,
+    clearOrderMem,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
     currentRestaurant: currentRestaurantSubject.asObservable(),
@@ -192,5 +219,5 @@ export const orderService = {
     usedPointsSubject: usedPointsSubject.asObservable(),
     get usedPointsValue() { return usedPointsSubject.value },
     locationSubject: locationSubject.asObservable(),
-    get locationSubject() { return locationSubject.value },
+    get locationSubjectValue() { return locationSubject.value },
 }

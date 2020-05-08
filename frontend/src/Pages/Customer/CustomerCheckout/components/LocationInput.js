@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
 import { Paper, Input } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import { orderService } from "../../../../services"
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +36,7 @@ const LocationInput = (props) => {
     <Paper {...rest} className={clsx(classes.root, className)} style={style}>
       <SearchIcon className={classes.icon} />
       <Input
+        value={orderService.locationSubjectValue}
         {...rest}
         className={classes.input}
         disableUnderline

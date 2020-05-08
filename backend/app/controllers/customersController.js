@@ -741,6 +741,72 @@ import { json } from 'body-parser';
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * new order
+   */
+  const newOrder = async (req, res) => {
+    const {
+      id, cc, address, delivery, usedpoints, subtotal, promo, cart, current
+    } = req.body;
+
+    console.log('body: ', req.body)
+
+    const query1 = `INSERT INTO
+        orders(id, ccpayment)
+        VALUES($1, $2)
+        returning *`;
+    const query2 = 'insert into receipt(orderid,promotionid,usedpoints,deliveryfee,foodfee) values($1,$2,$3,$4,$5) returning *'
+    const query3 = 'insert into orderdetails(orderid,addressdetails) values($1,$2) returning *'
+    const query4 = 'insert into contains(orderid, itemid, quantity,cost,foodfee) values($1,$2,$3,$4,$5) returning *'
+    const query5 = 'update customer set points = $1'
+    var nett = current + (subtotal - usedpoints);
+    const values5 = [
+      nett
+    ]
+    const values1 = [
+      id,
+      cc
+    ];
+    try {
+      await dbQuery.query('begin')
+      const { rows } = await dbQuery.query(query1, values1);
+      const orderid = rows[0].orderid;
+      const values2 = [
+        orderid,
+        promo,
+        usedpoints,
+        delivery,
+        subtotal
+      ]
+      const values3 = [
+        orderid,
+        address
+      ]
+      await dbQuery.query(query2, values2);
+      await dbQuery.query(query3, values3);
+      for (var i = 0; i < cart.length; i++) {
+        const values4 = [
+          orderid,
+          cart[i].itemid,
+          cart[i].qty,
+          cart[i].price,
+          cart[i].subtotal
+        ]
+        await dbQuery.query(query4, values4);
+      }
+      await dbQuery.query('commit');
+      // delete dbResponse.password;
+      successMessage.data = orderid;
+      return res.status(status.created).send(successMessage.data);
+    } catch (error) {
+      await dbQuery.query('rollback');
+      errorMessage.error = 'Operation was not successful';
+      console.log('error: ', error);
+      return res.status(status.success).send(errorMessage.error);
+    }
+  };
+
   
   export {
     createCustomer,
@@ -768,5 +834,6 @@ import { json } from 'body-parser';
     editReview,
     getReviewCount,
     deleteCreditCard,
-    getRecentAddress
+    getRecentAddress,
+    newOrder
   };

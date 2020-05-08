@@ -60,6 +60,7 @@ const RecentLocations = (props) => {
   const handleChange = (event) => {
     orderService.setLocation(addresses[event.target.value]);
     setValue(event.target.value)
+    console.log(orderService.locationSubjectValue)
   }
 
   return (
