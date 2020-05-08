@@ -40,9 +40,32 @@ function foodCategoryResults(data) {
   return results;
 }
 
+function ordersResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.orderid));
+  return results;
+}
+
+function orderItemResults(data) {
+  var results = [];
+  data.forEach(result => results.push(result.itemid));
+  return results;
+}
+
 function restaurantPromotionsResults(data) {
   var results = [];
   data.forEach(result => results.push(result.promotionid));
+  return results;
+}
+
+function reviewResults(data) {
+  var results = [];
+  data.forEach(result => results.push({
+    orderid: result.orderid,
+    itemid: result.itemid,
+    rating: result.rating,
+    reviews: result.review
+  }));
   return results;
 }
 
@@ -377,6 +400,62 @@ function getMin(id) {
       .then(handleErrors)
 }
 
+function getOrders(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/orders';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getOrderItems(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/orders/items';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getOrderDate(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/order/date';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
+function getRestaurantReviews(id) {
+  const data = {id: id};
+  const url = 'http://localhost:3000/api/v1/restaurant/reviews';
+
+  var request = new Request(url, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(data)
+  });
+
+  return fetch(request)
+      .then(handleErrors)
+}
+
 export const restaurantService = {
     restaurantSignup,
     searchRestaurant,
@@ -405,5 +484,12 @@ export const restaurantService = {
     getRestaurantName,
     editFood,
     editPromotion,
-    getMin
+    getMin,
+    getOrders,
+    ordersResults,
+    getOrderItems,
+    orderItemResults,
+    getOrderDate,
+    getRestaurantReviews,
+    reviewResults,
 }

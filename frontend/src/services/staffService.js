@@ -106,7 +106,53 @@ function getPromotions() {
         .then(handleErrors)
   }
 
+  function topitems(id, start, end) {
+    const data = {id: id, start: start, end: end};
+    const url = 'http://localhost:3000/api/v1/staff/summary/topitem';
+  
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+  
+    return fetch(request)
+        .then(handleErrors)
+  }
 
+  function totalcost(id, start, end) {
+    const data = {id: id, start: start, end: end};
+    const url = 'http://localhost:3000/api/v1/staff/summary/totalcost';
+  
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+  
+    return fetch(request)
+        .then(handleErrors)
+  }
+
+  function totalcount(id, start, end) {
+    const data = {id: id, start: start, end: end};
+    const url = 'http://localhost:3000/api/v1/staff/summary/totalcount';
+  
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+  
+    return fetch(request)
+        .then(handleErrors)
+  }
+
+  function topitemsresults(data) {
+    var results = [];
+    data.forEach(result => results.push(result.itemname));
+    return results;
+  }
 
 export const staffService = {
     getPromotions,
@@ -116,5 +162,9 @@ export const staffService = {
     getPastPromotions,
     newPromotion,
     deletePromotion,
-    editPromotion
+    editPromotion,
+    topitems,
+    totalcost,
+    totalcount,
+    topitemsresults
 }

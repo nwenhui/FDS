@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Typography, Avatar } from "@material-ui/core";
 import Trophy from "@material-ui/icons/EmojiEvents";
+import { restaurantService } from "../../../../../services"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,32 @@ const TopFive = (props) => {
   const classes = useStyles();
   const topFive = props.data;
 
+  const results = props.results;
+  const [names, setNames] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: ""
+  })
+
+//   const getNames = (results) => {
+//     results.map((result, index) => {
+//       restaurantService.getFood(result).then((response)=> {
+//         response.json().then((data) => {
+//           setNames({
+//             index: data.itemname
+//           })
+//         })
+//       })
+//     })
+//   }
+
+//   useEffect(() => {
+//     getNames(results);
+//   }, [props])
+// console.log(names)
+
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardContent>
@@ -62,7 +89,7 @@ const TopFive = (props) => {
                 <Trophy className={classes.icon} />
               </Avatar>
             </Grid>
-            {topFive.map((item) => {
+            {results.map((item) => {
               return <Typography variant="h4">{item}</Typography>;
             })}
           </Grid>

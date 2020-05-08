@@ -74,7 +74,7 @@ export default (props) => {
       </a>
       <a className="menu-item" href="/restaurantReview">
         <StarIcon />
-        Review
+        View Reviews
       </a>
       <a className="menu-item" href="/monthlyReview">
         <SummaryIcon />

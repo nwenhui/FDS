@@ -12,17 +12,22 @@ class Promotion extends Component {
     state = {  
         promotions: [],
         resid: orderService.currentRestaurantValue,
-        total: orderService.currentTotalValue,
+        total: orderService.currentTotalValue
     }
 
     componentDidMount() {
         console.log("resid???",this.state.resid);
-        console.log("total>>>>>", this.state.total);
-        orderService.applicableOrders(this.state.resid, this.state.total).then((response) => {
-             response.json().then((data) => {
-                this.setState({ promotions: orderService.promotionResults(data) });
-            })
-        })
+        orderService.currentTotal.subscribe((x) =>
+          this.setState({ total: x }, () => {
+            console.log("total>>>>>", this.state.total);
+            orderService.applicableOrders(this.state.resid, this.state.total).then((response) => {
+              response.json().then((data) => {
+                 this.setState({ promotions: orderService.promotionResults(data) });
+             })
+         })
+          })
+        );
+        
     }
 
     handleChange = (event) => {

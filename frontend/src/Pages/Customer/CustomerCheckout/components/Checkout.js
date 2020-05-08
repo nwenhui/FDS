@@ -11,6 +11,7 @@ import PaymentMethod from './checkoutcomponents/PaymentMethod'
 import Promotion from './checkoutcomponents/Promotion'
 import UsePoints from './checkoutcomponents/UsePoints'
 import SubmitButton from './checkoutcomponents/SubmitButton'
+import AddressInput from './checkoutcomponents/AddressInput'
 
 import { authenticationService } from "../../../../services"
 

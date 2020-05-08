@@ -68,15 +68,15 @@ export default (props) => {
       </a>
 
       <a className="menu-item" href="/customerHistory">
-        <HistoryIcon /> Past Orders
+        <HistoryIcon /> Order History
       </a>
-      <a className="menu-item" href="/EditRReview">
+      {/* <a className="menu-item" href="/EditRReview">
         <RateReviewIcon /> Restaurant Reviews
-      </a>
+      </a> */}
 
-      <a className="menu-item" href="/EditDRating">
+      {/* <a className="menu-item" href="/EditDRating">
         <GradeIcon /> Rider Ratings
-      </a>
+      </a> */}
 
       <a className="menu-item" href="/customerCheckout">
         <ShoppingCartIcon /> Check Out

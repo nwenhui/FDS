@@ -334,8 +334,8 @@ create table fdspromotion (
 );
 
 INSERT INTO fdspromotion VALUES (3, 3);
-INSERT INTO restaurantpromotion VALUES (2, 4);
-INSERT INTO restaurantpromotion VALUES (1, 2);
+INSERT INTO fdspromotion VALUES (2, 4);
+INSERT INTO fdspromotion VALUES (1, 2);
 
 CREATE TABLE Rider (
     Id SERIAL,

@@ -71,6 +71,8 @@ const PastOrders = (props) => {
                   <TableCell>Promotion Applied</TableCell>
                   <TableCell>Used Points</TableCell>
                   <TableCell>Date Ordered</TableCell>
+                  <TableCell>Rate Delivery</TableCell>
+                  <TableCell>Review Items</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

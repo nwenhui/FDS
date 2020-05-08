@@ -246,11 +246,12 @@ function logout() {
   localStorage.removeItem("orderPayment");
   localStorage.removeItem("promotionApplied");
   localStorage.removeItem("deliveryFee");
+  localStorage.removeItem("address");
   currentUserSubject.next(null);
 }
 
-function editCustomerProfile(firstname, lastname, email, password, id) {
-    const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id};
+function editCustomerProfile(firstname, lastname, email, password, id, cc) {
+    const data = {first_name: firstname, last_name: lastname, email: email, password: password, id: id, creditcard: cc};
     const url = 'http://localhost:3000/api/v1/customer/edit';
 
     console.log('data: ', JSON.stringify(data));

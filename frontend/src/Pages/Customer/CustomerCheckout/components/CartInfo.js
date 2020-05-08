@@ -78,7 +78,7 @@ class CartInfo extends Component {
         console.log('helloooo');
         let cart = 0;
         try {
-            cart = orderService.updateCart(this.state.itemid, this.state.qty);
+            cart = orderService.updateCart(this.state.itemid, this.state.qty, this.state.price);
             this.setState({ error: false, success: true, successMessage: "You have updated " + this.state.name + " in your cart." });
         } catch (error) {
             // error.text().then((errorMessage) => {

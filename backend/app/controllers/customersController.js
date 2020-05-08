@@ -13,6 +13,7 @@ import {
 import {
     errorMessage, successMessage, status,
 } from '../helpers/status';
+import { json } from 'body-parser';
 
 /**
    * Create A Customer
@@ -158,7 +159,7 @@ import {
    */
   const editCustomer = async (req, res) => {
     const {
-      email, first_name, last_name, password, id
+      email, first_name, last_name, password, id, creditcard
     } = req.body;
 
     console.log('body: ', req.body)
@@ -167,7 +168,6 @@ import {
     console.log('last_name: ', last_name)
     console.log('password: ', password)
     console.log('id: ', id)
-
 
     // const created_on = moment(new Date());
     // if (isEmpty(email) || isEmpty(first_name) || isEmpty(last_name) || isEmpty(password)) {
@@ -191,7 +191,8 @@ import {
         email = $1,
         first_name = $2,
         last_name = $3,
-        password = $4
+        password = $4,
+        ccid = $6
         where id = $5
         returning *`;
     const values = [
@@ -199,7 +200,8 @@ import {
       first_name,
       last_name,
       password,
-      id
+      id,
+      creditcard
       // creditcard
       // created_on,
     ];
@@ -221,6 +223,24 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   };
+
+  /**
+   * remove cc details in customer
+   */
+  const deleteCreditCard = async (req, res) => {
+    const { id } = req.body;
+    const deleteCustomerQuery = 'update customer set ccid = null where id = $1 returning *';
+    try {
+      const { rows } = await dbQuery.query(deleteCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+  
 
   /**
    * delete a customer
@@ -265,7 +285,7 @@ import {
   const applicablePromotions = async (req, res) => {
     const { id, total } = req.body;
     console.log('id: ', id);
-    const applicablePromotionsQuery = 'select * from promotion where (enddate > now()) and (promotionid = any(select promotionid from fdspromotion) or promotionid = any(select promotionid from restaurantpromotion where resid = $1)) and (minspending < $2)';
+    const applicablePromotionsQuery = 'select * from promotion where (enddate > now()) and (promotionid = any(select promotionid from fdspromotion) or promotionid = any(select promotionid from restaurantpromotion where resid = $1)) and (minspending <= $2)';
     
     const values = [
       id,
@@ -416,8 +436,54 @@ import {
    */
   const orderRestaurant = async (req, res) => {
     const { id } = req.body;
-    console.log('order restaurant id: ', id);
+    console.log('oopsie: ', id);
     const ordersByCustomerQuery = 'select resname from restaurant where resid = (select distinct resid from listings where itemid = any(select itemid from contains where orderid = $1))';
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('oopsie res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * rate a delivery
+   */
+  const rateDelivery = async (req, res) => {
+    const { id, value } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'insert into rates(orderid, rating) values($1, $2) returning *';
+    const values = [
+      id, 
+      value
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get delivery rating
+   */
+  const getRating = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select * from rates where orderid = $1';
+
     try {
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows[0];
@@ -430,6 +496,317 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * delete rating
+   */
+  const deleteRating = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'delete from rates where orderid = $1 returning *';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+  
+  /**
+   * edit rating
+   */
+  const editRating = async (req, res) => {
+    const { id, value } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'update rates set rating = $2 where orderid = $1 returning *';
+    const values = [
+      id, 
+      value
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * rating count
+   */
+  const getRatingCount = async (req, res) => {
+    const { id } = req.body;
+    console.log('test???? order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select count(orderid) from rates where orderid = $1';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get food names of order
+   */
+  const getOrderItemNames = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select itemid, itemname from fooditem where itemid = any(select itemid from contains where orderid = $1)';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * review a order item
+   */
+  const reviewItem = async (req, res) => {
+    const { orderid, itemid, rating, review } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'insert into reviews(orderid, itemid, rating, review) values($1, $2, $3, $4) returning *';
+    const values = [
+      orderid,
+      itemid,
+      rating,
+      review
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get order food item review
+   */
+  const getReview = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'select * from reviews where orderid = $1 and itemid = $2;';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * delete review
+   */
+  const deleteReview = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'delete from reviews where orderid = $1 and itemid = $2 returning *';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+  
+  /**
+   * edit review
+   */
+  const editReview = async (req, res) => {
+    const { rating, review, orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'update reviews set rating = $1, review = $2 where orderid = $3 and itemid = $4 returning *';
+    const values = [
+      rating,
+      review,
+      orderid, 
+      itemid,
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * review count
+   */
+  const getReviewCount = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('error body: ', req.body);
+    console.log('error orderid: ', orderid);
+    console.log('error itemid: ', itemid);
+    const ordersByCustomerQuery = 'select count(itemid) from reviews where itemid = $2 and orderid = $1';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', rows);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get up to 5 recent address
+   */
+  const getRecentAddress = async (req, res) => {
+    const { id } = req.body;
+    console.log('error body: ', req.body);
+    const ordersByCustomerQuery = 'select addressdetails from orderdetails where orderid = any(select orderid from orders where id = $1 order by ordered_on desc) limit 5';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      if (!dbResponse) {
+        errorMessage.error = 'Customer does not have any recent address saved in the system.';
+        console.log(errorMessage.error);
+        return res.status(status.notfound).send(errorMessage.error);
+      }
+      console.log('res: ', rows);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * new order
+   */
+  const newOrder = async (req, res) => {
+    const {
+      id, cc, address, delivery, usedpoints, subtotal, promo, cart, current
+    } = req.body;
+
+    console.log('body: ', req.body)
+
+    const query1 = `INSERT INTO
+        orders(id, ccpayment)
+        VALUES($1, $2)
+        returning *`;
+    const query2 = 'insert into receipt(orderid,promotionid,usedpoints,deliveryfee,foodfee) values($1,$2,$3,$4,$5) returning *'
+    const query3 = 'insert into orderdetails(orderid,addressdetails) values($1,$2) returning *'
+    const query4 = 'insert into contains(orderid, itemid, quantity,cost,foodfee) values($1,$2,$3,$4,$5) returning *'
+    const query5 = 'update customer set points = $1'
+    var nett = current + (subtotal - usedpoints);
+    const values5 = [
+      nett
+    ]
+    const values1 = [
+      id,
+      cc
+    ];
+    try {
+      await dbQuery.query('begin')
+      const { rows } = await dbQuery.query(query1, values1);
+      const orderid = rows[0].orderid;
+      const values2 = [
+        orderid,
+        promo,
+        usedpoints,
+        delivery,
+        subtotal
+      ]
+      const values3 = [
+        orderid,
+        address
+      ]
+      await dbQuery.query(query2, values2);
+      await dbQuery.query(query3, values3);
+      for (var i = 0; i < cart.length; i++) {
+        const values4 = [
+          orderid,
+          cart[i].itemid,
+          cart[i].qty,
+          cart[i].price,
+          cart[i].subtotal
+        ]
+        await dbQuery.query(query4, values4);
+      }
+      await dbQuery.query('commit');
+      // delete dbResponse.password;
+      successMessage.data = orderid;
+      return res.status(status.created).send(successMessage.data);
+    } catch (error) {
+      await dbQuery.query('rollback');
+      errorMessage.error = 'Operation was not successful';
+      console.log('error: ', error);
+      return res.status(status.success).send(errorMessage.error);
+    }
+  };
+
   
   export {
     createCustomer,
@@ -444,5 +821,19 @@ import {
     orderReceipt,
     orderInformation,
     orderFood,
-    orderRestaurant
+    orderRestaurant,
+    rateDelivery,
+    getRating,
+    deleteRating,
+    editRating,
+    getRatingCount,
+    getOrderItemNames,
+    reviewItem,
+    getReview,
+    deleteReview,
+    editReview,
+    getReviewCount,
+    deleteCreditCard,
+    getRecentAddress,
+    newOrder
   };

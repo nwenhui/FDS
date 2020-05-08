@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "@material-ui/core";
 import mockData from "./data";
+import { restaurantService, authenticationService } from "../../../../../services"
+import ListData from "./ListData"
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,6 +42,20 @@ const List = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [reviews] = useState(mockData);
+
+  const [order] = useState(props.orderid);
+
+  const [review, setReviews] = useState([]);
+
+  useEffect(() => {
+    console.log(authenticationService.currentUserValue)
+    restaurantService.getRestaurantReviews(authenticationService.currentUserValue.restaurantid).then((response) => {
+      response.json().then((data) => {
+        console.log("omooooo: ", restaurantService.reviewResults(data))
+          setReviews( restaurantService.reviewResults(data) );
+      })
+  })
+  }, []) 
 
   /**** Fetch the reviews for the driver
 
@@ -67,19 +83,17 @@ const List = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Date</TableCell>
+                  <TableCell>Item Name</TableCell>
+                  <TableCell>Date Ordered</TableCell>
                   <TableCell>Rating</TableCell>
                   <TableCell>Comments</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {reviews.map((review) => (
-                  <TableRow hover key={review.id}>
-                    <TableCell>{review.date}</TableCell>
-                    <TableCell>{review.rating}/5</TableCell>
-                    <TableCell>{review.comments}</TableCell>
-                  </TableRow>
+                {review.map((review) => (
+                  <ListData itemid={review.itemid} rating={review.rating} comments={review.reviews} orderid={review.orderid}  />
                 ))}
+                  
               </TableBody>
             </Table>
           </div>

@@ -13,6 +13,7 @@ import {
 } from "./components";
 import Cart from "./components/Cart";
 import { Button } from "@material-ui/core";
+import AddressInput from "./AddressInput"
 const useStyles = makeStyles((theme) => ({
   root: {
     // padding: theme.spacing(4)
@@ -29,7 +30,9 @@ const CustomerCheckout = (props) => {
   };
 
   const handleLocationInput = (event) => {
-    setSearchValue(event.target.value);
+    // setSearchValue(event.target.value);
+    orderService.setLocation(event.target.value);
+    console.log('locato:', orderService.locationSubjectValue);
   };
   const [checkout, setCheckout] = useState([]);
   const [resid, setResid] = useState();
@@ -49,22 +52,22 @@ const CustomerCheckout = (props) => {
 
       <Grid container container direction="column" justify="center" alignItems="center" spacing={6} xs={12}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          <Grid container justify="center">
+          {/* <Grid container direction="row" justify="center" alignItems="center">
             <LocationInput
-              placeholder="Enter your location"
-              onChange={handleLocationInput}
+              value={orderService.locationSubjectValue}
+              placeholder="Enter Delivery Address"
+              onChange={(e) => handleLocationInput(e)}
             />
-            <Button variant="contained" color="secondary" onClick={handleEnter}>
-              Enter
-            </Button>
+            
             <Grid container justify="center">
-              <Typography color="black" gutterBottom variant="h5">
+              <Typography color="black" gutterBottom variant="h6">
                 OR
               </Typography>
             </Grid>
 
             <RecentLocations />
-          </Grid>
+          </Grid> */}
+          <AddressInput />
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <Cart data={data.foodItem} resid={resid} checkout={checkout} />
           </Grid>
