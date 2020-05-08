@@ -12,6 +12,7 @@ import { customerService } from "../../../../services"
 import PastOrderPromotion from "./PastOrderPromotion";
 import PastOrderItems from "./PastOrderItems"
 import RateDeliveryDialog from "./RateDeliveryDialog"
+import ReviewItemDialog from "./ReviewItemDialog"
 
 class PastOrderInfo extends Component {
     state = {  
@@ -28,7 +29,7 @@ class PastOrderInfo extends Component {
     }
 
     componentDidMount() {
-        customerService.orderReceipt(this.state.orderid).then((response) => {
+        customerService.orderReceipt(this.props.orderid).then((response) => {
             response.json().then((data) => {
                 if (data.usedpoints > 0) {
                     this.setState({ promotion: data.promotionid, subtotal: data.foodfee, usedpoints: true })
@@ -37,19 +38,19 @@ class PastOrderInfo extends Component {
                 }
             })
         })
-        customerService.orderFood(this.state.orderid).then((response) => {
+        customerService.orderFood(this.props.orderid).then((response) => {
             response.json().then((data) => {
                 console.log('items: ', customerService.customerOrderItems(data))
                 this.setState({ items: customerService.customerOrderItems(data) }, () => {console.log(this.state.items)})
             })
         })
-        customerService.orderInformation(this.state.orderid).then((response) => {
+        customerService.orderInformation(this.props.orderid).then((response) => {
             response.json().then((data) => {
                 this.setState({ ccpayment: data.ccpayment,  date: data.ordered_on.substring(0,10) })
             })
         })
-        customerService.orderRestaurant(this.state.orderid).then((response) => {
-            console.log('hello over here')
+        customerService.orderRestaurant(this.props.orderid).then((response) => {
+            console.log('hello over here', response)
             response.json().then((data) => {
                 console.log('resname: ', data)
                 this.setState({ resname: data.resname })
@@ -66,6 +67,7 @@ class PastOrderInfo extends Component {
     }
 
     handleReview = (event) => {
+        console.log('clickyclick')
         if (this.state.review) {
             this.setState({ review: false });
         } else {
@@ -87,9 +89,9 @@ class PastOrderInfo extends Component {
                     <TableCell>${this.state.subtotal}</TableCell>
                     { this.state.ccpayment ? <TableCell>credit card</TableCell> : <TableCell>cash</TableCell> }
                     { this.state.promotion ? <PastOrderPromotion promotionid={this.state.promotion} /> : <TableCell>no promotion applied</TableCell> }
-                    { this.state.usedpoints ? <TableCell><CheckTwoToneIcon /></TableCell> : <TableCell><ClearTwoToneIcon /></TableCell> }
+                    { this.state.usedpoints ? <TableCell align="center"><CheckTwoToneIcon /></TableCell> : <TableCell align="center"><ClearTwoToneIcon /></TableCell> }
                     <TableCell>{this.state.date}</TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                         <IconButton
                             size="small"
                             onClick={this.handleRate.bind(this)}
@@ -97,15 +99,16 @@ class PastOrderInfo extends Component {
                             <EditIcon />
                         </IconButton>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                         <IconButton
                             size="small"
-                            onClick={() => this.handleReview.bind(this)}
+                            onClick={this.handleReview.bind(this)}
                         >
                             <EditIcon />
                         </IconButton>
                     </TableCell>
                     {this.state.rate && <RateDeliveryDialog open={this.state.rate} orderid={this.state.orderid} />}
+                    {this.state.review && <ReviewItemDialog open={this.state.review} orderid={this.state.orderid} items={this.state.items} />}
                   </TableRow>
         );
     }

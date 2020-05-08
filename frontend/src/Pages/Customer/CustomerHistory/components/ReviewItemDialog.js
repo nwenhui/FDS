@@ -17,27 +17,37 @@ import SuccessAlert from "../../../../components/Alerts/SuccessAlert/SuccessAler
 import TextField from '@material-ui/core/TextField';
 import { customerService } from "../../../../services"
 
-class RateDeliveryDialog extends Component {
+class ReviewItemDialog extends Component {
     state = {  
         orderid: this.props.orderid,
+        items: this.props.items,
         open: this.props.open,
-        old: null,
+        review: "",
         rating: 0,
         success: false,
         error: false,
+        reviewItem: this.props.items[0].itemid,
+        old: 0
     }
 
     componentDidMount() {
-        customerService.getRatingCount(this.state.orderid).then((response) => {
+        customerService.getOrderItemNames(this.state.orderid).then((response) => {
+            response.json().then((data) => {
+                this.setState({ items: customerService.orderItemNames(data) });
+            })
+        })
+        customerService.getReviewCount(this.state.orderid, this.state.reviewItem).then((response) => {
             response.json().then((data) => {
                 console.log('whyyyyy: ', data)
                 if (data.count != 0) {
-                    customerService.getRating(this.state.orderid).then((response) => {
+                    customerService.getReview(this.state.orderid, this.state.reviewItem).then((response) => {
                         response.json().then((data) => {
                             console.log('whyyyyy: ', data)
-                            this.setState({ rating: data.rating, old: data.rating });
+                            this.setState({ rating: data.rating, old: data.rating, review: data.review });
                         })
                     })
+                } else {
+                    this.setState({ old: null, rating: 0, review: "" });
                 }
             })
         })
@@ -52,7 +62,7 @@ class RateDeliveryDialog extends Component {
         console.log('clickyyyy')
         if (this.state.old === null) {
             if (this.state.rating != 0) {
-                customerService.rateDelivery(this.state.orderid, this.state.rating).then((response) => {
+                customerService.reviewItem(this.state.orderid, this.state.reviewItem, this.state.rating, this.state.review).then((response) => {
                     response.json().then((data) => {
                         window.location.reload(false);
                     })
@@ -60,13 +70,13 @@ class RateDeliveryDialog extends Component {
             }
         } else {
             if (this.state.rating === 0) {
-                customerService.deleteRating(this.state.orderid).then((response) => {
+                customerService.deleteReview(this.state.orderid, this.state.reviewItem).then((response) => {
                     response.json().then((data) => {
                         window.location.reload(false);
                     })
                 })
             } else {
-                customerService.editRating(this.state.orderid, this.state.rating).then((response) => {
+                customerService.editReview(this.state.orderid, this.state.reviewItem, this.state.rating, this.state.review).then((response) => {
                     response.json().then((data) => {
                         window.location.reload(false);
                     })
@@ -79,46 +89,95 @@ class RateDeliveryDialog extends Component {
         this.setState({open: false})
     }
 
+    setReviewItem = (event) => {
+        this.setState({ reviewItem: event.target.value }, () => {
+        console.log('why orderid: ', this.state.orderid);
+        console.log('why target vlaue: ', event.target.value);
+            customerService.getReviewCount(this.state.orderid, event.target.value).then((response) => {
+                response.json().then((data) => {
+                    console.log('whyyyyy: ', data)
+                    if (data.count != 0) {
+                        customerService.getReview(this.state.orderid, this.state.reviewItem).then((response) => {
+                            response.json().then((data) => {
+                                console.log('whyyyyy: ', data)
+                                this.setState({ rating: data.rating, old: data.rating, review: data.review });
+                            })
+                        })
+                    } else {
+                        this.setState({ old: null, rating: 0, review: "" });
+                    }
+                })
+            })
+        });
+    }
+
+    setRating = (event) => {
+        this.setState({ rating: event.target.value })
+    }
+
+    setReview = (event) => {
+        this.setState({ review: event.target.value })
+    }
+
     render() { 
         return (  
             <Dialog open={this.state.open} >
                 <PerfectScrollbar>
-                    <DialogTitle>Rate Delivery</DialogTitle>
+                    <DialogTitle>Review Items</DialogTitle>
                     <DialogContent>
-                    <form>
-                        <FormControl>
-                        {/* <TextField disabled label="Start Date" type="date" onChange={this.setStartDate.bind(this)} value={this.state.start} variant="outlined" /> */}
-                        </FormControl>
-                        <FormControl>
+                        <form>
+                    <FormControl>
                         <InputLabel>Rating</InputLabel>
                         <Select
                             labelId="demo-dialog-select-label"
                             id="demo-dialog-select"
-                            value={this.state.rating}
-                            onChange={this.setRating.bind(this)}
+                            value={this.state.reviewItem}
+                            onChange={this.setReviewItem.bind(this)}
                             input={<Input />}
                         >
                             <MenuItem value="">
                             <em>None</em>
                             </MenuItem>
-                            <MenuItem value={0}>None</MenuItem>
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                            <MenuItem value={4}>4</MenuItem>
-                            <MenuItem value={5}>5</MenuItem>
+                            {this.state.items.map((item) => (
+                                <MenuItem value={item.itemid}>{item.itemname}</MenuItem>
+                            ))}
                         </Select>
+                    </FormControl>
+                    <FormControl>
+                            <InputLabel>Rating</InputLabel>
+                            <Select
+                                labelId="demo-dialog-select-label"
+                                id="demo-dialog-select"
+                                value={this.state.rating}
+                                onChange={this.setRating.bind(this)}
+                                input={<Input />}
+                            >
+                                <MenuItem value="">
+                                <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={0}>Delete</MenuItem>
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                        <TextField label="Short Review" type="text" onChange={this.setReview.bind(this)} value={this.state.review} variant="outlined" />
                         </FormControl>
                     </form>
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={this.handleClose.bind(this)} color="secondary">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handleSubmit.bind(this)} color="secondary">
-                        Save
-                    </Button>
-                    </DialogActions>
+                  <Button onClick={this.handleClose.bind(this)} color="secondary">
+                    Cancel
+                  </Button>
+                </DialogActions>
+                <DialogActions>
+                  <Button onClick={this.handleSubmit.bind(this)} color="secondary">
+                    Save
+                  </Button>
+                </DialogActions>
                     {this.state.error && ErrorAlert(this.state.errorMessage)}
                 </PerfectScrollbar>
               </Dialog>
@@ -126,4 +185,4 @@ class RateDeliveryDialog extends Component {
     }
 }
  
-export default RateDeliveryDialog;
+export default ReviewItemDialog;

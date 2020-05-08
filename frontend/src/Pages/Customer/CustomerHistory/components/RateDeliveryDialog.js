@@ -99,7 +99,7 @@ class RateDeliveryDialog extends Component {
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={0}>None</MenuItem>
+                        <MenuItem value={0}>Delete</MenuItem>
                         <MenuItem value={1}>1</MenuItem>
                         <MenuItem value={2}>2</MenuItem>
                         <MenuItem value={3}>3</MenuItem>

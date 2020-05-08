@@ -417,13 +417,13 @@ import { json } from 'body-parser';
    */
   const orderRestaurant = async (req, res) => {
     const { id } = req.body;
-    console.log('order restaurant id: ', id);
+    console.log('oopsie: ', id);
     const ordersByCustomerQuery = 'select resname from restaurant where resid = (select distinct resid from listings where itemid = any(select itemid from contains where orderid = $1))';
     try {
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
-      console.log('res: ', dbResponse);
+      console.log('oopsie res: ', dbResponse);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
       console.log(error);
@@ -525,11 +525,11 @@ import { json } from 'body-parser';
   }
 
   /**
-   * ratig count
+   * rating count
    */
   const getRatingCount = async (req, res) => {
     const { id } = req.body;
-    console.log('order restaurant id: ', id);
+    console.log('test???? order restaurant id: ', id);
     const ordersByCustomerQuery = 'select count(orderid) from rates where orderid = $1';
 
     try {
@@ -537,6 +537,158 @@ import { json } from 'body-parser';
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
       console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get food names of order
+   */
+  const getOrderItemNames = async (req, res) => {
+    const { id } = req.body;
+    console.log('order restaurant id: ', id);
+    const ordersByCustomerQuery = 'select itemid, itemname from fooditem where itemid = any(select itemid from contains where orderid = $1)';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * review a order item
+   */
+  const reviewItem = async (req, res) => {
+    const { orderid, itemid, rating, review } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'insert into reviews(orderid, itemid, rating, review) values($1, $2, $3, $4) returning *';
+    const values = [
+      orderid,
+      itemid,
+      rating,
+      review
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get order food item review
+   */
+  const getReview = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'select * from reviews where orderid = $1 and itemid = $2;';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * delete review
+   */
+  const deleteReview = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'delete from reviews where orderid = $1 and itemid = $2 returning *';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+  
+  /**
+   * edit review
+   */
+  const editReview = async (req, res) => {
+    const { rating, review, orderid, itemid } = req.body;
+    console.log('order restaurant id: ', req.body);
+    const ordersByCustomerQuery = 'update reviews set rating = $1, review = $2 where orderid = $3 and itemid = $4 returning *';
+    const values = [
+      rating,
+      review,
+      orderid, 
+      itemid,
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * review count
+   */
+  const getReviewCount = async (req, res) => {
+    const { orderid, itemid } = req.body;
+    console.log('error body: ', req.body);
+    console.log('error orderid: ', orderid);
+    console.log('error itemid: ', itemid);
+    const ordersByCustomerQuery = 'select count(itemid) from reviews where itemid = $2 and orderid = $1';
+    const value = [
+      orderid,
+      itemid
+    ]
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, value);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', rows);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
       console.log(error);
@@ -564,4 +716,10 @@ import { json } from 'body-parser';
     deleteRating,
     editRating,
     getRatingCount,
+    getOrderItemNames,
+    reviewItem,
+    getReview,
+    deleteReview,
+    editReview,
+    getReviewCount,
   };

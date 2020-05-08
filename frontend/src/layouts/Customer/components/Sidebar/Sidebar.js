@@ -74,9 +74,9 @@ export default (props) => {
         <RateReviewIcon /> Restaurant Reviews
       </a>
 
-      <a className="menu-item" href="/EditDRating">
+      {/* <a className="menu-item" href="/EditDRating">
         <GradeIcon /> Rider Ratings
-      </a>
+      </a> */}
 
       <a className="menu-item" href="/customerCheckout">
         <ShoppingCartIcon /> Check Out
