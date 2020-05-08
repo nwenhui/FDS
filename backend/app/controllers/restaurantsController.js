@@ -680,6 +680,83 @@ const getRestaurant = async (req, res) => {
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get all orders from restaurant
+   */
+  const getOrders = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "select distinct orderid from contains where itemid = any(select itemid from listings where resid = $1)";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('omo: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get items in restaurant order
+   */
+  const getOrderItems = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "select * from contains where orderid = $1";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('???: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get order date of order
+   */
+  const getOrderDate = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "select * from orders where orderid = $1";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('???: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get reviews for restaurant
+   */
+  const getRestaurantReviews = async (req, res) => {
+    const { id } = req.body;
+    const getRestaurantNameQuery = "select * from reviews where itemid = any(select itemid from listings where resid = $1)";
+    try {
+      const { rows } = await dbQuery.query(getRestaurantNameQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('reviewa: ', successMessage.data);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
   
 export {
     searchRestaurant,
@@ -706,5 +783,9 @@ export {
     getRestaurantName,
     editFood,
     editPromotion,
-    getMinSpending
+    getMinSpending,
+    getOrders,
+    getOrderItems,
+    getOrderDate,
+    getRestaurantReviews
 };

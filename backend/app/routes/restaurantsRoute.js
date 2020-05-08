@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { searchRestaurant, getRestaurant, createRestaurant, editRestaurant, deleteRestaurant, getRestaurantMenu, getFood, getFoodAvailability, getPromotions, getPromotionInformation, getOngoingPromotions, getPastPromotions, createRestaurantPromotion, deletePromotion, getCategory, newFoodItem, deleteFood, getRestaurantFromFood, getRestaurantAvailables, searchAllFood, searchAvailableFood, getRestaurantName, editFood, editPromotion, getMinSpending } from '../controllers/restaurantsController';
+import { searchRestaurant, getRestaurant, createRestaurant, editRestaurant, deleteRestaurant, getRestaurantMenu, getFood, getFoodAvailability, getPromotions, getPromotionInformation, getOngoingPromotions, getPastPromotions, createRestaurantPromotion, deletePromotion, getCategory, newFoodItem, deleteFood, getRestaurantFromFood, getRestaurantAvailables, searchAllFood, searchAvailableFood, getRestaurantName, editFood, editPromotion, getMinSpending, getOrders, getOrderItems, getOrderDate, getRestaurantReviews } from '../controllers/restaurantsController';
 
 const router = express.Router();
 
@@ -32,5 +32,9 @@ router.post('/name', getRestaurantName)
 router.post('/food/edit', editFood)
 router.post('/promotion/edit', editPromotion)
 router.post('/min', getMinSpending)
+router.post('/orders', getOrders)
+router.post('/orders/items', getOrderItems)
+router.post('/order/date', getOrderDate)
+router.post('/reviews', getRestaurantReviews)
 
 export default router;

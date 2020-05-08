@@ -6,6 +6,12 @@ function customerOrdersResults(data) {
     return results;
 }
 
+function addressResults(data) {
+    var results = [];
+    data.forEach(result => results.push(result.addressdetails));
+    return results;
+}
+
 function customerOrderItems(data) {
     var results = [];
     data.forEach(result => {
@@ -273,6 +279,20 @@ function getReviewCount(orderid, itemid) {
         .then(handleErrors)
 }
 
+function getRecentAddress(id) {
+    const data = { id: id };
+    const url = 'http://localhost:3000/api/v1/customer/address';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
 
 export const customerService = {
     customerOrderCount,
@@ -295,4 +315,6 @@ export const customerService = {
     deleteReview,
     editReview,
     getReviewCount,
+    getRecentAddress,
+    addressResults,
 }

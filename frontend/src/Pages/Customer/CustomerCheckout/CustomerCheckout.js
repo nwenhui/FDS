@@ -30,6 +30,8 @@ const CustomerCheckout = (props) => {
 
   const handleLocationInput = (event) => {
     setSearchValue(event.target.value);
+    orderService.setLocation(event.target.value);
+    console.log('locato:', orderService.locationSubjectValue);
   };
   const [checkout, setCheckout] = useState([]);
   const [resid, setResid] = useState();
@@ -49,16 +51,16 @@ const CustomerCheckout = (props) => {
 
       <Grid container container direction="column" justify="center" alignItems="center" spacing={6} xs={12}>
         <Grid item lg={12} md={12} xl={12} xs={12}>
-          <Grid container justify="center">
+          <Grid container direction="row" justify="center" alignItems="center">
             <LocationInput
-              placeholder="Enter your location"
-              onChange={handleLocationInput}
+              placeholder="Enter Delivery Address"
+              onChange={(e) => handleLocationInput(e)}
             />
-            <Button variant="contained" color="secondary" onClick={handleEnter}>
+            {/* <Button variant="contained" color="secondary" onClick={handleEnter}>
               Enter
-            </Button>
+            </Button> */}
             <Grid container justify="center">
-              <Typography color="black" gutterBottom variant="h5">
+              <Typography color="black" gutterBottom variant="h6">
                 OR
               </Typography>
             </Grid>

@@ -5,7 +5,9 @@ import { createCustomer, signinCustomer, searchCustomerFirstnameOrLastname, edit
     getReview,
     deleteReview,
     editReview,
-    getReviewCount, } from '../controllers/customersController';
+    getReviewCount,
+    getRecentAddress,
+ } from '../controllers/customersController';
 
 const router = express.Router();
 
@@ -35,6 +37,7 @@ router.post('/order/review/new', reviewItem)
 router.post('/order/review/remove', deleteReview)
 router.post('/order/review/edit', editReview)
 router.post('/order/review/count', getReviewCount)
+router.post('/address', getRecentAddress)
 
 
 export default router;

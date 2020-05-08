@@ -14,16 +14,21 @@ class SubmitButton extends Component {
     }
 
     componentDidMount() {
+        if (orderService.currentRestaurantValue) {
         restaurantService.getMin(orderService.currentRestaurantValue).then((response) => {
             response.json().then((data) => {
                 this.setState({ min: data.minspending })
             })
         })
+        }
     }
 
     handleSubmit = (event) => {
         if (orderService.currentTotalValue < this.state.min) {
             const errorMessage = "You have not reached the minimum order of $" + this.state.min + " excluding delivery fees. Add more items before submitting!";
+            this.setState({ error: true, errorMessage})
+        } else if (!orderService.currentRestaurantValue) {
+            const errorMessage = "Your cart is empty... Search for some items to add!";
             this.setState({ error: true, errorMessage})
         }
     }

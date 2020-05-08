@@ -1,9 +1,10 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Staff/components";
 import { List, data } from "./components";
+import { authenticationService, restaurantService } from "../../../../services"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,14 +15,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RestaurantReview = () => {
+const RestaurantReview = (props) => {
   const classes = useStyles();
+
+  const [orders] = useState(props.order)
+  // const [items, setItems] = useState([])
+
+  // useEffect(() => {
+  //   restaurantService.getOrderItems(orders).then((response) => {
+  //     response.json().then((data) => {
+  //       setItems(restaurantService.orderItemResults(data));
+  //     })
+  //   })
+  // })
 
   return (
     <div className={classes.root}>
       <Grid container item spacing={4}>
         <Grid item lg={12} sm={10} xl={12} xs={12}>
-          <List data={data} />
+          
+            <List />
+          
+          
         </Grid>
       </Grid>
     </div>
@@ -29,6 +44,11 @@ const RestaurantReview = () => {
 };
 
 class Review extends Component {
+  state = {
+    id: null,
+    orders: []
+  }
+    
   render() {
     return (
       <div>
@@ -41,7 +61,9 @@ class Review extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <RestaurantReview></RestaurantReview>
+              {/* {this.state.orders.map((order) => ( */}
+                <RestaurantReview />
+              {/* ))} */}
             </Grid>
           </Grid>
         </Grid>

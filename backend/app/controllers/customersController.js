@@ -285,7 +285,7 @@ import { json } from 'body-parser';
   const applicablePromotions = async (req, res) => {
     const { id, total } = req.body;
     console.log('id: ', id);
-    const applicablePromotionsQuery = 'select * from promotion where (enddate > now()) and (promotionid = any(select promotionid from fdspromotion) or promotionid = any(select promotionid from restaurantpromotion where resid = $1)) and (minspending < $2)';
+    const applicablePromotionsQuery = 'select * from promotion where (enddate > now()) and (promotionid = any(select promotionid from fdspromotion) or promotionid = any(select promotionid from restaurantpromotion where resid = $1)) and (minspending <= $2)';
     
     const values = [
       id,
@@ -715,6 +715,32 @@ import { json } from 'body-parser';
       return res.status(status.error).send(errorMessage.error);
     }
   }
+
+  /**
+   * get up to 5 recent address
+   */
+  const getRecentAddress = async (req, res) => {
+    const { id } = req.body;
+    console.log('error body: ', req.body);
+    const ordersByCustomerQuery = 'select addressdetails from orderdetails where orderid = any(select orderid from orders where id = $1 order by ordered_on desc) limit 5';
+
+    try {
+      const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      if (!dbResponse) {
+        errorMessage.error = 'Customer does not have any recent address saved in the system.';
+        console.log(errorMessage.error);
+        return res.status(status.notfound).send(errorMessage.error);
+      }
+      console.log('res: ', rows);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
   
   export {
     createCustomer,
@@ -741,5 +767,6 @@ import { json } from 'body-parser';
     deleteReview,
     editReview,
     getReviewCount,
-    deleteCreditCard
+    deleteCreditCard,
+    getRecentAddress
   };

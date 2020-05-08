@@ -10,11 +10,16 @@ const orderPaymentSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(
 const promotionAppliedSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("promotionApplied") || "null"));
 const deliveryFeeSubject = new BehaviorSubject(JSON.parse(localStorage.getItem("deliveryFee") || "4"));
 const usedPointsSubject = new BehaviorSubject(false);
+const locationSubject = new BehaviorSubject("null");
 
 function promotionResults(data) {
     var results = [];
     data.forEach(result => results.push(result.promotionid));
     return results;
+}
+
+const setLocation = (location) => {
+  locationSubject.next(location);
 }
 
 const addToCheckOut = (itemid, qty, resid, price) => {
@@ -171,6 +176,7 @@ export const orderService = {
     setAppliedPromotion,
     setDeliveryFee,
     setUsedPoints,
+    setLocation,
     currentCheckOut: currentCheckOutSubject.asObservable(),
     get currentCheckOutValue() { return currentCheckOutSubject.value },
     currentRestaurant: currentRestaurantSubject.asObservable(),
@@ -185,4 +191,6 @@ export const orderService = {
     get deliveryFeeValue() { return deliveryFeeSubject.value },
     usedPointsSubject: usedPointsSubject.asObservable(),
     get usedPointsValue() { return usedPointsSubject.value },
+    locationSubject: locationSubject.asObservable(),
+    get locationSubject() { return locationSubject.value },
 }
