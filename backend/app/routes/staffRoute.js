@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createStaff, signinStaff, searchStaffFirstnameOrLastname, editStaff, deleteStaff, getOngoingPromotions, getPastPromotions, getPromotions, getPromotionInformation, createFDSPromotion, deletePromotion, editPromotion } from '../controllers/staffController';
+import { createStaff, signinStaff, searchStaffFirstnameOrLastname, editStaff, deleteStaff, getOngoingPromotions, getPastPromotions, getPromotions, getPromotionInformation, createFDSPromotion, deletePromotion, editPromotion, getTopItems, getTopItemsWithin, getTotalCostWithin, getTotalOrderCountWithin } from '../controllers/staffController';
 
 const router = express.Router();
 
@@ -18,5 +18,9 @@ router.post('/promotions/ongoing', getOngoingPromotions)
 router.post('/promotions/new', createFDSPromotion)
 router.post('/promotions/delete', deletePromotion)
 router.post('/promotion/edit', editPromotion)
+router.post('/summary/top', getTopItems)
+router.post('/summary/topitem', getTopItemsWithin)
+router.post('/summary/totalcost', getTotalCostWithin)
+router.post('/summary/totalcount', getTotalOrderCountWithin)
 
 export default router;

@@ -416,7 +416,102 @@ import {
       errorMessage.error = 'Operation was not successful';
       return res.sendStatus(status.error).send(errorMessage.error);
     }
+  };
+
+  /**
+   * get top 5 items sold by restaurant (by date)
+   */
+  const getTopItems = async (req, res) => {
+    const { id } = req.body;
+    const deletePromotionQuery = 'with ordercount (itemid, count) as ( select itemid, count(*) from contains group by itemid) select itemid from ordercount where itemid = any(select itemid from listings where resid = $1)  order by count desc limit 5';
+    try {
+      const { rows } = await dbQuery.query(deletePromotionQuery, [id]);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  };
+
+  /**
+   * get top 5 within a preiod
+   */
+  const getTopItemsWithin = async(req, res) => {
+    const { id, start, end } = req.body;
+    console.log('omomomomo???', req.body)
+    const query = 'with ordercount (itemid, count) as (select itemid, count(*)from contains where orderid = any (select orderid from orders where ordered_on >= $2 and ordered_on <= $3) group by itemid) select itemname from fooditem where itemid = any (select itemid  from ordercount  where itemid = any( select itemid from listings where resid = $1 order by count desc  limit 5))'
+    const values = [
+      id,
+      start, 
+      end
+    ]
+    try {
+      const { rows } = await dbQuery.query(query, values);
+      const dbResponse = rows;
+      console.log('dbResponse: ', dbResponse)
+      if (!rows[0]) {
+        errorMessage.error = "No data found... Try another date"
+        return res.status(status.notfound).send(errorMessage.error);
+      }
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
   }
+
+  /**
+   * get total cost of orders within a period
+   */
+  const getTotalCostWithin = async(req, res) => {
+    const { id, start, end } = req.body;
+    const query = 'select sum(foodfee) from receipt where orderid = any(select orderid from contains where itemid = any(select itemid from listings where resid = $1)) and orderid = any (select orderid from orders where ordered_on >= $2 and ordered_on <= $3)'
+    const values = [
+      id,
+      start, 
+      end
+    ]
+    try {
+      const { rows } = await dbQuery.query(query, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+  /**
+   * get total no. of orders within a period
+   */
+  const getTotalOrderCountWithin = async(req, res) => {
+    const { id, start, end } = req.body;
+    const query = 'select count(orderid) from orders where orderid = any( select orderid from contains where itemid = any(select itemid from listings where resid = $1)) and ordered_on >= $2 and ordered_on <= $3'
+    const values = [
+      id,
+      start, 
+      end
+    ]
+    try {
+      const { rows } = await dbQuery.query(query, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }
+
+
   
   export {
     createStaff,
@@ -430,5 +525,10 @@ import {
     getPromotions,
     createFDSPromotion,
     deletePromotion,
-    editPromotion
-  };
+    editPromotion,
+    getTopItems,
+    getTopItemsWithin,
+    getTotalCostWithin,
+    getTotalOrderCountWithin,
+
+};

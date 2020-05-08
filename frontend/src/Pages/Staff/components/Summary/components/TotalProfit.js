@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const TotalProfit = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
-  const totalProfit = props.data;
+  const totalProfit = props.results;
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
