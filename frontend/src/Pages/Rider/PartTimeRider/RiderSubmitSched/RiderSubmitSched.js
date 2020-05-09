@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import NavBar from "../../../../components/Navigation/Navigation";
@@ -74,6 +74,69 @@ const RiderSubmitSched = (props) => {
 
     setShowData(true);
   };
+
+  const now = new Date();
+  const m = new Date(now);
+  m.setDate(m.getDate() + add);
+  var dd = String(m.getDate()).padStart(2, "0");
+  var mm = String(m.getMonth() + 1).padStart(2, "0");
+  var yyyy = m.getFullYear();
+  const mondate = yyyy + "-" + mm + "-" + dd;
+
+  const tu = new Date(now);
+  tu.setDate(tu.getDate() + add + 1);
+  var dd = String(tu.getDate()).padStart(2, "0");
+  var mm = String(tu.getMonth() + 1).padStart(2, "0");
+  var yyyy = tu.getFullYear();
+  const tuedate = yyyy + "-" + mm + "-" + dd;
+
+  const w = new Date(now);
+  w.setDate(w.getDate() + add + 2);
+  var dd = String(w.getDate()).padStart(2, "0");
+  var mm = String(w.getMonth() + 1).padStart(2, "0");
+  var yyyy = w.getFullYear();
+  const weddate = yyyy + "-" + mm + "-" + dd;
+
+  const th = new Date(now);
+  th.setDate(th.getDate() + add + 3);
+  var dd = String(th.getDate()).padStart(2, "0");
+  var mm = String(th.getMonth() + 1).padStart(2, "0");
+  var yyyy = th.getFullYear();
+  const thurdate = yyyy + "-" + mm + "-" + dd;
+
+  const f = new Date(now);
+  f.setDate(f.getDate() + add + 4);
+  var dd = String(f.getDate()).padStart(2, "0");
+  var mm = String(f.getMonth() + 1).padStart(2, "0");
+  var yyyy = f.getFullYear();
+  const fridate = yyyy + "-" + mm + "-" + dd;
+
+  const s = new Date(now);
+  s.setDate(s.getDate() + add + 5);
+  var dd = String(s.getDate()).padStart(2, "0");
+  var mm = String(s.getMonth() + 1).padStart(2, "0");
+  var yyyy = s.getFullYear();
+  const satdate = yyyy + "-" + mm + "-" + dd;
+
+  const su = new Date(now);
+  su.setDate(su.getDate() + add + 6);
+  var dd = String(su.getDate()).padStart(2, "0");
+  var mm = String(su.getMonth() + 1).padStart(2, "0");
+  var yyyy = su.getFullYear();
+  const sundate = yyyy + "-" + mm + "-" + dd;
+
+  const [open, set] = useState(true)
+
+  useEffect(() => {
+    // riderService.getlatestshift(authenticationService.currentUserValue.id).then((response) => {
+    //   response.json().then((data) => {
+    //     if (data.starttime == mondate || data.starttime == tuedate || data.starttime == weddate || data.starttime == thurdate || data.starttime == fridate || data.starttime == satdate || data.starttime == sundate) {
+    //       riderService.setsubmit();
+    //       set(false)
+    //     }
+    //   })
+    // })
+  })
 
   return (
     <div>

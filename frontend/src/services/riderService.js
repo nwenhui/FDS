@@ -81,6 +81,26 @@ function getrates(id) {
         .then(handleErrors)
 }
 
+function getlatestshift(id) {
+    const data = {id: id};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/shifts/latest';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+const setsubmit = () => {
+    currentSubmitSubject.next(false);
+    localStorage.setItem("currentSubmit", JSON.stringify(false));
+}
+
 
 
 export const riderService = {
@@ -88,6 +108,8 @@ export const riderService = {
     entershift,
     getshifts,
     getrates,
+    getlatestshift,
+    setsubmit,
     currentSubmit: currentSubmitSubject.asObservable(),
     get currentSubmitValue () { return currentSubmitSubject.value },
     

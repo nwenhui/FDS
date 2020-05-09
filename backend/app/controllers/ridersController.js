@@ -335,6 +335,29 @@ import {
     }
   }  
 
+  /**
+   * get latest shift date
+   */
+  const getlatestshift = async (req, res) => {
+    const { id } = req.body;
+    console.log('body: ', date);
+    const getRiderTypeQuery = "select starttime::date from shifts where id = $2 order by starttime desc limit 1";
+    const values = [
+      id
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+
 
   export {
     createRider,
@@ -346,5 +369,6 @@ import {
     getRiderType,
     entershift,
     getshifts,
-    getrates
+    getrates,
+    getlatestshift
   };
