@@ -22,7 +22,7 @@ import { RiderData } from "./components/RiderData";
 import { DeliveryData } from "./components/DeliveryData";
 // import OrderSummary from "./OrderSummary";
 // import DeliverySummery from "./DeliverySummary";
-import { managerService } from "../../../../services";
+import { managerService, customerService, riderService } from "../../../../services";
 import {
   Card,
   CardHeader,
@@ -37,6 +37,10 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 import ErrorAlert from "../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import DeliverySummaryInfo from "./DeliverySummaryInfo";
+import { PastOrders } from "./components";
+import PastOrderInfo from "./components/PastOrderInfo"
+
+
 
 const now = new Date();
 const tomorrow = new Date(now);
@@ -56,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MonthlySummary = () => {
+const RiderSummary = () => {
   const classes = useStyles();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -214,9 +218,13 @@ class DisplaySummary extends Component {
     locations: [],
     restuarant: 0,
     customer: 0,
-    orders: 0,
     cost: 0,
     nett: 0,
+    orders: 0,
+    customerid: null,
+    orderids: [],
+    showorders: false,
+    totalsalary: 0
   };
   setStartDate = (event) => {
     this.setState({ start: event.target.value }, () => {
@@ -231,6 +239,36 @@ class DisplaySummary extends Component {
       this.fetchData();
     });
   };
+
+  setCustomerid = (event) => {
+      console.log(event.target.value);
+    this.setState({ customerid: event.target.value }, () => {
+        managerService.checkriderid(this.state.customerid).then((response) => {
+            response.json().then((data) => {
+                console.log("id: ", this.state.customerid);
+                this.setState({ error: false })
+                managerService.riderorders(this.state.start, this.state.end, this.state.customerid).then((response) => {
+                    response.json().then((data) => {
+                        console.log("hwoe", customerService.customerOrdersResults(data))
+                      this.setState({ orderids: customerService.customerOrdersResults(data) }, () => {
+                          console.log('nbcb', this.state.orders)
+                        this.setState({ showorders: false })
+                        this.fetchData();
+                      });
+                    })
+                  })
+              });
+            })
+            .catch((error) => {
+              error.text().then((errorMessage) => {
+                this.setState({ error: true, errorMessage, showorders: false })
+              })
+            })
+        console.log("start: ", this.state.customerid);
+        // this.fetchData();
+      });
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("clickyyyy");
@@ -238,37 +276,13 @@ class DisplaySummary extends Component {
   };
 
   fetchData = () => {
+    riderService.basesalary(this.state.id, this.state.start).then((response) => {
+      response.json().then((data) => {
+        this.setState({ totalsalary: data.totalsalary})
+      })
+    })
     managerService
-      .locations(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          console.log("locations: ", this.state.locations);
-          this.setState(
-            { locations: managerService.locationsresults(data) },
-            () => {
-              console.log("locations: ", managerService.locationsresults(data));
-            }
-          );
-        });
-      });
-    managerService
-      .newrestaurantcount(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          this.setState({ restuarant: data.count });
-        });
-      });
-
-    managerService
-      .newcustomercount(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          this.setState({ customer: data.count });
-        });
-      });
-
-    managerService
-      .orderscount(this.state.start, this.state.end)
+      .customerorderscount(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ orders: data.count });
@@ -276,7 +290,7 @@ class DisplaySummary extends Component {
       });
 
     managerService
-      .totalfoodcost(this.state.start, this.state.end)
+      .customertotalfoodcost(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ cost: data.sum });
@@ -284,7 +298,7 @@ class DisplaySummary extends Component {
       });
 
     managerService
-      .totalnett(this.state.start, this.state.end)
+      .customertotalnett(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ nett: data.sum });
@@ -338,13 +352,22 @@ class DisplaySummary extends Component {
                       onChange={this.setEndDate.bind(this)}
                     />
                   </div>
+                  <div class="col" align="center">
+                    <label>Enter Customer ID</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                    //   value={this.state.customerid}
+                      onChange={this.setCustomerid.bind(this)}
+                    />
+                  </div>
                 </div>
               </form>
             </Grid>
             <Grid item lg={12} sm={12} xl={12} xs={12}>
               {/* <OrderSummary /> */}
               <Card>
-                <CardHeader title="New" />
+                <CardHeader title="Total" />
                 <Divider />
                 <CardContent>
                   <PerfectScrollbar>
@@ -353,27 +376,17 @@ class DisplaySummary extends Component {
                         <TableHead>
                           <TableRow>
                             <TableCell align="center">
-                              No. of Restaurants
+                              No. of Deliveries
                             </TableCell>
                             <TableCell align="center">
-                              No. of New Customers
+                              Total Salary Earned
                             </TableCell>
-                            <TableCell align="center">No. of Orders</TableCell>
-                            <TableCell align="center">
-                              Total Food Cost
-                            </TableCell>
-                            <TableCell align="center">Total Nett</TableCell>
+                            <TableCell align="center">Average Delivery Time</TableCell>
                           </TableRow>
                         </TableHead>
 
                         <TableBody>
                           <TableRow>
-                            <TableCell align="center">
-                              {this.state.restuarant}
-                            </TableCell>
-                            <TableCell align="center">
-                              {this.state.customer}
-                            </TableCell>
                             <TableCell align="center">
                               {this.state.orders}
                             </TableCell>
@@ -390,54 +403,50 @@ class DisplaySummary extends Component {
                   </PerfectScrollbar>
                 </CardContent>
                 <Divider />
-                {this.state.error && ErrorAlert(this.state.msg)}
+                {/* {this.state.error && ErrorAlert(this.state.msg)} */}
               </Card>
             </Grid>
 
-            <Grid item lg={12} sm={12} xl={12} xs={12}>
-              {/* <DeliverySummery start={this.state.start} end={this.state.end} /> */}
+            <Grid item lg={12} md={12} xl={12} xs={12}>
+              {/* {this.state.showorders && <PastOrders orders={this.state.orders} />} */}
               <Card>
-                <CardHeader title="Delivery Info" />
-                <Divider />
-                <CardContent>
-                  <PerfectScrollbar>
-                    <div>
-                      <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell align="center">Location</TableCell>
-                            <TableCell align="center">1000-1100</TableCell>
-                            <TableCell align="center">1100-1200</TableCell>
-                            <TableCell align="center">1200-1300</TableCell>
-                            <TableCell align="center">1300-1400</TableCell>
-                            <TableCell align="center">1400-1500</TableCell>
-                            <TableCell align="center">1500-1600</TableCell>
-                            <TableCell align="center">1600-1700</TableCell>
-                            <TableCell align="center">1700-1800</TableCell>
-                            <TableCell align="center">1800-1900</TableCell>
-                            <TableCell align="center">1900-2000</TableCell>
-                            <TableCell align="center">2000-2100</TableCell>
-                            <TableCell align="center">2100-2200</TableCell>
-                          </TableRow>
-                        </TableHead>
-
-                        <TableBody>
-                          {this.state.locations.map((location) => (
-                            <DeliverySummaryInfo
-                              start={this.state.start}
-                              end={this.state.end}
-                              location={location}
-                            />
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </PerfectScrollbar>
-                </CardContent>
-                <Divider />
-                {this.state.error && ErrorAlert(this.state.msg)}
-              </Card>
+      <Divider />
+      <CardContent>
+        <PerfectScrollbar>
+          <div>
+            <CardHeader
+              border="max-width: 18rem;"
+              action={""}
+              title="Past Orders"
+            />
+            <Divider />
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Restaurant</TableCell>
+                  <TableCell>Items</TableCell>
+                  <TableCell>Subtotal</TableCell>
+                  <TableCell>Payment Method</TableCell>
+                  <TableCell>Promotion Applied</TableCell>
+                  <TableCell>Used Points</TableCell>
+                  <TableCell>Date Ordered</TableCell>
+                  {/* <TableCell>Rate Delivery</TableCell>
+                  <TableCell>Review Items</TableCell> */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.orderids.map((order) => (
+                  <PastOrderInfo orderid={order}/>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          {/* {openDiv && <AddPromo onClick={handleOpenDiv} />} */}
+        </PerfectScrollbar>
+      </CardContent>
+    </Card>
             </Grid>
+            {this.state.error && ErrorAlert(this.state.errorMessage)}
 
             {/* <Grid item lg={12} sm={12} xl={12} xs={12}>
               <MonthlySummary></MonthlySummary>

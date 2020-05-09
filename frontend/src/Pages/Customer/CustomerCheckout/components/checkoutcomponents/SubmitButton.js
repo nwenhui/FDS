@@ -65,6 +65,7 @@ class SubmitButton extends Component {
                 response.json().then((data) => {
                     orderService.clearOrderMem();
                     this.setState({error: false, success: true});
+                    window.location.reload(false);
                 })
             })
         }

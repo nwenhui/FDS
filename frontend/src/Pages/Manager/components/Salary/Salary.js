@@ -4,6 +4,7 @@ import { Grid, Button } from "@material-ui/core";
 import NavBar from "../../../../components/Navigation/Navigation";
 import { Sidebar } from "../../../../layouts/Manager/components";
 import { CurrentSalary, data } from "./components";
+import NewSalaryForm from './NewSalaryForm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,8 @@ class Salary extends Component {
             <Grid item lg={6} sm={6} xl={6} xs={12}></Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
-              <ManagerPromo></ManagerPromo>
+              <NewSalaryForm />
+              {/* <ManagerPromo></ManagerPromo> */}
             </Grid>
           </Grid>
         </Grid>

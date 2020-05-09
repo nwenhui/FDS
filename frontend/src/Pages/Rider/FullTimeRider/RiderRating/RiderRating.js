@@ -1,28 +1,54 @@
-import React from "react";
+import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 import { Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import NavBar from "../../../../components/Navigation/Navigation";
-import { RatingTable, data } from "./components";
-import { Sidebar } from "../../../../layouts/Customer/components";
+import { Sidebar } from "../../../../layouts/RiderPT/components";
+import { PastOrders, TotalCustOrders, data, AddPromo } from "./components";
+import { authenticationService, customerService, riderService } from "../../../../services"
 
-const RiderRating = (props) => {
-  // QUERY DATA for Customer promo list and delivery promo list
 
-  return (
-    <div>
-      <NavBar history={props.history} />
+class RiderRating extends Component {
+  state = { 
+    id: null,
+    email: null,
+    firstname: null,
+    lastname: null,
+    points: null,
+    creditcard: null,
+    orders: []
+  }
 
-      <Grid container item spacing={6}>
-        <Grid item lg={6} sm={6} xl={6} xs={12}>
-          <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
-        </Grid>
-        <Grid container justify="center" id="page-wrap">
-          <Grid item lg={6} sm={6} xl={6} xs={6}>
-            <RatingTable data={data.deliveryrating} />
+  componentDidMount() {
+      riderService.getrates(authenticationService.currentUserValue.id).then((response) => {
+        response.json().then((data) => {
+          console.log("hello", data);
+          this.setState({orders: data})
+        })
+      })
+  }
+
+  render() {
+    return (
+      <div>
+        <NavBar history={this.props.history} />
+
+        <Grid container spacing={6}>
+          <Grid item lg={6} sm={6} xl={6} xs={12}>
+            <Sidebar pageWrapId={"page-wrap"} outerContainerId={"Home"} />
+          </Grid>
+          <Grid container item spacing={4} id="page-wrap">
+            {/* <Grid container justify="center">
+              <TotalCustOrders id={this.state.id}/>
+            </Grid> */}
+            <Grid item lg={12} md={12} xl={12} xs={12}>
+              <PastOrders data={data.restaurantreview} orders={this.state.orders} />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </div>
-  );
-};
+      </div>
+    );
+  }
+}
 
 export default RiderRating;

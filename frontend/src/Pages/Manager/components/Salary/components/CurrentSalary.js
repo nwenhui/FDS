@@ -75,6 +75,7 @@ const Cpromo = (props) => {
                   <TableCell>Rider ID</TableCell>
                   <TableCell>Salary</TableCell>
                   <TableCell>Full/Part Time</TableCell>
+                  <TableCell>Date Started: </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -362,6 +362,9 @@ import { json } from 'body-parser';
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows;
       successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send("hello (:");
+      }
       console.log('res: ', dbResponse);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
@@ -382,6 +385,9 @@ import { json } from 'body-parser';
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send("hello (:");
+      }
       console.log('res: ', dbResponse);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
@@ -759,11 +765,13 @@ import { json } from 'body-parser';
     const query2 = 'insert into receipt(orderid,promotionid,usedpoints,deliveryfee,foodfee) values($1,$2,$3,$4,$5) returning *'
     const query3 = 'insert into orderdetails(orderid,addressdetails) values($1,$2) returning *'
     const query4 = 'insert into contains(orderid, itemid, quantity,cost,foodfee) values($1,$2,$3,$4,$5) returning *'
-    const query5 = 'update customer set points = $1'
-    var nett = current + (subtotal - usedpoints);
+    const query5 = 'update customer set points = $1 where id = $2'
     const values5 = [
-      nett
+      subtotal - usedpoints,
+      id
     ]
+    var nett = current + (subtotal - usedpoints);
+   
     const values1 = [
       id,
       cc
@@ -794,11 +802,12 @@ import { json } from 'body-parser';
           cart[i].subtotal
         ]
         await dbQuery.query(query4, values4);
+        await dbQuery.query(query5, values5)
       }
       await dbQuery.query('commit');
       // delete dbResponse.password;
       successMessage.data = orderid;
-      return res.status(status.created).send(successMessage.data);
+      return res.status(status.success).send(successMessage.data);
     } catch (error) {
       await dbQuery.query('rollback');
       errorMessage.error = 'Operation was not successful';
