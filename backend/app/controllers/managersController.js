@@ -581,6 +581,9 @@ const checkcustomerid = async (req, res) => {
     return res.status(status.success).send(successMessage.data);
   } catch (error) {
     console.log(error);
+    if (error.routine === 'pg_strtoint32') {
+      return res.status(status.success).send("hello :)");
+    }
     errorMessage.error = 'Operation was not successful';
     return res.status(status.error).send(errorMessage.error);
   }

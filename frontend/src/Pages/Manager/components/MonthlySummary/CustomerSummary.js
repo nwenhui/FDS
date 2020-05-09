@@ -217,7 +217,7 @@ class DisplaySummary extends Component {
     orders: 0,
     cost: 0,
     nett: 0,
-    customerid: 0,
+    customerid: null
   };
   setStartDate = (event) => {
     this.setState({ start: event.target.value }, () => {
@@ -234,19 +234,23 @@ class DisplaySummary extends Component {
   };
 
   setCustomerid = (event) => {
-    managerService.checkcustomerid(event.target.value).then((response) => {
-      response.json().then((data) => {
-        this.setState({ customerid: event.target.value, error: false }, () => {
-          console.log("start: ", this.state.customerid);
-          // this.fetchData();
-        });
-      })
-      .catch((error) => {
-        error.text().then((errorMessage) => {
-          this.setState({ error: true, errorMessage })
-        })
-      })
-    })
+      console.log(event.target.value);
+    this.setState({ customerid: event.target.value }, () => {
+        managerService.checkcustomerid(this.state.customerid).then((response) => {
+            response.json().then((data) => {
+                console.log("id: ", this.state.customerid);
+                this.setState({ error: false })
+                // this.fetchData();
+              });
+            })
+            .catch((error) => {
+              error.text().then((errorMessage) => {
+                this.setState({ error: true, errorMessage })
+              })
+            })
+        console.log("start: ", this.state.customerid);
+        // this.fetchData();
+      });
   }
 
   handleSubmit = (event) => {
@@ -286,7 +290,7 @@ class DisplaySummary extends Component {
     //   });
 
     managerService
-      .custoemrorderscount(this.state.start, this.state.end, this.state.customerid)
+      .customerorderscount(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ orders: data.count });
@@ -361,7 +365,7 @@ class DisplaySummary extends Component {
                     <input
                       type="number"
                       class="form-control"
-                      value={this.state.customerid}
+                    //   value={this.state.customerid}
                       onChange={this.setCustomerid.bind(this)}
                     />
                   </div>
