@@ -589,6 +589,40 @@ const checkcustomerid = async (req, res) => {
   }
 }
 
+/**
+ * orders by customers in a period
+ */
+const customerorders = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select orderid from orders where ordered_on >= $1 and ordered_on <= $2 and id = $3'
+  const values = [
+    start,
+    end,
+    id
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
 
 
   export {
@@ -607,5 +641,6 @@ const checkcustomerid = async (req, res) => {
     customerorderscount,
     customertotalfoodcost,
     customertotalnett,
-    checkcustomerid
+    checkcustomerid,
+    customerorders
   };

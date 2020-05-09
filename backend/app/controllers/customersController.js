@@ -362,6 +362,9 @@ import { json } from 'body-parser';
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows;
       successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send("hello (:");
+      }
       console.log('res: ', dbResponse);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {
@@ -382,6 +385,9 @@ import { json } from 'body-parser';
       const { rows } = await dbQuery.query(ordersByCustomerQuery, [id]);
       const dbResponse = rows[0];
       successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send("hello (:");
+      }
       console.log('res: ', dbResponse);
       return res.status(status.success).send(successMessage.data);
     } catch (error) {

@@ -163,6 +163,20 @@ function checkcustomerid(id) {
         .then(handleErrors)
 }
 
+function customerorders(start, end, id) {
+    const data = {start: start, end: end, id: id};
+    const url = 'http://localhost:3000/api/v1/manager/summary/customer/orderid';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
 export const managerService = {
     newrestaurantcount,
     newcustomercount,
@@ -175,5 +189,6 @@ export const managerService = {
     customerorderscount,
     customertotalfoodcost,
     customertotalnett,
-    checkcustomerid
+    checkcustomerid,
+    customerorders
 }

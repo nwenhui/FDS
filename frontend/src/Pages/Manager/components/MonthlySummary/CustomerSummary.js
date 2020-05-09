@@ -22,7 +22,7 @@ import { RiderData } from "./components/RiderData";
 import { DeliveryData } from "./components/DeliveryData";
 // import OrderSummary from "./OrderSummary";
 // import DeliverySummery from "./DeliverySummary";
-import { managerService } from "../../../../services";
+import { managerService, customerService } from "../../../../services";
 import {
   Card,
   CardHeader,
@@ -37,6 +37,10 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 import ErrorAlert from "../../../../components/Alerts/ErrorAlert/ErrorAlert";
 import DeliverySummaryInfo from "./DeliverySummaryInfo";
+import { PastOrders } from "./components";
+import PastOrderInfo from "./components/PastOrderInfo"
+
+
 
 const now = new Date();
 const tomorrow = new Date(now);
@@ -214,10 +218,12 @@ class DisplaySummary extends Component {
     locations: [],
     restuarant: 0,
     customer: 0,
-    orders: 0,
     cost: 0,
     nett: 0,
-    customerid: null
+    orders: 0,
+    customerid: null,
+    orderids: [],
+    showorders: false,
   };
   setStartDate = (event) => {
     this.setState({ start: event.target.value }, () => {
@@ -240,12 +246,21 @@ class DisplaySummary extends Component {
             response.json().then((data) => {
                 console.log("id: ", this.state.customerid);
                 this.setState({ error: false })
-                this.fetchData();
+                managerService.customerorders(this.state.start, this.state.end, this.state.customerid).then((response) => {
+                    response.json().then((data) => {
+                        console.log("hwoe", customerService.customerOrdersResults(data))
+                      this.setState({ orderids: customerService.customerOrdersResults(data) }, () => {
+                          console.log('nbcb', this.state.orders)
+                        this.setState({ showorders: false })
+                        this.fetchData();
+                      });
+                    })
+                  })
               });
             })
             .catch((error) => {
               error.text().then((errorMessage) => {
-                this.setState({ error: true, errorMessage })
+                this.setState({ error: true, errorMessage, showorders: false })
               })
             })
         console.log("start: ", this.state.customerid);
@@ -415,49 +430,44 @@ class DisplaySummary extends Component {
               </Card>
             </Grid>
 
-            <Grid item lg={12} sm={12} xl={12} xs={12}>
-              {/* <DeliverySummery start={this.state.start} end={this.state.end} /> */}
+            <Grid item lg={12} md={12} xl={12} xs={12}>
+              {/* {this.state.showorders && <PastOrders orders={this.state.orders} />} */}
               <Card>
-                <CardHeader title="Orders Info" />
-                <Divider />
-                <CardContent>
-                  <PerfectScrollbar>
-                    <div>
-                      <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell align="center">Location</TableCell>
-                            <TableCell align="center">1000-1100</TableCell>
-                            <TableCell align="center">1100-1200</TableCell>
-                            <TableCell align="center">1200-1300</TableCell>
-                            <TableCell align="center">1300-1400</TableCell>
-                            <TableCell align="center">1400-1500</TableCell>
-                            <TableCell align="center">1500-1600</TableCell>
-                            <TableCell align="center">1600-1700</TableCell>
-                            <TableCell align="center">1700-1800</TableCell>
-                            <TableCell align="center">1800-1900</TableCell>
-                            <TableCell align="center">1900-2000</TableCell>
-                            <TableCell align="center">2000-2100</TableCell>
-                            <TableCell align="center">2100-2200</TableCell>
-                          </TableRow>
-                        </TableHead>
-
-                        <TableBody>
-                          {this.state.locations.map((location) => (
-                            <DeliverySummaryInfo
-                              start={this.state.start}
-                              end={this.state.end}
-                              location={location}
-                            />
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </PerfectScrollbar>
-                </CardContent>
-                <Divider />
-                {/* {this.state.error && ErrorAlert(this.state.msg)} */}
-              </Card>
+      <Divider />
+      <CardContent>
+        <PerfectScrollbar>
+          <div>
+            <CardHeader
+              border="max-width: 18rem;"
+              action={""}
+              title="Past Orders"
+            />
+            <Divider />
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Restaurant</TableCell>
+                  <TableCell>Items</TableCell>
+                  <TableCell>Subtotal</TableCell>
+                  <TableCell>Payment Method</TableCell>
+                  <TableCell>Promotion Applied</TableCell>
+                  <TableCell>Used Points</TableCell>
+                  <TableCell>Date Ordered</TableCell>
+                  {/* <TableCell>Rate Delivery</TableCell>
+                  <TableCell>Review Items</TableCell> */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.orderids.map((order) => (
+                  <PastOrderInfo orderid={order}/>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          {/* {openDiv && <AddPromo onClick={handleOpenDiv} />} */}
+        </PerfectScrollbar>
+      </CardContent>
+    </Card>
             </Grid>
             {this.state.error && ErrorAlert(this.state.errorMessage)}
 
