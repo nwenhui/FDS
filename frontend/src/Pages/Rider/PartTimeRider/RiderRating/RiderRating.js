@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import NavBar from "../../../../components/Navigation/Navigation";
-import { Sidebar } from "../../../../layouts/Customer/components";
+import { Sidebar } from "../../../../layouts/RiderPT/components";
 import { PastOrders, TotalCustOrders, data, AddPromo } from "./components";
 import { authenticationService, customerService, riderService } from "../../../../services"
 
