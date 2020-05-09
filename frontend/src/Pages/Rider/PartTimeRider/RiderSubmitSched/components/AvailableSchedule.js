@@ -22,8 +22,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import mockData from "./data";
-import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert"
-import { authenticationService, riderService } from "../../../../../services"
+import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
+import { authenticationService, riderService } from "../../../../../services";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -123,18 +123,56 @@ const AvailableSchedule = (props) => {
   var yyyy = su.getFullYear();
   const sundate = yyyy + "-" + mm + "-" + dd;
 
-  const calendar = [...Array(7)].map(month => Array(12));
-  const dates = [mondate, tuedate, weddate, thurdate, fridate, satdate, sundate]
-  const starttimes = [" 10:00"," 11:00"," 12:00"," 13:00"," 14:00"," 15:00"," 16:00"," 17:00"," 18:00"," 19:00"," 20:00"," 21:00"]
-  const endtimes = [" 11:00"," 12:00"," 13:00"," 14:00"," 15:00"," 16:00"," 17:00"," 18:00"," 19:00"," 20:00"," 21:00"," 22:00"]
-  for (let i = 0; i < 7; i ++) {
+  const calendar = [...Array(7)].map((month) => Array(12));
+  const dates = [
+    mondate,
+    tuedate,
+    weddate,
+    thurdate,
+    fridate,
+    satdate,
+    sundate,
+  ];
+  const starttimes = [
+    " 10:00",
+    " 11:00",
+    " 12:00",
+    " 13:00",
+    " 14:00",
+    " 15:00",
+    " 16:00",
+    " 17:00",
+    " 18:00",
+    " 19:00",
+    " 20:00",
+    " 21:00",
+  ];
+  const endtimes = [
+    " 11:00",
+    " 12:00",
+    " 13:00",
+    " 14:00",
+    " 15:00",
+    " 16:00",
+    " 17:00",
+    " 18:00",
+    " 19:00",
+    " 20:00",
+    " 21:00",
+    " 22:00",
+  ];
+  for (let i = 0; i < 7; i++) {
     for (let j = 0; j < 12; j++) {
-      calendar[i][j] = {date: dates[i], start: starttimes[j], end: endtimes[j], check: false}
+      calendar[i][j] = {
+        date: dates[i],
+        start: starttimes[j],
+        end: endtimes[j],
+        check: false,
+      };
     }
   }
 
-  console.log(calendar[4][5].start)
-  
+  console.log(calendar[4][5].start);
 
   const week = Array(7)
     .fill()
@@ -143,10 +181,69 @@ const AvailableSchedule = (props) => {
   const [sched, setSched] = useState(calendar);
 
   const handleChange = (index, slot, event) => {
+    console.log(index);
+    console.log(slot);
     const update = [...sched];
-    update[index][slot].check = event.target.checked;
-    setSched(update);
-    console.log(update);
+    console.log(update[0][0].check);
+    const slot1 = slot + 1;
+    const slot2 = slot + 2;
+    const slo1 = slot - 1;
+    const slo2 = slot - 2;
+
+    if (slot === 0) {
+      if (update[index][slot1].check && update[index][slot2].check) {
+        setError(true);
+        setMsg("You can't select more than 2 consecutive slots");
+      } else {
+        update[index][slot].check = event.target.checked;
+        setSched(update);
+        console.log("ok");
+        console.log(sched);
+      }
+    } else if (slot === 11) {
+      if (update[index][slo1].check && update[index][slo2].check) {
+        setError(true);
+        setMsg("You can't select more than 2 consecutive slots");
+      } else {
+        update[index][slot].check = event.target.checked;
+        setSched(update);
+        console.log("ok");
+        console.log(sched);
+      }
+    } else if (slot === 1) {
+      if (update[index][slo1].check && update[index][slot1].check) {
+        setError(true);
+        setMsg("You can't select more than 2 consecutive slots");
+      } else {
+        update[index][slot].check = event.target.checked;
+        setSched(update);
+        console.log("ok");
+        console.log(sched);
+      }
+    } else if (slot === 10) {
+      if (update[index][slo1].check && update[index][slot1].check) {
+        setError(true);
+        setMsg("You can't select more than 2 consecutive slots");
+      } else {
+        update[index][slot].check = event.target.checked;
+        setSched(update);
+        console.log("ok");
+        console.log(sched);
+      }
+    } else {
+      if (
+        (update[index][slot1].check && update[index][slot2].check) ||
+        (update[index][slo1].check && update[index][slo2].check)
+      ) {
+        setError(true);
+        setMsg("You can't select more than 2 consecutive slots");
+      } else {
+        update[index][slot].check = event.target.checked;
+        setSched(update);
+        console.log("ok");
+        console.log(sched);
+      }
+    }
   };
 
   /*DATE OBJECT THINGIES*/
@@ -292,15 +389,15 @@ const AvailableSchedule = (props) => {
   datesOfCheckbox[5][11] = sat + "9:00PM to 10:00PM";
   datesOfCheckbox[6][11] = sun + "9:00PM to 10:00PM";
 
-  const [error, setError] = useState(false)
-  const [msg, setMsg] = useState("")
+  const [error, setError] = useState(false);
+  const [msg, setMsg] = useState("");
 
   function count() {
     var counter = 0;
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 12; j++) {
-        if (sched[i][j].check == true) { 
-          counter++
+        if (sched[i][j].check == true) {
+          counter++;
         }
       }
     }
@@ -309,32 +406,41 @@ const AvailableSchedule = (props) => {
 
   const submit = () => {
     if (count() < 10) {
-      setError(true)
-      setMsg("You have not entered enough shifts. Please add at least 10 shifts.")
+      setError(true);
+      setMsg(
+        "You have not entered enough shifts. Please add at least 10 shifts."
+      );
     } else if (count() > 48) {
-      setError(true)
-      setMsg("You have entered too many shifts. Pkease add at most 48 shifts.")
+      setError(true);
+      setMsg("You have entered too many shifts. Pkease add at most 48 shifts.");
     } else {
-      setError(false)
+      setError(false);
       for (let i = 0; i < 7; i++) {
         for (let j = 0; j < 12; j++) {
-          if (sched[i][j].check == true) { 
-            riderService.entershift(authenticationService.currentUserValue.id, sched[i][j].date, sched[i][j].start, sched[i][j].end).then((response) => {
-              response.json().then((data) => {
-                console.log('donzo')
-                window.location.reload(false)
+          if (sched[i][j].check == true) {
+            riderService
+              .entershift(
+                authenticationService.currentUserValue.id,
+                sched[i][j].date,
+                sched[i][j].start,
+                sched[i][j].end
+              )
+              .then((response) => {
+                response.json().then((data) => {
+                  console.log("donzo");
+                  window.location.reload(false);
+                });
               })
-            })
-            .catch((error) => {
-              error.text().then((errorMessage) => {
-                console.log(errorMessage)
-              })
-            })
+              .catch((error) => {
+                error.text().then((errorMessage) => {
+                  console.log(errorMessage);
+                });
+              });
           }
         }
       }
     }
-  }
+  };
 
   /*testing*/
   return (
@@ -372,7 +478,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][0].checked}
+                              checked={sched[index][0].check}
                               onChange={(e) => handleChange(index, 0, e)}
                               name="slot1"
                             />
@@ -385,7 +491,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][1].checked}
+                              checked={sched[index][1].check}
                               onChange={(e) => handleChange(index, 1, e)}
                               name="slot2"
                             />
@@ -398,7 +504,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][2].checked}
+                              checked={sched[index][2].check}
                               onChange={(e) => handleChange(index, 2, e)}
                               name="slot3"
                             />
@@ -411,7 +517,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][3].checked}
+                              checked={sched[index][3].check}
                               onChange={(e) => handleChange(index, 3, e)}
                               name="slot4"
                             />
@@ -424,7 +530,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][4].checked}
+                              checked={sched[index][4].check}
                               onChange={(e) => handleChange(index, 4, e)}
                               name="slot5"
                             />
@@ -437,7 +543,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][5].checked}
+                              checked={sched[index][5].check}
                               onChange={(e) => handleChange(index, 5, e)}
                               name="slot6"
                             />
@@ -450,7 +556,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][6].checked}
+                              checked={sched[index][6].check}
                               onChange={(e) => handleChange(index, 6, e)}
                               name="slot7"
                             />
@@ -463,7 +569,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][7].checked}
+                              checked={sched[index][7].check}
                               onChange={(e) => handleChange(index, 7, e)}
                               name="slot8"
                             />
@@ -476,7 +582,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][8].checked}
+                              checked={sched[index][8].check}
                               onChange={(e) => handleChange(index, 8, e)}
                               name="slot9"
                             />
@@ -489,7 +595,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][9].checked}
+                              checked={sched[index][9].check}
                               onChange={(e) => handleChange(index, 9, e)}
                               name="slot10"
                             />
@@ -502,7 +608,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][10].checked}
+                              checked={sched[index][10].check}
                               onChange={(e) => handleChange(index, 10, e)}
                               name="slot11"
                             />
@@ -515,7 +621,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={calendar[index][11].checked}
+                              checked={sched[index][11].check}
                               onChange={(e) => handleChange(index, 11, e)}
                               name="slot12"
                             />
