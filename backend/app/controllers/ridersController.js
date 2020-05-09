@@ -357,7 +357,87 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   }  
+  /**
+   * get base salary for date
+   */
+  const basesalary = async (req, res) => {
+    const { id, startdate } = req.body;
+    console.log('body: ', req.body);
+    const getRiderTypeQuery = "select * from salary where id = $1 and startdate::date < $2 order by startdate::date desc limit 1";
+    const values = [
+      id,
+      startdate
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send(JSON.stringify(0));
+      }
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
 
+
+  /**
+   * get total deliveries
+   */
+  const totaljourney = async (req, res) => {
+    const { id, startdate, enddate } = req.body;
+    console.log('body: ', req.body);
+    const getRiderTypeQuery = "select count(id) from delivers where id = $1 and orderid = any(select orderid from orders where ordered_on >= $2 and ordered_on <= $3)";
+    const values = [
+      id,
+      startdate,
+      enddate
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+
+  /**
+   * get total time worked
+   */
+  const totalhours = async (req, res) => {
+    const { id, startdate, enddate } = req.body;
+    console.log('body: ', req.body);
+    const getRiderTypeQuery = "select count(id) from shifts where id = $1 and starttime >= $2 and endtime <= $3";
+    const values = [
+      id,
+      startdate,
+      enddate
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      if (!dbResponse) {
+        return res.status(status.success).send(JSON.stringify(0));
+      }
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+  
 
   export {
     createRider,
@@ -370,5 +450,8 @@ import {
     entershift,
     getshifts,
     getrates,
-    getlatestshift
+    getlatestshift,
+    basesalary,
+    totaljourney,
+    totalhours
   };

@@ -152,6 +152,50 @@ const setsubmit = () => {
     localStorage.setItem("currentSubmit", JSON.stringify(false));
 }
 
+function basesalary(id, startdate) {
+    const data = {id: id, startdate: startdate};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/summary/salary';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function totaljourney(id, startdate, enddate) {
+    const data = {id: id, startdate: startdate, enddate: enddate};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/summary/journey';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function totalhours(id, startdate, enddate) {
+    const data = {id: id, startdate: startdate, enddate: enddate};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/summary/hours';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
 
 
 export const riderService = {
@@ -162,6 +206,9 @@ export const riderService = {
     getlatestshift,
     setsubmit,
     enterftshift,
+    basesalary,
+    totaljourney,
+    totalhours,
     currentSubmit: currentSubmitSubject.asObservable(),
     get currentSubmitValue () { return currentSubmitSubject.value },
     
