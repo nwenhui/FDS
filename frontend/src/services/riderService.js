@@ -66,12 +66,28 @@ function getshifts(id, date) {
         .then(handleErrors)
 }
 
+function getrates(id) {
+    const data = {id: id};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/rates';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
 
 
 export const riderService = {
     riderOrderCount,
     entershift,
     getshifts,
+    getrates,
     currentSubmit: currentSubmitSubject.asObservable(),
     get currentSubmitValue () { return currentSubmitSubject.value },
     

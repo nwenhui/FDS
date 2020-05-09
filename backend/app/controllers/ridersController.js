@@ -312,6 +312,30 @@ import {
     }
   }  
 
+  /**
+   * get rider's rated orders
+   */
+  const getrates = async (req, res) => {
+    const { id, date } = req.body;
+    console.log('body: ', date);
+    const getRiderTypeQuery = "select * from delivers where id = $1";
+    const values = [
+      id
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+
+
   export {
     createRider,
     signinRider,
@@ -321,5 +345,6 @@ import {
     ordersByRider,
     getRiderType,
     entershift,
-    getshifts
+    getshifts,
+    getrates
   };
