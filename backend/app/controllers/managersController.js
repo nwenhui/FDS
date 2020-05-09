@@ -590,6 +590,43 @@ const checkcustomerid = async (req, res) => {
 }
 
 /**
+ * check if rider id is valid
+ */
+const checkriderid = async (req, res) => {
+  const { id } = req.body;
+  var newid = 0;
+  if (id == "") {
+    newid = 0
+  } else {
+    newid = id
+  }
+  console.log('error body: ', req.body);
+  const query = 'select * from rider where id = $1;'
+  const values = [
+    newid
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No such customer in records!';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    if (error.routine === 'pg_strtoint32') {
+      return res.status(status.success).send("hello :)");
+    }
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
  * orders by customers in a period
  */
 const customerorders = async (req, res) => {
@@ -623,6 +660,67 @@ const customerorders = async (req, res) => {
   }
 }
 
+/**
+ * orders by customers in a period
+ */
+const riderorders = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select orderid from delivers where id = $1 and orderid = any(select orderid from orders where ordered_on >= $2 and ordered_on <= $3)'
+  const values = [
+    id,
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * new salary
+ */
+const newsalary = async (req, res) => {
+  const { start, salary, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'insert into salary(basesalary, startdate, enddate, id) values($1,$2,$3,$4)'
+  const values = [
+    salary,
+    start,
+    start, 
+    id
+  ]
+  
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
 
 
   export {
@@ -642,5 +740,8 @@ const customerorders = async (req, res) => {
     customertotalfoodcost,
     customertotalnett,
     checkcustomerid,
-    customerorders
+    customerorders,
+    checkriderid,
+    riderorders,
+    newsalary
   };

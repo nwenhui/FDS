@@ -163,9 +163,51 @@ function checkcustomerid(id) {
         .then(handleErrors)
 }
 
+function checkriderid(id) {
+    const data = {id: id};
+    const url = 'http://localhost:3000/api/v1/manager/check/rider';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
 function customerorders(start, end, id) {
     const data = {start: start, end: end, id: id};
     const url = 'http://localhost:3000/api/v1/manager/summary/customer/orderid';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function riderorders(start, end, id) {
+    const data = {start: start, end: end, id: id};
+    const url = 'http://localhost:3000/api/v1/manager/summary/rider/orderid';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+function newsalary(start, salary, id) {
+    const data = {start: start, salary: salary, id: id};
+    const url = 'http://localhost:3000/api/v1/manager/rider/salary';
 
     var request = new Request(url, {
         method: 'POST',
@@ -190,5 +232,8 @@ export const managerService = {
     customertotalfoodcost,
     customertotalnett,
     checkcustomerid,
-    customerorders
+    customerorders,
+    checkriderid, 
+    riderorders,
+    newsalary,
 }

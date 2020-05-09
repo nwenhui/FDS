@@ -12,7 +12,10 @@ import { createManager, signinManager, searchManagerFirstnameOrLastname, editMan
     customertotalfoodcost,
     customertotalnett,
     checkcustomerid ,
-    customerorders
+    customerorders,
+    checkriderid,
+    riderorders,
+    newsalary
 } from '../controllers/managersController';
 
 const router = express.Router();
@@ -35,5 +38,9 @@ router.post('/summary/customer/orders', customerorderscount)
 router.post('/summary/customer/foodcost', customertotalfoodcost)
 router.post('/summary/customer/nett', customertotalnett)
 router.post('/check/customer', checkcustomerid)
+router.post('/check/rider', checkriderid)
+router.post('/summary/rider/orderid', riderorders)
+router.post('/rider/salary', newsalary)
+
 router.post('/summary/customer/orderid', customerorders)
 export default router;
