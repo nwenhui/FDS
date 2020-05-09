@@ -1,1 +1,2 @@
-export { default as MonthlySummary } from "./MonthlySummary";
+export { default as MonthlySummary } from "./MonthSummary";
+export { default as CustomerSummary } from "./CustomerSummary";

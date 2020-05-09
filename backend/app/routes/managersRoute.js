@@ -1,6 +1,19 @@
 import express from 'express';
 
-import { createManager, signinManager, searchManagerFirstnameOrLastname, editManager, deleteManager } from '../controllers/managersController';
+import { createManager, signinManager, searchManagerFirstnameOrLastname, editManager, deleteManager,
+    newrestaurantcount,
+    newcustomercount,
+    orderscount,
+    totalfoodcost,
+    totalnett,
+    locations,
+    locationsperhr,
+    customerorderscount,
+    customertotalfoodcost,
+    customertotalnett,
+    // checkcustomerid
+
+} from '../controllers/managersController';
 
 const router = express.Router();
 
@@ -11,5 +24,16 @@ router.post('/auth/signin', signinManager);
 router.get('/search', searchManagerFirstnameOrLastname);
 router.post('/edit', editManager);
 router.post('/delete', deleteManager);
+router.post('/summary/restaurant/count', newrestaurantcount)
+router.post('/summary/customer/count', newcustomercount)
+router.post('/summary/orders/count', orderscount)
+router.post('/summary/orders/foodcost', totalfoodcost)
+router.post('/summary/orders/nett', totalnett)
+router.post('/summary/locations', locations)
+router.post('/summary/locations/hr', locationsperhr)
+router.post('/summary/customer/orders', customerorderscount)
+router.post('/summary/customer/foodcost', customertotalfoodcost)
+router.post('/summary/customer/nett', customertotalnett)
+// router.post('/check/customer', checkcustomerid)
 
 export default router;

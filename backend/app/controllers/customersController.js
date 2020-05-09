@@ -807,6 +807,270 @@ import { json } from 'body-parser';
     }
   };
 
+/**
+ * FDS SUMMARY QUERIES BELOW
+ */
+
+/**
+ * get new customers that join within a period of time
+ */
+const newCustomers = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select * from customer where joined_at >= $1 and joined_at <= $2';
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new customers joined within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * get total no. of orders within a period
+ */
+const totalOrdersCount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(orderid) from orders where ordered_on >= $1 and ordered_on <= $2';
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * get total cost of all orders
+ */
+const totalOrdersCost = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(foodfee), sum(totalfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2)';
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * get customer's total orders cost in a period of time
+ */
+const customerTotalCost = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(foodfee), sum(totalfee) from receipt where orderid = any(select orderid from orders where id = $3) and ordered_on >= $2 and ordered_on <= $3)';
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of new restuarants within period
+ */
+const newrestaurantcount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(resid) from restaurant where joined_at >= $1 and joined_at <= $2'
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new restaurants joined within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of new customers within period
+ */
+const newcustomercount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(id) from customer where joined_at >= $1 and joined_at <= $2'
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new cuwtomers joined within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of orders within period
+ */
+const orderscount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(orderid) from orders where ordered_on >= $1 and ordered_on <= $2'
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total total food cost within period
+ */
+const totalfoodcost = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(foodfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2)'
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total total nett cost within period
+ */
+const totalnett = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(totalfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2)'
+  const values = [
+    start,
+    end
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
   
   export {
     createCustomer,
@@ -835,5 +1099,10 @@ import { json } from 'body-parser';
     getReviewCount,
     deleteCreditCard,
     getRecentAddress,
-    newOrder
+    newOrder,
+    newrestaurantcount,
+    newcustomercount,
+    orderscount,
+    totalfoodcost,
+    totalnett
   };
