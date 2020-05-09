@@ -23,6 +23,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import mockData from "./data";
 import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert";
+import { riderService, authenticationService } from "../../../../../services";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -44,6 +45,34 @@ const AvailableSchedule = (props) => {
   const { className, ...rest } = props;
   const classes = useStyles();
   const [schedules] = useState(mockData);
+
+
+  const todayy = new Date(); //create Date object with current date time
+  const dayy = todayy.getDay(); //get current day (mon,tues,wed)
+  var add; //no. of days to add to current date to get next monday
+  switch (dayy) {
+    case 0: //currently sunday
+      add = 1;
+      break;
+    case 1: //currently mon
+      add = 7;
+      break;
+    case 2: //currently tues
+      add = 6;
+      break;
+    case 3: //currently wed
+      add = 5;
+      break;
+    case 4: //currently thur
+      add = 4;
+      break;
+    case 5: //currently fri
+      add = 3;
+      break;
+    case 6: //currently sat
+      add = 2;
+      break;
+  }
 
   const now = new Date();
   const m = new Date(now);
@@ -104,6 +133,7 @@ const AvailableSchedule = (props) => {
     satdate,
     sundate,
   ];
+  console.log(mondate)
 
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState("");
@@ -268,6 +298,107 @@ const AvailableSchedule = (props) => {
   datesOfCheckbox[5][3] = sat + "1:00PM - 5:00PM & 6:00PM - 10:00PM";
   datesOfCheckbox[6][3] = sun + "1:00PM - 5:00PM & 6:00PM - 10:00PM";
 
+  const submit = () => {
+    const a = [0, 1, 2, 3, 4];
+    const b = [1, 2, 3, 4, 5];
+    const c = [2, 3, 4, 5, 6];
+    var ans = [];
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (sched[i][j].check) {
+          ans.push(i);
+        }
+      }
+    }
+    console.log(ans);
+    if (
+      JSON.stringify(ans) === JSON.stringify(a) ||
+      JSON.stringify(ans) === JSON.stringify(b) ||
+      JSON.stringify(ans) === JSON.stringify(c)
+    ) {
+      console.log("yes");
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 4; j++) {
+          if (sched[i][j].check) {
+            const date = sched[i][j].date;
+            const id = authenticationService.currentUserValue.id;
+            if (j == 0) {
+              riderService
+                .entershift(id, date, " 10:00", " 14:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+              riderService
+                .entershift(id, date, " 15:00", " 19:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+            }
+            if (j === 1) {
+              riderService
+                .entershift(id, date, " 11:00", " 15:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+              riderService
+                .entershift(id, date, " 16:00", " 20:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+            }
+            if (j === 2) {
+              riderService
+                .entershift(id, date, " 12:00", " 16:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+              riderService
+                .entershift(id, date, " 17:00", " 21:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+            }
+            if (j === 3) {
+              riderService
+                .entershift(id, date, " 13:00", " 17:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+                riderService
+                .entershift(id, date, " 18:00", " 22:00")
+                .then((response) => {
+                  response.json((data) => {
+                    console.log("donezo");
+                  });
+                });
+            }
+          }
+        }
+        window.location.reload(false);
+      }
+    } else {
+      console.log("no");
+      setError(true);
+      setMsg(
+        "You have to select only one slot for exacrtly 5 consecutive days"
+      );
+    }
+  };
+
   return (
     <Card {...rest}>
       <CardHeader title="Available Work Schedule" />
@@ -356,7 +487,7 @@ const AvailableSchedule = (props) => {
           type="submit"
           color="secondary"
           variant="contained"
-          onClick={() => this.submit()}
+          onClick={() => submit()}
         >
           Save details
         </Button>
