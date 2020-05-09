@@ -130,7 +130,7 @@ class SummaryDetails extends Component {
                               Base Salary
                             </TableCell>
                             <TableCell align="center">
-                              Total No. of Hours Worked
+                              Total No. of Shifts Worked
                             </TableCell>
                             <TableCell align="center">No. of Deliveries</TableCell>
                             <TableCell align="center">Total Salary Earned</TableCell>
