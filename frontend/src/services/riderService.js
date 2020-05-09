@@ -51,9 +51,28 @@ function entershift(id, date, starttime, endtime) {
         .then(handleErrors)
 }
 
+function getshifts(id, date) {
+    const data = {id: id, date: date};
+    console.log(data)
+    const url = 'http://localhost:3000/api/v1/rider/shifts/get';
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
+
+
 export const riderService = {
     riderOrderCount,
     entershift,
+    getshifts,
     currentSubmit: currentSubmitSubject.asObservable(),
     get currentSubmitValue () { return currentSubmitSubject.value },
+    
 }

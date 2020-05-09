@@ -288,6 +288,30 @@ import {
     }
   }  
 
+  /**
+   * rider shifts on day
+   */
+  const getshifts = async (req, res) => {
+    const { id, date } = req.body;
+    console.log('body: ', date);
+    const getRiderTypeQuery = "select * from shifts where id = $1 and starttime::date = $2";
+    const values = [
+      id,
+      date
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows;
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+
   export {
     createRider,
     signinRider,
@@ -296,5 +320,6 @@ import {
     deleteRider,
     ordersByRider,
     getRiderType,
-    entershift
+    entershift,
+    getshifts
   };
