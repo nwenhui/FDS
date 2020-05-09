@@ -1,4 +1,9 @@
 import { handleErrors } from '../helpers';
+import { BehaviorSubject } from "rxjs";
+
+const currentSubmitSubject = new BehaviorSubject(
+    JSON.parse(localStorage.getItem("currentSubmit") || "true")
+  );
 
 function riderOrderCount(id) {
     const data = {id: id};
@@ -28,6 +33,27 @@ function riderType(id) {
         .then(handleErrors)
 }
 
+function entershift(id, date, starttime, endtime) {
+    const start = date.concat(starttime)
+    const end = date.concat(endtime)
+    const data = {id: id, start: start, end: end};
+    const url = 'http://localhost:3000/api/v1/rider/shifts/new';
+    currentSubmitSubject.next(false);
+    localStorage.setItem("currentSubmit", JSON.stringify(false));
+
+    var request = new Request(url, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(data)
+    });
+
+    return fetch(request) 
+        .then(handleErrors)
+}
+
 export const riderService = {
     riderOrderCount,
+    entershift,
+    currentSubmit: currentSubmitSubject.asObservable(),
+    get currentSubmitValue () { return currentSubmitSubject.value },
 }

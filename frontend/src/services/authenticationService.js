@@ -247,6 +247,7 @@ function logout() {
   localStorage.removeItem("promotionApplied");
   localStorage.removeItem("deliveryFee");
   localStorage.removeItem("address");
+  localStorage.removeItem("currentSubmit");
   currentUserSubject.next(null);
 }
 

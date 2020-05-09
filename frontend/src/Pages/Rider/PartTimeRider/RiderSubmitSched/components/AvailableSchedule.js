@@ -22,6 +22,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import mockData from "./data";
+import ErrorAlert from "../../../../../components/Alerts/ErrorAlert/ErrorAlert"
+import { authenticationService, riderService } from "../../../../../services"
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -44,15 +46,105 @@ const AvailableSchedule = (props) => {
   const classes = useStyles();
   const [schedules] = useState(mockData);
 
+  const todayy = new Date(); //create Date object with current date time
+  const dayy = todayy.getDay(); //get current day (mon,tues,wed)
+  var add; //no. of days to add to current date to get next monday
+  switch (dayy) {
+    case 0: //currently sunday
+      add = 1;
+      break;
+    case 1: //currently mon
+      add = 7;
+      break;
+    case 2: //currently tues
+      add = 6;
+      break;
+    case 3: //currently wed
+      add = 5;
+      break;
+    case 4: //currently thur
+      add = 4;
+      break;
+    case 5: //currently fri
+      add = 3;
+      break;
+    case 6: //currently sat
+      add = 2;
+      break;
+  }
+
+  const now = new Date();
+  const m = new Date(now);
+  m.setDate(m.getDate() + add);
+  var dd = String(m.getDate()).padStart(2, "0");
+  var mm = String(m.getMonth() + 1).padStart(2, "0");
+  var yyyy = m.getFullYear();
+  const mondate = yyyy + "-" + mm + "-" + dd;
+
+  const tu = new Date(now);
+  tu.setDate(tu.getDate() + add + 1);
+  var dd = String(tu.getDate()).padStart(2, "0");
+  var mm = String(tu.getMonth() + 1).padStart(2, "0");
+  var yyyy = tu.getFullYear();
+  const tuedate = yyyy + "-" + mm + "-" + dd;
+
+  const w = new Date(now);
+  w.setDate(w.getDate() + add + 2);
+  var dd = String(w.getDate()).padStart(2, "0");
+  var mm = String(w.getMonth() + 1).padStart(2, "0");
+  var yyyy = w.getFullYear();
+  const weddate = yyyy + "-" + mm + "-" + dd;
+
+  const th = new Date(now);
+  th.setDate(th.getDate() + add + 3);
+  var dd = String(th.getDate()).padStart(2, "0");
+  var mm = String(th.getMonth() + 1).padStart(2, "0");
+  var yyyy = th.getFullYear();
+  const thurdate = yyyy + "-" + mm + "-" + dd;
+
+  const f = new Date(now);
+  f.setDate(f.getDate() + add + 4);
+  var dd = String(f.getDate()).padStart(2, "0");
+  var mm = String(f.getMonth() + 1).padStart(2, "0");
+  var yyyy = f.getFullYear();
+  const fridate = yyyy + "-" + mm + "-" + dd;
+
+  const s = new Date(now);
+  s.setDate(s.getDate() + add + 5);
+  var dd = String(s.getDate()).padStart(2, "0");
+  var mm = String(s.getMonth() + 1).padStart(2, "0");
+  var yyyy = s.getFullYear();
+  const satdate = yyyy + "-" + mm + "-" + dd;
+
+  const su = new Date(now);
+  su.setDate(su.getDate() + add + 6);
+  var dd = String(su.getDate()).padStart(2, "0");
+  var mm = String(su.getMonth() + 1).padStart(2, "0");
+  var yyyy = su.getFullYear();
+  const sundate = yyyy + "-" + mm + "-" + dd;
+
+  const calendar = [...Array(7)].map(month => Array(12));
+  const dates = [mondate, tuedate, weddate, thurdate, fridate, satdate, sundate]
+  const starttimes = [" 10:00"," 11:00"," 12:00"," 13:00"," 14:00"," 15:00"," 16:00"," 17:00"," 18:00"," 19:00"," 20:00"," 21:00"]
+  const endtimes = [" 11:00"," 12:00"," 13:00"," 14:00"," 15:00"," 16:00"," 17:00"," 18:00"," 19:00"," 20:00"," 21:00"," 22:00"]
+  for (let i = 0; i < 7; i ++) {
+    for (let j = 0; j < 12; j++) {
+      calendar[i][j] = {date: dates[i], start: starttimes[j], end: endtimes[j], check: false}
+    }
+  }
+
+  console.log(calendar[4][5].start)
+  
+
   const week = Array(7)
-    .fill(false)
+    .fill()
     .map((x) => Array(12).fill(false));
 
-  const [sched, setSched] = useState(week);
+  const [sched, setSched] = useState(calendar);
 
   const handleChange = (index, slot, event) => {
     const update = [...sched];
-    update[index][slot] = event.target.checked;
+    update[index][slot].check = event.target.checked;
     setSched(update);
     console.log(update);
   };
@@ -200,6 +292,50 @@ const AvailableSchedule = (props) => {
   datesOfCheckbox[5][11] = sat + "9:00PM to 10:00PM";
   datesOfCheckbox[6][11] = sun + "9:00PM to 10:00PM";
 
+  const [error, setError] = useState(false)
+  const [msg, setMsg] = useState("")
+
+  function count() {
+    var counter = 0;
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 12; j++) {
+        if (sched[i][j].check == true) { 
+          counter++
+        }
+      }
+    }
+    return counter;
+  }
+
+  const submit = () => {
+    if (count() < 10) {
+      setError(true)
+      setMsg("You have not entered enough shifts. Please add at least 10 shifts.")
+    } else if (count() > 48) {
+      setError(true)
+      setMsg("You have entered too many shifts. Pkease add at most 48 shifts.")
+    } else {
+      setError(false)
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 12; j++) {
+          if (sched[i][j].check == true) { 
+            riderService.entershift(authenticationService.currentUserValue.id, sched[i][j].date, sched[i][j].start, sched[i][j].end).then((response) => {
+              response.json().then((data) => {
+                console.log('donzo')
+                window.location.reload(false)
+              })
+            })
+            .catch((error) => {
+              error.text().then((errorMessage) => {
+                console.log(errorMessage)
+              })
+            })
+          }
+        }
+      }
+    }
+  }
+
   /*testing*/
   return (
     <Card {...rest}>
@@ -236,7 +372,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][0]}
+                              checked={calendar[index][0].checked}
                               onChange={(e) => handleChange(index, 0, e)}
                               name="slot1"
                             />
@@ -249,7 +385,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][1]}
+                              checked={calendar[index][1].checked}
                               onChange={(e) => handleChange(index, 1, e)}
                               name="slot2"
                             />
@@ -262,7 +398,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][2]}
+                              checked={calendar[index][2].checked}
                               onChange={(e) => handleChange(index, 2, e)}
                               name="slot3"
                             />
@@ -275,7 +411,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][3]}
+                              checked={calendar[index][3].checked}
                               onChange={(e) => handleChange(index, 3, e)}
                               name="slot4"
                             />
@@ -288,7 +424,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][4]}
+                              checked={calendar[index][4].checked}
                               onChange={(e) => handleChange(index, 4, e)}
                               name="slot5"
                             />
@@ -301,7 +437,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][5]}
+                              checked={calendar[index][5].checked}
                               onChange={(e) => handleChange(index, 5, e)}
                               name="slot6"
                             />
@@ -314,7 +450,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][6]}
+                              checked={calendar[index][6].checked}
                               onChange={(e) => handleChange(index, 6, e)}
                               name="slot7"
                             />
@@ -327,7 +463,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][7]}
+                              checked={calendar[index][7].checked}
                               onChange={(e) => handleChange(index, 7, e)}
                               name="slot8"
                             />
@@ -340,7 +476,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][8]}
+                              checked={calendar[index][8].checked}
                               onChange={(e) => handleChange(index, 8, e)}
                               name="slot9"
                             />
@@ -353,7 +489,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][9]}
+                              checked={calendar[index][9].checked}
                               onChange={(e) => handleChange(index, 9, e)}
                               name="slot10"
                             />
@@ -366,7 +502,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][10]}
+                              checked={calendar[index][10].checked}
                               onChange={(e) => handleChange(index, 10, e)}
                               name="slot11"
                             />
@@ -379,7 +515,7 @@ const AvailableSchedule = (props) => {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={sched[index][11]}
+                              checked={calendar[index][11].checked}
                               onChange={(e) => handleChange(index, 11, e)}
                               name="slot12"
                             />
@@ -401,11 +537,12 @@ const AvailableSchedule = (props) => {
           type="submit"
           color="secondary"
           variant="contained"
-          onClick={() => this.submit()}
+          onClick={() => submit()}
         >
           Save details
         </Button>
       </CardActions>
+      {error && ErrorAlert(msg)}
     </Card>
   );
 };

@@ -275,35 +275,6 @@ class DisplaySummary extends Component {
   };
 
   fetchData = () => {
-    // managerService
-    //   .locations(this.state.start, this.state.end)
-    //   .then((response) => {
-    //     response.json().then((data) => {
-    //       console.log("locations: ", this.state.locations);
-    //       this.setState(
-    //         { locations: managerService.locationsresults(data) },
-    //         () => {
-    //           console.log("locations: ", managerService.locationsresults(data));
-    //         }
-    //       );
-    //     });
-    //   });
-    // managerService
-    //   .newrestaurantcount(this.state.start, this.state.end)
-    //   .then((response) => {
-    //     response.json().then((data) => {
-    //       this.setState({ restuarant: data.count });
-    //     });
-    //   });
-
-    // managerService
-    //   .newcustomercount(this.state.start, this.state.end)
-    //   .then((response) => {
-    //     response.json().then((data) => {
-    //       this.setState({ customer: data.count });
-    //     });
-    //   });
-
     managerService
       .customerorderscount(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {

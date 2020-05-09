@@ -263,6 +263,31 @@ import {
     }
   }
   
+  /**
+   * enter shift
+   */
+  const entershift = async (req, res) => {
+    const { id, start, end } = req.body;
+    console.log('id: ', id);
+    const getRiderTypeQuery = "insert into shifts values($1, $2, $3) returning *";
+    const values = [
+      id,
+      start,
+      end
+    ]
+    try {
+      const { rows } = await dbQuery.query(getRiderTypeQuery, values);
+      const dbResponse = rows[0];
+      successMessage.data = dbResponse;
+      console.log('res: ', dbResponse);
+      return res.status(status.success).send(successMessage.data);
+    } catch (error) {
+      console.log(error);
+      errorMessage.error = 'Operation was not successful';
+      return res.status(status.error).send(errorMessage.error);
+    }
+  }  
+
   export {
     createRider,
     signinRider,
@@ -270,5 +295,6 @@ import {
     editRider,
     deleteRider,
     ordersByRider,
-    getRiderType
+    getRiderType,
+    entershift
   };
