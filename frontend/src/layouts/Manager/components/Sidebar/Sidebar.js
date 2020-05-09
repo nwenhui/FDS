@@ -73,19 +73,19 @@ export default (props) => {
       <a className="menu-item" href="/riderSalary">
         <Salary /> Salary
       </a>
-      <a className="menu-item" href="/deliveryFee">
+      {/* <a className="menu-item" href="/deliveryFee">
         <DeliverySummary /> Delivery Fee
-      </a>
+      </a> */}
 
       <a className="menu-item" href="/monthlySummary">
         <MonthlySummary /> Monthly Summary
       </a>
-      {/* <a className="menu-item" href="/customerHistory">
-        <DeliverySummary /> Delivery Summary
+      <a className="menu-item" href="/manager/customerSummary">
+        <DeliverySummary /> Customer Summary
       </a>
-      <a className="menu-item" href="/EditRReview">
+      <a className="menu-item" href="/manager/riderSummary">
         <RiderSummary /> Rider Summary
-      </a> */}
+      </a>
     </Menu>
   );
 };

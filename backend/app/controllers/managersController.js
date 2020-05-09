@@ -8,6 +8,7 @@ import {
     isValidEmail,
     validatePassword,
     isEmpty,
+    durationError,
 } from '../helpers/validations';
   
 import {
@@ -219,11 +220,389 @@ import {
       return res.status(status.error).send(errorMessage.error);
     }
   };
-  
+
+  /**
+ * total no. of new restuarants within period
+ */
+const newrestaurantcount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(resid) from restaurant where joined_at >= $1 and joined_at <= $2'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new restaurants joined within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of new customers within period
+ */
+const newcustomercount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(id) from customer where joined_at >= $1 and joined_at <= $2'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new cuwtomers joined within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of orders within period
+ */
+const orderscount = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(orderid) from orders where ordered_on >= $1 and ordered_on <= $2'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total total food cost within period
+ */
+const totalfoodcost = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(foodfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2)'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse.sum) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total total nett cost within period
+ */
+const totalnett = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(totalfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2)'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse.sum) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * all locations used in orders within period
+ */
+const locations = async (req, res) => {
+  const { start, end } = req.body;
+  console.log('locations body: ', req.body);
+  const query = 'select distinct addressdetails from orderdetails where orderid = any (select orderid from orders where ordered_on >= $1 and ordered_on <= $2)'
+  const values = [
+    start,
+    end
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows;
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('locations : ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * get no. of orders per location per hr
+ */
+const locationsperhr = async (req, res) => {
+  const { start, end, starttime, endtime, location } = req.body;
+  console.log('perhr body: ', req.body);
+  const query = 'select count(orderid) from orderdetails where addressdetails = $5 and orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2 and ordered_on::time >= $3 and ordered_on::time <= $4)';
+  const values = [
+    start,
+    end,
+    starttime,
+    endtime,
+    location
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse.count) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total no. of orders by customers in a period
+ */
+const customerorderscount = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select count(orderid) from orders where ordered_on >= $1 and ordered_on <= $2 and id = $3'
+  const values = [
+    start,
+    end,
+    id
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+
+/**
+ * total customer total food cost within period
+ */
+const customertotalfoodcost = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(foodfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2 and id = $3)'
+  const values = [
+    start,
+    end,
+    id
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse.sum) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * total customer total nett cost within period
+ */
+const customertotalnett = async (req, res) => {
+  const { start, end, id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select sum(totalfee) from receipt where orderid = any(select orderid from orders where ordered_on >= $1 and ordered_on <= $2 and id = $3)'
+  const values = [
+    start,
+    end,
+    id
+  ]
+  if (durationError(start,end)) {
+    errorMessage.error = 'Start Date must before End Date';
+    return res.status(status.bad).send(errorMessage.error);
+  }
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse.sum) {
+      errorMessage.error = 'No new orders made within this period';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+/**
+ * check if customer id is valid
+ */
+const checkcustomerid = async (req, res) => {
+  const { id } = req.body;
+  console.log('error body: ', req.body);
+  const query = 'select * from customer where id = $1;'
+  const values = [
+    id
+  ]
+  try {
+    const { rows } = await dbQuery.query(query, values);
+    const dbResponse = rows[0];
+    successMessage.data = dbResponse;
+    if (!dbResponse) {
+      errorMessage.error = 'No such customer in records!';
+      console.log(errorMessage.error);
+      return res.status(status.notfound).send(errorMessage.error);
+    }
+    console.log('res: ', rows);
+    return res.status(status.success).send(successMessage.data);
+  } catch (error) {
+    console.log(error);
+    errorMessage.error = 'Operation was not successful';
+    return res.status(status.error).send(errorMessage.error);
+  }
+}
+
+
+
   export {
     createManager,
     signinManager,
     searchManagerFirstnameOrLastname,
     editManager,
-    deleteManager
+    deleteManager,
+    newrestaurantcount,
+    newcustomercount,
+    orderscount,
+    totalfoodcost,
+    totalnett,
+    locations,
+    locationsperhr, 
+    customerorderscount,
+    customertotalfoodcost,
+    customertotalnett,
+    checkcustomerid
   };

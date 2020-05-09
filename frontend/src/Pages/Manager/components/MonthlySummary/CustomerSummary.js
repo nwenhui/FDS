@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MonthlySummary = () => {
+const CustomerSummary = () => {
   const classes = useStyles();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -217,6 +217,7 @@ class DisplaySummary extends Component {
     orders: 0,
     cost: 0,
     nett: 0,
+    customerid: 0,
   };
   setStartDate = (event) => {
     this.setState({ start: event.target.value }, () => {
@@ -231,6 +232,23 @@ class DisplaySummary extends Component {
       this.fetchData();
     });
   };
+
+  setCustomerid = (event) => {
+    managerService.checkcustomerid(event.target.value).then((response) => {
+      response.json().then((data) => {
+        this.setState({ customerid: event.target.value, error: false }, () => {
+          console.log("start: ", this.state.customerid);
+          // this.fetchData();
+        });
+      })
+      .catch((error) => {
+        error.text().then((errorMessage) => {
+          this.setState({ error: true, errorMessage })
+        })
+      })
+    })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("clickyyyy");
@@ -238,37 +256,37 @@ class DisplaySummary extends Component {
   };
 
   fetchData = () => {
-    managerService
-      .locations(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          console.log("locations: ", this.state.locations);
-          this.setState(
-            { locations: managerService.locationsresults(data) },
-            () => {
-              console.log("locations: ", managerService.locationsresults(data));
-            }
-          );
-        });
-      });
-    managerService
-      .newrestaurantcount(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          this.setState({ restuarant: data.count });
-        });
-      });
+    // managerService
+    //   .locations(this.state.start, this.state.end)
+    //   .then((response) => {
+    //     response.json().then((data) => {
+    //       console.log("locations: ", this.state.locations);
+    //       this.setState(
+    //         { locations: managerService.locationsresults(data) },
+    //         () => {
+    //           console.log("locations: ", managerService.locationsresults(data));
+    //         }
+    //       );
+    //     });
+    //   });
+    // managerService
+    //   .newrestaurantcount(this.state.start, this.state.end)
+    //   .then((response) => {
+    //     response.json().then((data) => {
+    //       this.setState({ restuarant: data.count });
+    //     });
+    //   });
+
+    // managerService
+    //   .newcustomercount(this.state.start, this.state.end)
+    //   .then((response) => {
+    //     response.json().then((data) => {
+    //       this.setState({ customer: data.count });
+    //     });
+    //   });
 
     managerService
-      .newcustomercount(this.state.start, this.state.end)
-      .then((response) => {
-        response.json().then((data) => {
-          this.setState({ customer: data.count });
-        });
-      });
-
-    managerService
-      .orderscount(this.state.start, this.state.end)
+      .custoemrorderscount(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ orders: data.count });
@@ -276,7 +294,7 @@ class DisplaySummary extends Component {
       });
 
     managerService
-      .totalfoodcost(this.state.start, this.state.end)
+      .customertotalfoodcost(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ cost: data.sum });
@@ -284,7 +302,7 @@ class DisplaySummary extends Component {
       });
 
     managerService
-      .totalnett(this.state.start, this.state.end)
+      .customertotalnett(this.state.start, this.state.end, this.state.customerid)
       .then((response) => {
         response.json().then((data) => {
           this.setState({ nett: data.sum });
@@ -338,13 +356,22 @@ class DisplaySummary extends Component {
                       onChange={this.setEndDate.bind(this)}
                     />
                   </div>
+                  <div class="col" align="center">
+                    <label>Enter Customer ID</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      value={this.state.customerid}
+                      onChange={this.setCustomerid.bind(this)}
+                    />
+                  </div>
                 </div>
               </form>
             </Grid>
             <Grid item lg={12} sm={12} xl={12} xs={12}>
               {/* <OrderSummary /> */}
               <Card>
-                <CardHeader title="New" />
+                <CardHeader title="Total" />
                 <Divider />
                 <CardContent>
                   <PerfectScrollbar>
@@ -353,12 +380,8 @@ class DisplaySummary extends Component {
                         <TableHead>
                           <TableRow>
                             <TableCell align="center">
-                              No. of Restaurants
+                              No. of Orders
                             </TableCell>
-                            <TableCell align="center">
-                              No. of New Customers
-                            </TableCell>
-                            <TableCell align="center">No. of Orders</TableCell>
                             <TableCell align="center">
                               Total Food Cost
                             </TableCell>
@@ -370,12 +393,6 @@ class DisplaySummary extends Component {
                           <TableRow>
                             <TableCell align="center">
                               {this.state.restuarant}
-                            </TableCell>
-                            <TableCell align="center">
-                              {this.state.customer}
-                            </TableCell>
-                            <TableCell align="center">
-                              {this.state.orders}
                             </TableCell>
                             <TableCell align="center">
                               ${this.state.cost}
@@ -390,14 +407,14 @@ class DisplaySummary extends Component {
                   </PerfectScrollbar>
                 </CardContent>
                 <Divider />
-                {this.state.error && ErrorAlert(this.state.msg)}
+                {/* {this.state.error && ErrorAlert(this.state.msg)} */}
               </Card>
             </Grid>
 
             <Grid item lg={12} sm={12} xl={12} xs={12}>
               {/* <DeliverySummery start={this.state.start} end={this.state.end} /> */}
               <Card>
-                <CardHeader title="Delivery Info" />
+                <CardHeader title="Orders Info" />
                 <Divider />
                 <CardContent>
                   <PerfectScrollbar>
@@ -435,9 +452,10 @@ class DisplaySummary extends Component {
                   </PerfectScrollbar>
                 </CardContent>
                 <Divider />
-                {this.state.error && ErrorAlert(this.state.msg)}
+                {/* {this.state.error && ErrorAlert(this.state.msg)} */}
               </Card>
             </Grid>
+            {this.state.error && ErrorAlert(this.state.errorMessage)}
 
             {/* <Grid item lg={12} sm={12} xl={12} xs={12}>
               <MonthlySummary></MonthlySummary>
