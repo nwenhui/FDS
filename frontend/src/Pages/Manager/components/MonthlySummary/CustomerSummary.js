@@ -240,7 +240,7 @@ class DisplaySummary extends Component {
             response.json().then((data) => {
                 console.log("id: ", this.state.customerid);
                 this.setState({ error: false })
-                // this.fetchData();
+                this.fetchData();
               });
             })
             .catch((error) => {
@@ -396,7 +396,7 @@ class DisplaySummary extends Component {
                         <TableBody>
                           <TableRow>
                             <TableCell align="center">
-                              {this.state.restuarant}
+                              {this.state.orders}
                             </TableCell>
                             <TableCell align="center">
                               ${this.state.cost}
