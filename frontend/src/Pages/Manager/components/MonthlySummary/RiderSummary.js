@@ -391,7 +391,7 @@ class DisplaySummary extends Component {
                             {/* <TableCell align="center">Average Delivery Time</TableCell> */}
                           </TableRow>
                         </TableHead>
-
+                        
                         <TableBody>
                           <TableRow>
                             <TableCell align="center">
